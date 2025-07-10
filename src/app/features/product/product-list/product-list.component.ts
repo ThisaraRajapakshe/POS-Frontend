@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductService } from '../services/product.service';
+import { ProductService } from '../../../Core/services/product.service';
 import { Product } from './product';
 import { CommonModule } from '@angular/common';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -11,25 +12,14 @@ import { CommonModule } from '@angular/common';
   styleUrl: './product-list.component.scss'
 })
 export class ProductListComponent implements OnInit {
-  products: Product[] = [];
-  errorMessage: string = '';
+  products$! : Observable<Product[]>; 
 
   constructor(private productService: ProductService) { }
-
+  
   ngOnInit(): void {
-    this.loadProducts();
+    this.products$ = this.productService.getAll();
   }
-
-  loadProducts(): void {
-    this.productService.getProducts().subscribe({
-      next: (data) => {
-        this.products = data;
-      },
-      error: (error) => {
-        this.errorMessage = 'Error loading products';
-        console.error(error);
-      }
-    });
-  }
-
 }
+  
+
+
