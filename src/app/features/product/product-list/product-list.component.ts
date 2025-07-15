@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../../Core/services/product.service';
-import { Product } from './product';
+import { Product } from '../../../Core/models/product.model';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
 

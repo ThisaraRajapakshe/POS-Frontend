@@ -4,12 +4,14 @@
         <tr>
           <th>Id</th>
           <th>Name</th>
+          <th>Category</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let product of products$ | async">
           <td>{{ product.id }}</td>
           <td>{{ product.name }}</td>
+          <td>{{ product.category.name }}</td>
         </tr>
       </tbody>
     </table>

@@ -1,0 +1,24 @@
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Barcode Id</th>
+            <th>Cost</th>
+            <th>Display Price</th>
+            <th>Discounted Price</th>
+            <th>Product Name</th>
+            <th>Category Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of productLineItems$ | async">
+            <td>{{ item.id }}</td>
+            <td>{{ item.barcodeId }}</td>
+            <td>{{ item.cost }}</td>
+            <td>{{ item.displayPrice }}</td>
+            <td>{{ item.discountedPrice }}</td>
+            <td>{{ item.product.name }}</td>
+            <td>{{ item.product.category.name }}</td>
+        </tr>
+    </tbody>
+</table>
