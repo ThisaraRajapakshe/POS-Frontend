@@ -1,0 +1,9 @@
+<h1>Delete Product</h1>
+<div *ngIf="message" class="alert" [ngClass]="{'alert-success': !isError, 'alert-danger': isError}">
+  {{ message }}
+</div>
+<div>
+    <label class="form-label" for="productId">Product Id</label>
+    <input class="form-control" id="productId" #productIdInput>
+    <button class="btn btn-primary" (click)="deleteProduct(productIdInput.value)">Delete Product</button>
+</div>
