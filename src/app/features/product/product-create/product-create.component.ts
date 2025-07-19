@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Product } from '../../../Core/models/product.model';
+import { Product } from '../../../Core/models/Domains/product.model';
 import { OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProductService } from '../../../Core/services/product.service';

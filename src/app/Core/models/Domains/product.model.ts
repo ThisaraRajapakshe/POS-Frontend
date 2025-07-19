@@ -1,4 +1,4 @@
-import { Category } from "./Domains/category.model";
+import { Category } from "./category.model";
 
 export interface Product{
     id : string;
