@@ -13,7 +13,8 @@ import { CommonModule } from '@angular/common';
 export class ProductCreateComponent implements OnInit {
 
   productForm!: FormGroup;
-  submissionError = '';
+  submissionError : boolean = false;
+  message : string = '';
 
   constructor(private formBuilder: FormBuilder, private productService: ProductService) { }
   ngOnInit(): void {
@@ -31,11 +32,14 @@ export class ProductCreateComponent implements OnInit {
       this.productService.create(product).subscribe({
         next: (response) => {
           console.log('Product created successfully:', response);
+          this.message = 'Product created successfully';
+          this.submissionError = false;
           this.productForm.reset(); // Reset the form after successful submission
         },
         error: (error) => {
           console.error('Error creating product:', error);
-          this.submissionError = 'Failed to create product. Please try again.';
+          this.submissionError = true;
+          this.message = 'Failed to create product. Please try again.';
         }
       });
     }
