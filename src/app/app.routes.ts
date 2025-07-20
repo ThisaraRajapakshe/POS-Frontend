@@ -6,11 +6,13 @@ import { ProductDeleteComponent } from './features/product/product-delete/produc
 import { ProductEditComponent } from './features/product/product-edit/product-edit.component';
 import { ProductLineItemCreateComponent } from './features/product-Line-Item/product-line-item-create/product-line-item-create.component';
 import { ProductLineItemEditComponent } from './features/product-Line-Item/product-Line-Item-Edit/product-line-item-edit.component';
+import { ProductLineItemDeleteComponent } from './features/product-Line-Item/product-line-item-delete/product-line-item-delete.component';
 
 export const routes: Routes = [
     {path: 'product-line-item-list', component: ProductLineItemListComponent },
     {path: 'product-line-item-create', component: ProductLineItemCreateComponent },
     {path: 'product-line-item-edit', component: ProductLineItemEditComponent },
+    {path: 'product-line-item-delete', component: ProductLineItemDeleteComponent },
     {path: 'product-list', component: ProductListComponent },
     {path: 'product-create', component: ProductCreateComponent },
     {path: 'product-delete', component: ProductDeleteComponent },
