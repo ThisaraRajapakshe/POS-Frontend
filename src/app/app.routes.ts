@@ -8,6 +8,7 @@ import { ProductLineItemCreateComponent } from './features/product-Line-Item/pro
 import { ProductLineItemEditComponent } from './features/product-Line-Item/product-Line-Item-Edit/product-line-item-edit.component';
 import { ProductLineItemDeleteComponent } from './features/product-Line-Item/product-line-item-delete/product-line-item-delete.component';
 import { CategoryListComponent } from './features/category/category-list/category-list.component';
+import { CategoryCreateComponent } from './features/category/category-create/category-create.component';
 
 export const routes: Routes = [
     {path: 'product-line-item-list', component: ProductLineItemListComponent },
@@ -19,4 +20,5 @@ export const routes: Routes = [
     {path: 'product-delete', component: ProductDeleteComponent },
     {path: 'product-edit', component: ProductEditComponent },
     {path: 'category-list', component: CategoryListComponent },
+    {path: 'category-create', component: CategoryCreateComponent },
 ];
