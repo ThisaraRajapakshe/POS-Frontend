@@ -4,7 +4,7 @@ export interface ProductLineItem{
     
   
     id: string,
-    barcodeId: string,
+    barCodeId: string,
     productId: string;
     cost : number;
     displayPrice: number;

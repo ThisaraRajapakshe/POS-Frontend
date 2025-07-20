@@ -1,1 +1,32 @@
-<p>product-line-item-create works!</p>
+<h1>Create Product Line Item</h1>
+<div *ngIf="message" class="alert" [ngClass]="{'alert-success': !submissionError, 'alert-danger': submissionError}">
+  {{ message }}
+</div>
+
+<form [formGroup]="productLineItemForm" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label for="id">ID</label>
+    <input id="id" formControlName="id" class="form-control" />
+  </div>
+  <div class="form-group">
+    <label for="barCodeId">Bar Code ID</label>
+    <input id="barCodeId" formControlName="barCodeId" class="form-control" />
+  </div>
+  <div class="form-group">
+    <label for="productId">Product ID</label>
+    <input id="productId" formControlName="productId" class="form-control" />
+  </div>
+  <div class="form-group">
+    <label for="cost">Cost</label>
+    <input id="cost" formControlName="cost" type="number" class="form-control" />
+  </div>
+  <div class="form-group">
+    <label for="displayPrice">Display Price</label>
+    <input id="displayPrice" formControlName="displayPrice" type="number" class="form-control" />
+  </div>
+  <div class="form-group">
+    <label for="discountedPrice">Discounted Price</label>
+    <input id="discountedPrice" formControlName="discountedPrice" type="number" class="form-control" />
+  </div>
+  <button type="submit" class="btn btn-primary">Create Product Line Item</button>
+</form>

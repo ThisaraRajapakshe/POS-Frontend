@@ -1,7 +1,0 @@
-import { Category } from "./Domains/category.model";
-
-export interface Product{
-    id : string;
-    name : string;
-    category : Category
-}

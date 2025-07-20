@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BaseHttpService } from './base-http.service';
-import { Product } from '../models/product.model';
+import { Product } from '../models/Domains/product.model';
 import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs/internal/Observable';
 import { catchError, shareReplay, throwError } from 'rxjs';

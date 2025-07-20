@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
 import { BaseHttpService } from './base-http.service';
-import { ProductLineItem } from '../models/product-line-item.model';
+import { ProductLineItem } from '../models/Domains/product-line-item.model';
 import { catchError, Observable, shareReplay, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { CreateProductLineItemDto } from '../models/Dtos/create-product-line-item-dto';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class ProductLineItemService extends BaseHttpService<ProductLineItem> {
+export class ProductLineItemService extends BaseHttpService<ProductLineItem, CreateProductLineItemDto> {
 
   private productLineItems$!: Observable<ProductLineItem[]>;
   constructor(http: HttpClient) {
