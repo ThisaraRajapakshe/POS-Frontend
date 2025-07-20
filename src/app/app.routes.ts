@@ -9,6 +9,8 @@ import { ProductLineItemEditComponent } from './features/product-Line-Item/produ
 import { ProductLineItemDeleteComponent } from './features/product-Line-Item/product-line-item-delete/product-line-item-delete.component';
 import { CategoryListComponent } from './features/category/category-list/category-list.component';
 import { CategoryCreateComponent } from './features/category/category-create/category-create.component';
+import { CategoryEditComponent } from './features/category/category-edit/category-edit.component';
+import { CategoryDeleteComponent } from './features/category/category-delete/category-delete.component';
 
 export const routes: Routes = [
     {path: 'product-line-item-list', component: ProductLineItemListComponent },
@@ -21,4 +23,6 @@ export const routes: Routes = [
     {path: 'product-edit', component: ProductEditComponent },
     {path: 'category-list', component: CategoryListComponent },
     {path: 'category-create', component: CategoryCreateComponent },
+    {path: 'category-edit', component: CategoryEditComponent },
+    {path: 'category-delete', component: CategoryDeleteComponent },
 ];

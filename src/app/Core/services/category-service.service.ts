@@ -4,11 +4,12 @@ import { BaseHttpService } from './base-http.service';
 import { catchError, Observable, shareReplay, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment.prod';
+import { UpdateCategoryDto } from '../models/Dtos/update-category-dto';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CategoryServiceService extends BaseHttpService<Category> {
+export class CategoryService extends BaseHttpService<Category, Category, UpdateCategoryDto> {
   private categories$!: Observable<Category[]>;
   constructor(http: HttpClient) {
     super(http, `${environment.apiUrl}/Category`);

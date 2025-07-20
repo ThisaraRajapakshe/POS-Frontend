@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { CategoryServiceService } from '../../../Core/services/category-service.service';
+import { CategoryService } from '../../../Core/services/category-service.service';
 import { Category } from '../../../Core/models/Domains/category.model';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -17,7 +17,7 @@ export class CategoryCreateComponent {
   submissionError: boolean = false;
   message: string = '';
 
-  constructor(private fb: FormBuilder, private categoryService: CategoryServiceService) { }
+  constructor(private fb: FormBuilder, private categoryService: CategoryService) { }
   // Initialize the form with validation
   ngOnInit(): void {
     this.categoryForm = this.fb.group({

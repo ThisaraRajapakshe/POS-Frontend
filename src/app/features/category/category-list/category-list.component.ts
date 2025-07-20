@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { catchError, tap, throwError, of, Observable } from 'rxjs';
 import { Category } from '../../../Core/models/Domains/category.model';
-import { CategoryServiceService } from '../../../Core/services/category-service.service';
+import { CategoryService } from '../../../Core/services/category-service.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -14,7 +14,7 @@ export class CategoryListComponent implements OnInit {
   categories$!: Observable<Category[]>;
   message: string = '';
 
-  constructor(private categoryService: CategoryServiceService) { }
+  constructor(private categoryService: CategoryService) { }
   ngOnInit(): void {
     //   this.categories$ = this.categoryService.getAll();
     this.loadCategories();

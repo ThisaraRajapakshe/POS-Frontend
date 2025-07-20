@@ -1,0 +1,20 @@
+<h1 class="text-center my-4">Delete Category</h1>
+<div *ngIf="message" class="alert text-center mx-auto w-50"
+    [ngClass]="{'alert-danger': isError, 'alert-success': !isError}">{{ message }}
+</div>
+<div class="container w-50">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form (ngSubmit)="deleteCategory(categoryId)" class="p-5">
+                <div class="mb-3">
+                    <label for="categoryId" class="form-label">Category ID</label>
+                    <input id="categoryId" [(ngModel)]="categoryId" name="categoryId" class="form-control" />
+                </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-danger mt-2 m-1">Delete Category</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
