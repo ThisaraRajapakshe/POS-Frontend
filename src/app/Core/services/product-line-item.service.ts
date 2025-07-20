@@ -5,12 +5,13 @@ import { catchError, Observable, shareReplay, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { CreateProductLineItemDto } from '../models/Dtos/create-product-line-item-dto';
+import { UpdateProductLineItemDto } from '../models/Dtos/update-product-line-item-dto';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class ProductLineItemService extends BaseHttpService<ProductLineItem, CreateProductLineItemDto> {
+export class ProductLineItemService extends BaseHttpService<ProductLineItem, CreateProductLineItemDto, UpdateProductLineItemDto> {
 
   private productLineItems$!: Observable<ProductLineItem[]>;
   constructor(http: HttpClient) {

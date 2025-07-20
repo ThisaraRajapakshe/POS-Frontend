@@ -5,11 +5,12 @@ import { ProductCreateComponent } from './features/product/product-create/produc
 import { ProductDeleteComponent } from './features/product/product-delete/product-delete.component';
 import { ProductEditComponent } from './features/product/product-edit/product-edit.component';
 import { ProductLineItemCreateComponent } from './features/product-Line-Item/product-line-item-create/product-line-item-create.component';
+import { ProductLineItemEditComponent } from './features/product-Line-Item/product-Line-Item-Edit/product-line-item-edit.component';
 
 export const routes: Routes = [
     {path: 'product-line-item-list', component: ProductLineItemListComponent },
     {path: 'product-line-item-create', component: ProductLineItemCreateComponent },
-    
+    {path: 'product-line-item-edit', component: ProductLineItemEditComponent },
     {path: 'product-list', component: ProductListComponent },
     {path: 'product-create', component: ProductCreateComponent },
     {path: 'product-delete', component: ProductDeleteComponent },
