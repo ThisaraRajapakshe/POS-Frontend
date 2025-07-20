@@ -1,32 +1,35 @@
-<h1>Create Product Line Item</h1>
+<h1 class="text-center my-4">Create Product Line Item</h1>
 <div *ngIf="message" class="alert" [ngClass]="{'alert-success': !submissionError, 'alert-danger': submissionError}">
   {{ message }}
 </div>
-
-<form [formGroup]="productLineItemForm" (ngSubmit)="onSubmit()">
-  <div class="form-group">
-    <label for="id">ID</label>
-    <input id="id" formControlName="id" class="form-control" />
-  </div>
-  <div class="form-group">
-    <label for="barCodeId">Bar Code ID</label>
-    <input id="barCodeId" formControlName="barCodeId" class="form-control" />
-  </div>
-  <div class="form-group">
-    <label for="productId">Product ID</label>
-    <input id="productId" formControlName="productId" class="form-control" />
-  </div>
-  <div class="form-group">
-    <label for="cost">Cost</label>
-    <input id="cost" formControlName="cost" type="number" class="form-control" />
-  </div>
-  <div class="form-group">
-    <label for="displayPrice">Display Price</label>
-    <input id="displayPrice" formControlName="displayPrice" type="number" class="form-control" />
-  </div>
-  <div class="form-group">
-    <label for="discountedPrice">Discounted Price</label>
-    <input id="discountedPrice" formControlName="discountedPrice" type="number" class="form-control" />
-  </div>
-  <button type="submit" class="btn btn-primary">Create Product Line Item</button>
-</form>
+<pos-card-wrapper>
+  <form [formGroup]="productLineItemForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="id" class="form-label">ID</label>
+      <input id="id" formControlName="id" class="form-control" />
+    </div>
+    <div>
+      <label for="barCodeId" class="form-label">Bar Code ID</label>
+      <input id="barCodeId" formControlName="barCodeId" class="form-control" />
+    </div>
+    <div>
+      <label for="productId" class="form-label">Product ID</label>
+      <input id="productId" formControlName="productId" class="form-control" />
+    </div>
+    <div>
+      <label for="cost" class="form-label">Cost</label>
+      <input id="cost" formControlName="cost" type="number" class="form-control" />
+    </div>
+    <div>
+      <label for="displayPrice" class="form-label">Display Price</label>
+      <input id="displayPrice" formControlName="displayPrice" type="number" class="form-control" />
+    </div>
+    <div>
+      <label for="discountedPrice" class="form-label">Discounted Price</label>
+      <input id="discountedPrice" formControlName="discountedPrice" type="number" class="form-control" />
+    </div>
+    <div class="d-grid my-4">
+      <button type="submit" class="btn btn-primary" [disabled]="productLineItemForm.invalid">Create Product Line Item</button>
+    </div>
+  </form>
+</pos-card-wrapper>

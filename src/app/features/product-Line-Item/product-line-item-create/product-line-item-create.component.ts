@@ -5,10 +5,11 @@ import { CreateProductLineItemDto } from '../../../Core/models/Dtos/create-produ
 import { OnInit } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { CardWrapperComponent } from '../../../shared/Components/card-wrapper/card-wrapper.component';
 
 @Component({
   selector: 'pos-product-line-item-create',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, CardWrapperComponent],
   templateUrl: './product-line-item-create.component.html',
   styleUrl: './product-line-item-create.component.scss'
 })
