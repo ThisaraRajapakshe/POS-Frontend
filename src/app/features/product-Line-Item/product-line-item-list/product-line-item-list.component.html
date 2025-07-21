@@ -1,3 +1,5 @@
+<h1 class="text-center">Product Line Items</h1>
+
 <table class="table table-striped">
     <thead>
         <tr>
@@ -13,10 +15,10 @@
     <tbody>
         <tr *ngFor="let item of productLineItems$ | async">
             <td>{{ item.id }}</td>
-            <td>{{ item.barcodeId }}</td>
-            <td>{{ item.cost }}</td>
-            <td>{{ item.displayPrice }}</td>
-            <td>{{ item.discountedPrice }}</td>
+            <td>{{ item.barCodeId }}</td>
+            <td>{{ item.cost | currency:'Rs.' }}</td>
+            <td>{{ item.displayPrice | currency:'Rs.' }}</td>
+            <td>{{ item.discountedPrice | currency:'Rs.' }}</td>
             <td>{{ item.product.name }}</td>
             <td>{{ item.product.category.name }}</td>
         </tr>
