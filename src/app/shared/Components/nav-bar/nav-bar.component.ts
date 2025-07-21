@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { RouterLink } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'pos-nav-bar',
@@ -22,6 +23,7 @@ import { RouterLink } from '@angular/router';
     MatIconModule,
     AsyncPipe,
     RouterLink,
+    RouterOutlet,
   ]
 })
 export class NavBarComponent {

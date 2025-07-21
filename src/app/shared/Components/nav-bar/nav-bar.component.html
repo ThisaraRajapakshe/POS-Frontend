@@ -6,8 +6,18 @@
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
       <a mat-list-item [routerLink]="['/product-list']">Product List</a>
+      <a mat-list-item [routerLink]="['/product-create']">Product Create</a>
+      <a mat-list-item [routerLink]="['/product-edit']">Product Edit</a>
+      <a mat-list-item [routerLink]="['/product-delete']">Product Delete</a>
       <a mat-list-item [routerLink]="['/product-line-item-list']">Product Line Item List</a>
-      <!-- <a mat-list-item [routerLink]="['/link3']">Link 3</a> -->
+      <a mat-list-item [routerLink]="['/product-line-item-create']">Product Line Item Create</a>
+      <a mat-list-item [routerLink]="['/product-line-item-edit']">Product Line Item Edit</a>
+      <a mat-list-item [routerLink]="['/product-line-item-delete']">Product Line Item Delete</a>
+      <a mat-list-item [routerLink]="['/category-list']">Category List</a>
+      <a mat-list-item [routerLink]="['/category-create']">Category Create</a>
+      <a mat-list-item [routerLink]="['/category-edit']">Category Edit</a>
+      <a mat-list-item [routerLink]="['/category-delete']">Category Delete</a>
+
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -24,5 +34,6 @@
       <span>POS System</span>
     </mat-toolbar>
     <!-- Add Content Here -->
+    <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
