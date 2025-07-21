@@ -7,27 +7,27 @@
     <div class="card shadow-sm">
         <div class="card-body">
         <form [formGroup]="productLineItemForm" (ngSubmit)="onSubmit()">
-            <div>
+            <div class="mb-3">
                 <label for="id" class="form-label">ID</label>
                 <input id="id" formControlName="id" class="form-control" />
             </div>
-            <div>
+            <div class="mb-3">
                 <label for="barCodeId" class="form-label">Bar Code ID</label>
                 <input id="barCodeId" formControlName="barCodeId" class="form-control" />
             </div>
-            <div>
+            <div class="mb-3">
                 <label for="productId" class="form-label">Product ID</label>
                 <input id="productId" formControlName="productId" class="form-control" />
             </div>
-            <div>
+            <div class="mb-3">
                 <label for="cost" class="form-label">Cost</label>
                 <input id="cost" formControlName="cost" type="number" min="0" class="form-control" />
             </div>
-            <div>
+            <div class="mb-3">
                 <label for="displayPrice" class="form-label">Display Price</label>
                 <input id="displayPrice" formControlName="displayPrice" type="number" min="0" class="form-control" />
             </div>
-            <div>
+            <div class="mb-3">
                 <label for="discountedPrice" class="form-label">Discounted Price</label>
                 <input id="discountedPrice" formControlName="discountedPrice" type="number" min="0" class="form-control" />
             </div>

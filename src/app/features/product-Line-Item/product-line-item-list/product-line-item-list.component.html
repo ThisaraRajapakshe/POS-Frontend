@@ -1,26 +1,29 @@
-<h1 class="text-center">Product Line Items</h1>
+<pos-card-wrapper width="75">
+    <h1 class="text-center my-4">Product Line Items</h1>
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Barcode Id</th>
-            <th>Cost</th>
-            <th>Display Price</th>
-            <th>Discounted Price</th>
-            <th>Product Name</th>
-            <th>Category Name</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let item of productLineItems$ | async">
-            <td>{{ item.id }}</td>
-            <td>{{ item.barCodeId }}</td>
-            <td>{{ item.cost | currency:'Rs.' }}</td>
-            <td>{{ item.displayPrice | currency:'Rs.' }}</td>
-            <td>{{ item.discountedPrice | currency:'Rs.' }}</td>
-            <td>{{ item.product.name }}</td>
-            <td>{{ item.product.category.name }}</td>
-        </tr>
-    </tbody>
-</table>
+
+    <table class="table table-striped table-bordered mt-3 w-100 mx-auto shadow-sm">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Barcode Id</th>
+                <th>Cost</th>
+                <th>Display Price</th>
+                <th>Discounted Price</th>
+                <th>Product Name</th>
+                <th>Category Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of productLineItems$ | async">
+                <td>{{ item.id }}</td>
+                <td>{{ item.barCodeId }}</td>
+                <td>{{ item.cost | currency:'Rs.' }}</td>
+                <td>{{ item.displayPrice | currency:'Rs.' }}</td>
+                <td>{{ item.discountedPrice | currency:'Rs.' }}</td>
+                <td>{{ item.product.name }}</td>
+                <td>{{ item.product.category.name }}</td>
+            </tr>
+        </tbody>
+    </table>
+</pos-card-wrapper>

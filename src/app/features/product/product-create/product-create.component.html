@@ -1,30 +1,41 @@
-<h1>Add New Product</h1>
+<h1 class="text-center my-4">Add New Product</h1>
 <div *ngIf="message" class="alert" [ngClass]="{'alert-success': !submissionError, 'alert-danger': submissionError}">
-  {{ message }}
+    {{ message }}
 </div>
-<form [formGroup]="productForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-        <label for="productId">Product Id</label>
-        <input type="text" id="productId" placeholder="Product Id" class="form-control" formControlName="id" required="true" >
-        <div *ngIf="productForm.get('id')?.invalid && (productForm.get('id')?.dirty || productForm.get('id')?.touched)">
-            <small class="text-danger" *ngIf="productForm.get('id')?.errors?.['required']">Product Id is required.</small>
+<pos-card-wrapper width="75%">
+    <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="p-2">
+        <div class="mb-3">
+            <label for="productId" class="form-label">Product Id</label>
+            <input type="text" id="productId" placeholder="Product Id" class="form-control" formControlName="id"
+                required="true">
+            <div
+                *ngIf="productForm.get('id')?.invalid && (productForm.get('id')?.dirty || productForm.get('id')?.touched)">
+                <small class="text-danger" *ngIf="productForm.get('id')?.errors?.['required']">Product Id is
+                    required.</small>
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label for="name">Product Name</label>
-        <input type="text" id="name" placeholder="Product Name" class="form-control" formControlName="name" required="true">
-        <div *ngIf="productForm.get('name')?.invalid && (productForm.get('name')?.dirty || productForm.get('name')?.touched)">
-            <small class="text-danger" *ngIf="productForm.get('name')?.errors?.['required']">Product Name is required.</small>
+        <div class="mb-3">
+            <label for="name" class="form-label">Product Name</label>
+            <input type="text" id="name" placeholder="Product Name" class="form-control" formControlName="name"
+                required="true">
+            <div
+                *ngIf="productForm.get('name')?.invalid && (productForm.get('name')?.dirty || productForm.get('name')?.touched)">
+                <small class="text-danger" *ngIf="productForm.get('name')?.errors?.['required']">Product Name is
+                    required.</small>
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label for="categoryId">Category Id</label>
-        <input type="text" id="categoryId" placeholder="Category Id" class="form-control" formControlName="categoryId" required="true">
-        <div *ngIf="productForm.get('categoryId')?.invalid && (productForm.get('categoryId')?.dirty || productForm.get('categoryId')?.touched)">
-            <small class="text-danger" *ngIf="productForm.get('categoryId')?.errors?.['required']">Category Id is required.</small>
+        <div class="mb-3">
+            <label for="categoryId" class="form-label">Category Id</label>
+            <input type="text" id="categoryId" placeholder="Category Id" class="form-control"
+                formControlName="categoryId" required="true">
+            <div
+                *ngIf="productForm.get('categoryId')?.invalid && (productForm.get('categoryId')?.dirty || productForm.get('categoryId')?.touched)">
+                <small class="text-danger" *ngIf="productForm.get('categoryId')?.errors?.['required']">Category Id is
+                    required.</small>
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-            <button type="submit" [disabled]="productForm.invalid" class="btn btn-primary">Add Product</button>
-    </div>
-</form>
+        <div class="d-grid">
+            <button type="submit" [disabled]="productForm.invalid" class="btn btn-primary mt-2 m-1">Add Product</button>
+        </div>
+    </form>
+</pos-card-wrapper>

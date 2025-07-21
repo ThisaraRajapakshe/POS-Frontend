@@ -4,9 +4,10 @@ import { OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProductService } from '../../../Core/services/product.service';
 import { CommonModule } from '@angular/common';
+import { CardWrapperComponent } from "../../../shared/Components/card-wrapper/card-wrapper.component";
 @Component({
   selector: 'pos-product-create',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, CardWrapperComponent],
   templateUrl: './product-create.component.html',
   styleUrl: './product-create.component.scss'
 })

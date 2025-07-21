@@ -3,10 +3,11 @@ import { Observable } from 'rxjs';
 import { ProductLineItem } from '../../../Core/models/Domains/product-line-item.model';
 import { ProductLineItemService } from '../../../Core/services/product-line-item.service';
 import { CommonModule } from '@angular/common';
+import { CardWrapperComponent } from "../../../shared/Components/card-wrapper/card-wrapper.component";
 
 @Component({
   selector: 'pos-product-line-item-list',
-  imports: [CommonModule],
+  imports: [CommonModule, CardWrapperComponent],
   templateUrl: './product-line-item-list.component.html',
   styleUrl: './product-line-item-list.component.scss'
 })

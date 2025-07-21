@@ -3,10 +3,11 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ProductService } from '../../../Core/services/product.service';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CardWrapperComponent } from '../../../shared/Components/card-wrapper/card-wrapper.component';
 
 @Component({
   selector: 'pos-product-edit',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, CardWrapperComponent],
   templateUrl: './product-edit.component.html',
   styleUrl: './product-edit.component.scss'
 })

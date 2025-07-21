@@ -1,9 +1,13 @@
-<h1>Delete Product</h1>
+<h1 class="text-center my-4">Delete Product</h1>
 <div *ngIf="message" class="alert" [ngClass]="{'alert-success': !isError, 'alert-danger': isError}">
   {{ message }}
 </div>
-<div>
+<pos-card-wrapper>
+  <div>
     <label class="form-label" for="productId">Product Id</label>
     <input class="form-control" id="productId" #productIdInput>
-    <button class="btn btn-primary" (click)="deleteProduct(productIdInput.value)">Delete Product</button>
-</div>
+    <div class="d-grid">
+      <button class="btn btn-danger m-1 mt-4" (click)="deleteProduct(productIdInput.value)">Delete Product</button>
+    </div>
+  </div>
+</pos-card-wrapper>

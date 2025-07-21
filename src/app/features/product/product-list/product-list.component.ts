@@ -3,11 +3,12 @@ import { ProductService } from '../../../Core/services/product.service';
 import { Product } from '../../../Core/models/Domains/product.model';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
+import { CardWrapperComponent } from "../../../shared/Components/card-wrapper/card-wrapper.component";
 
 
 @Component({
   selector: 'pos-product-list',
-  imports: [ CommonModule ],
+  imports: [CommonModule, CardWrapperComponent],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss'
 })

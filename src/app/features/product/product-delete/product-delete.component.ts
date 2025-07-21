@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { ProductService } from '../../../Core/services/product.service';
-import { CommonModule } from '@angular/common'; 
+import { CommonModule } from '@angular/common';
+import { CardWrapperComponent } from "../../../shared/Components/card-wrapper/card-wrapper.component"; 
 
 @Component({
   selector: 'pos-product-delete',
-  imports: [ CommonModule ],
+  imports: [CommonModule, CardWrapperComponent],
   templateUrl: './product-delete.component.html',
   styleUrl: './product-delete.component.scss'
 })
