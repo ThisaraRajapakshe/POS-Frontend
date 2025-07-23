@@ -7,7 +7,7 @@
     <label class="form-label" for="productId">Product Id</label>
     <input class="form-control" id="productId" #productIdInput>
     <div class="d-grid">
-      <button class="btn btn-danger m-1 mt-4" (click)="deleteProduct(productIdInput.value)">Delete Product</button>
+      <button class="btn btn-danger m-1 mt-4" (click)="openConfirmDialog(productIdInput.value)">Delete Product</button>
     </div>
   </div>
 </pos-card-wrapper>
