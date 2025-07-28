@@ -1,0 +1,22 @@
+<h2 mat-dialog-title>{{ data.mode === 'edit' ? 'Edit Product' : 'Add Product' }}</h2>
+<mat-dialog-content>
+  <form [formGroup]="productForm">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>ID</mat-label>
+      <input matInput type="text" formControlName="id" placeholder="ID" [readonly]="data.mode === 'edit'" />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Name</mat-label>
+      <input matInput type="text" formControlName="name" placeholder="Name" />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Category</mat-label>
+      <input matInput type="text" formControlName="categoryId" placeholder="Category" />
+    </mat-form-field>
+
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onClose()">Cancel</button>
+  <button mat-button color="secondary" (click)="onSave()">Save</button>
+</mat-dialog-actions>

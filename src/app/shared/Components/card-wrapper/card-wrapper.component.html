@@ -1,7 +1,7 @@
-<div class="container" [ngStyle]="{'width': width}">
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <ng-content></ng-content>
-        </div>
-    </div>
+<div class="mat-container" [ngStyle]="{ 'width': width }">
+  <mat-card class="mat-elevation-z2">
+    <mat-card-content>
+      <ng-content></ng-content>
+    </mat-card-content>
+  </mat-card>
 </div>
