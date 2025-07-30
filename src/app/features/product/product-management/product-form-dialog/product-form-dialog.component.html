@@ -4,10 +4,17 @@
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>ID</mat-label>
       <input matInput type="text" formControlName="id" placeholder="ID" [readonly]="data.mode === 'edit'" />
+      <!-- show error message -->
+      <mat-error *ngIf="productForm.get('id')?.hasError('required')">
+        ID is <strong>required</strong>
+      </mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Name</mat-label>
       <input matInput type="text" formControlName="name" placeholder="Name" />
+      <mat-error *ngIf="productForm.get('name')?.hasError('required')">
+        Product Name is <strong>required</strong>
+      </mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Category</mat-label>

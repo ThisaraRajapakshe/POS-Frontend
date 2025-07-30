@@ -2,7 +2,6 @@ import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogContent, MatDialogModule, MatDialogRef } from "@angular/material/dialog";
 import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
-import { ProductService } from '../../../../Core/services/product.service';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
@@ -22,7 +21,6 @@ export class ProductFormDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<ProductFormDialogComponent>,
-    private productService: ProductService
   ) {
     this.productForm = this.fb.group({
       id: [data?.product?.id || ''],
