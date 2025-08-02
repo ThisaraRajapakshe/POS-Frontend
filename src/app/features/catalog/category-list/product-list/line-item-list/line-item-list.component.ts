@@ -3,10 +3,11 @@ import { ProductLineItemService } from '../../../../../Core/services/product-lin
 import { Observable } from 'rxjs/internal/Observable';
 import { ProductLineItem } from '../../../../../Core/models/Domains/product-line-item.model';
 import { CommonModule } from '@angular/common';
+import { MatTableModule } from '@angular/material/table';
 
 @Component({
   selector: 'pos-line-item-list',
-  imports: [CommonModule],
+  imports: [CommonModule, MatTableModule],
   templateUrl: './line-item-list.component.html',
   styleUrl: './line-item-list.component.scss'
 })
