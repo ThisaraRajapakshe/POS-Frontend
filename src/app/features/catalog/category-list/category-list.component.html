@@ -1,0 +1,8 @@
+<mat-accordion *ngIf="categories$ | async as categories">
+  <mat-expansion-panel *ngFor="let category of categories" (opened)="selectCategory(category.id)">
+    <mat-expansion-panel-header>
+      <mat-panel-title>{{ category.name }}</mat-panel-title>
+    </mat-expansion-panel-header>
+    <pos-product-list [categoryId]="category.id"></pos-product-list>
+  </mat-expansion-panel>
+</mat-accordion>

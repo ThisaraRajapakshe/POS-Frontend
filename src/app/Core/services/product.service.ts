@@ -22,4 +22,13 @@ export class ProductService extends BaseHttpService<Product> {
       })
     );
   }
+  getByCategory(categoryId: string): Observable<Product[]>{
+    const url = `${environment.apiUrl}/product/category/${categoryId}`;
+    return this.http.get<Product[]>(url).pipe(
+      catchError((error) => {
+        console.error(`Error fetching products by category (${categoryId}):`, error);
+        return throwError(() => error);
+      })
+    );
+  }
 }

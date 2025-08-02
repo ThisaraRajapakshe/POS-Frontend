@@ -1,0 +1,6 @@
+<ul *ngIf="lineItems$ | async as lineItems">
+  <li *ngFor="let item of lineItems">
+    Id :-{{ item.id }} Barcode:- {{ item.barCodeId }} Cost:- {{ item.cost }} Display Price:- {{ item.displayPrice }}
+    Discounted Price:- {{ item.discountedPrice }}
+  </li>
+</ul>

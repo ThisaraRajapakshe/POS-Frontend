@@ -24,4 +24,14 @@ export class ProductLineItemService extends BaseHttpService<ProductLineItem, Cre
       })
     );
   }
+  getByProduct(productId: string): Observable<ProductLineItem[]> {
+    const url = `${environment.apiUrl}/ProductLineItem/product/${productId}`;
+    return this.http.get<ProductLineItem[]>(url).pipe(
+      shareReplay(1),
+      catchError((error) => {
+        console.error(`Error fetching product line items by product:${productId}`, error);
+        return throwError(() => error);
+      })
+    );
+  }
 }

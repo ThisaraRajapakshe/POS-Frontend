@@ -1,0 +1,11 @@
+<mat-accordion *ngIf="products$ | async as products">
+  <mat-expansion-panel *ngFor="let product of products">
+    <mat-expansion-panel-header>
+      <mat-panel-title>{{ product.name }}</mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <!-- 🟢 Nest line item list here -->
+    <pos-line-item-list [productId]="product.id"></pos-line-item-list>
+
+  </mat-expansion-panel>
+</mat-accordion>
