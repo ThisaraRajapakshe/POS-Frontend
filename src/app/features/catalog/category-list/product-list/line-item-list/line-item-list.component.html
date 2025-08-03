@@ -1,4 +1,5 @@
-<table mat-table [dataSource]="(lineItems$ | async) ?? []" class="mat-elevation-z8" *ngIf="lineItems$ | async as lineItems">
+<table mat-table [dataSource]="(lineItems$ | async) ?? []" class="mat-elevation-z8"
+  *ngIf="lineItems$ | async as lineItems">
 
   <!-- Id Column -->
   <ng-container matColumnDef="id">
@@ -39,6 +40,10 @@
     <th mat-header-cell *matHeaderCellDef> Category Name </th>
     <td mat-cell *matCellDef="let item"> {{item.product.category.name}} </td>
   </ng-container>
-  <tr mat-header-row *matHeaderRowDef="['id', 'barCodeId', 'cost', 'displayPrice', 'discountedPrice', 'productName', 'categoryName']"></tr>
-  <tr mat-row *matRowDef="let row; columns: ['id', 'barCodeId', 'cost', 'displayPrice', 'discountedPrice', 'productName', 'categoryName'];"></tr>
+  <tr mat-header-row
+    *matHeaderRowDef="['id', 'barCodeId', 'cost', 'displayPrice', 'discountedPrice', 'productName', 'categoryName']">
+  </tr>
+  <tr mat-row
+    *matRowDef="let row; columns: ['id', 'barCodeId', 'cost', 'displayPrice', 'discountedPrice', 'productName', 'categoryName'];">
+  </tr>
 </table>

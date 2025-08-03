@@ -1,3 +1,4 @@
+<div *ngIf="message" class="alert alert-danger">{{ message }}</div>
 <mat-accordion *ngIf="categories$ | async as categories">
   <mat-expansion-panel *ngFor="let category of categories" (opened)="selectCategory(category.id)">
     <mat-expansion-panel-header>

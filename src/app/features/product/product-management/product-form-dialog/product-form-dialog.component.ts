@@ -27,17 +27,9 @@ export class ProductFormDialogComponent {
     this.productForm = this.fb.group({
       id: [data?.product?.id || ''],
       name: [data?.product?.name || '', Validators.required],
-      categoryId: [data?.product?.categoryId || '', Validators.required]
+      categoryId: [data?.product?.category.id || '', Validators.required]
     });
   }
-  // ngOnInit(): void {
-  //   // Initialize the form with validation
-  //   this.productForm = this.fb.group({
-  //     id: ['', Validators.required],
-  //     name: ['', Validators.required],
-  //     categoryId: ['', Validators.required]
-  //   });
-  // }
   onClose(): void {
     this.dialogRef.close();
   }
