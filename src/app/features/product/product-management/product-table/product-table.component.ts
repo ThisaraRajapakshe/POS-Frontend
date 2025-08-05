@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, Output, EventEmitter, AfterViewInit } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -15,7 +15,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './product-table.component.html',
   styleUrl: './product-table.component.scss'
 })
-export class ProductTableComponent implements OnInit {
+export class ProductTableComponent implements AfterViewInit {
   @Input() products$!: Observable<Product[]>;
   @Output() editProduct = new EventEmitter<Product>();
   @Output() deleteProduct = new EventEmitter<Product>();
@@ -26,11 +26,17 @@ export class ProductTableComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
     this.products$.subscribe((data) => {
-      this.dataSource.data = data;
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
+      this.dataSource.sortingDataAccessor = (item, property) => {
+        switch (property) {
+          case 'category': return item.category?.name;
+          default: return (item as any)[property];
+        }
+      };
+      this.dataSource.data = data;
     });
   }
 
