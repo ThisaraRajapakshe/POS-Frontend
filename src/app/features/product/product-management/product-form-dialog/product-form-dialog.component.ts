@@ -6,6 +6,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
+import { CategoryService } from '../../../../Core/services/category-service.service';
+import { Category } from '../../../../Core/models/Domains/category.model';
 
 
 @Component({
@@ -17,13 +19,21 @@ import { CommonModule } from '@angular/common';
 })
 export class ProductFormDialogComponent {
   productForm!: FormGroup;
+  categories: Category[] = [];
 
   constructor(
     // Injecting MAT_DIALOG_DATA to access data passed to the dialog
     @Inject(MAT_DIALOG_DATA) public data: any,
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<ProductFormDialogComponent>,
+    private categoryService: CategoryService,
   ) {
+    // load categories for the select dropdown
+    this.categoryService.getAll().subscribe((categories) => {
+      this.categories = categories;
+    });
+
+    // Initialize the form with data if available
     this.productForm = this.fb.group({
       id: [data?.product?.id || ''],
       name: [data?.product?.name || '', Validators.required],

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, of } from 'rxjs';
 import { Category } from '../../../Core/models/Domains/category.model';
 import { CategoryService } from '../../../Core/services/category-service.service';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -8,6 +8,7 @@ import { ConfirmDialogComponent } from '../../../shared/dialogs/confirm-dialog.c
 import { CategoryTableComponent } from './category-table/category-table.component';
 import { CardWrapperComponent } from '../../../shared/Components/card-wrapper/card-wrapper.component';
 import { MatButton, MatButtonModule } from '@angular/material/button';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'pos-category-management',
@@ -17,32 +18,77 @@ import { MatButton, MatButtonModule } from '@angular/material/button';
 })
 export class CategoryManagementComponent implements OnInit {
   categories$!: Observable<Category[]>;
-  constructor(private categoryService: CategoryService, private dialog: MatDialog) {}
+  constructor(private categoryService: CategoryService, private dialog: MatDialog, private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
-    this.categories$ = this.categoryService.getAll();
+    this.loadCategories();
   }
+  
   openAddCategory() {
     const dialogRef = this.dialog.open(CategoryFormDialogComponent, {
       data: { mode: 'create' },
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.categoryService.create(result).subscribe(() => {
-          this.categories$ = this.categoryService.getAll();
+        this.categoryService.create(result).subscribe({
+          next: () => {
+            this.snackBar.open('Category created successfully', 'Close', {
+              duration: 3000,
+              panelClass: ['snackbar-success']
+            });
+            this.loadCategories();
+          },
+          error: (error) => {
+            this.snackBar.open('Failed to create category', 'Close', {
+              duration: 3000,
+              panelClass: ['snackbar-error'],
+            });
+            console.error('Error creating category:', error);
+          }
         });
       }
     });
   }
+
+
+  loadCategories() {
+    this.categories$ = this.categoryService.getAll().pipe(
+      // error handling here
+      catchError(error => {
+        this.snackBar.open('Failed to load categories', 'Close', {
+          duration: 3000,
+          panelClass: ['snackbar-error'],
+        });
+        console.error('Error loading categories:', error);
+        return of([]); // Return an empty array on error
+      })
+    );
+  }
+
   openEditCategory(category: Category) {
     const dialogRef = this.dialog.open(CategoryFormDialogComponent, {
       data: { mode: 'edit', category },
     });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.categoryService.update(category.id, result).subscribe(() => {
-          this.categories$ = this.categoryService.getAll();
-        });
+    dialogRef.afterClosed().subscribe({
+      next: (result) => {
+        if (result) {
+          this.categoryService.update(category.id, result).subscribe({
+            next: () => {
+              this.loadCategories();
+              this.snackBar.open('Category updated successfully', 'Close', {
+                duration: 3000,
+                panelClass: ['snackbar-success']
+              });
+            },
+            error: (error) => {
+              this.snackBar.open('Failed to update category', 'Close', {
+                duration: 3000,
+                panelClass: ['snackbar-error'],
+              });
+              console.error('Error updating category:', error);
+            }
+          });
+        }
       }
     });
   }
@@ -50,11 +96,24 @@ export class CategoryManagementComponent implements OnInit {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: { message: `Delete this category "${category.name}"?`, title: 'Confirm Deletion', confirmButtonText: 'Delete', cancelButtonText: 'Cancel' },
     });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.categoryService.delete(category.id).subscribe(() => {
-          this.categories$ = this.categoryService.getAll();
+    dialogRef.afterClosed().subscribe({
+      next: (result) => {
+        if (result) {
+          this.categoryService.delete(category.id).subscribe(() => {
+            this.loadCategories();
+            this.snackBar.open('Category deleted successfully', 'Close', {
+              duration: 3000,
+              panelClass: ['snackbar-success'],
+            });
+          });
+        }
+      },
+      error: (error) => {
+        this.snackBar.open('Failed to delete category', 'Close', {
+          duration: 3000,
+          panelClass: ['snackbar-error'],
         });
+        console.error('Error deleting category:', error);
       }
     });
   }

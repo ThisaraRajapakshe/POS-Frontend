@@ -7,22 +7,33 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from '@angular/material/select';
 import { CardWrapperComponent } from "../../../../shared/Components/card-wrapper/card-wrapper.component";
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { ProductService } from '../../../../Core/services/product.service';
+import { Product } from '../../../../Core/models/Domains/product.model';
 
 @Component({
   selector: 'pos-line-item-form-dialog',
-  imports: [CommonModule, ReactiveFormsModule, MatInputModule, MatFormFieldModule, MatButtonModule, MatSelectModule, CardWrapperComponent],
+  imports: [CommonModule, ReactiveFormsModule, MatInputModule, MatFormFieldModule, MatButtonModule, MatSelectModule, CardWrapperComponent, MatSnackBarModule],
   templateUrl: './line-item-form-dialog.component.html',
   styleUrl: './line-item-form-dialog.component.scss'
 })
 export class LineItemFormDialogComponent {
   lineItemForm!: FormGroup;
+  products: Product[] = [];
 
   constructor(
     // Injecting MAT_DIALOG_DATA to access data passed to the dialog
     @Inject(MAT_DIALOG_DATA) public data: any,
     private fb: FormBuilder,
-    private dialogRef: MatDialogRef<LineItemFormDialogComponent>)
-  {
+    private dialogRef: MatDialogRef<LineItemFormDialogComponent>,
+    private snackBar: MatSnackBar,
+    private productService: ProductService
+  ) {
+    // Load products for the select dropdown
+    this.productService.getAll().subscribe((products) => {
+      this.products = products;
+    });
+    // Initialize the form with data if available
     this.lineItemForm = this.fb.group({
       id: [data?.lineItem?.id || '', Validators.required],
       barCodeId: [data?.lineItem?.barCodeId || '', Validators.required],

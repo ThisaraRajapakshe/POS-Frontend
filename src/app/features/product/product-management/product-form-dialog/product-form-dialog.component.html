@@ -16,11 +16,19 @@
         Product Name is <strong>required</strong>
       </mat-error>
     </mat-form-field>
-    <mat-form-field appearance="outline" class="full-width">
+    <!-- <mat-form-field appearance="outline" class="full-width">
       <mat-label>Category</mat-label>
       <input matInput type="text" formControlName="categoryId" placeholder="Category" />
+    </mat-form-field> -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Category</mat-label>
+      <mat-select formControlName="categoryId">
+        <mat-option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="productForm.get('categoryId')?.hasError('required')">
+        Category is <strong>required</strong>
+      </mat-error>
     </mat-form-field>
-
   </form>
 </mat-dialog-content>
 <mat-dialog-actions>

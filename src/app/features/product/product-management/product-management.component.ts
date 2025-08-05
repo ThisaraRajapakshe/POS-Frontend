@@ -6,8 +6,9 @@ import { ProductService } from '../../../Core/services/product.service';
 import { Product } from '../../../Core/models/Domains/product.model';
 import { ProductTableComponent } from './product-table/product-table.component';
 import { MatButton, MatButtonModule } from '@angular/material/button';
-import { Observable } from 'rxjs';
+import { catchError, Observable, of } from 'rxjs';
 import { CardWrapperComponent } from '../../../shared/Components/card-wrapper/card-wrapper.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'pos-product-management',
@@ -18,9 +19,9 @@ import { CardWrapperComponent } from '../../../shared/Components/card-wrapper/ca
 })
 export class ProductManagementComponent implements OnInit {
   products$!: Observable<Product[]>;
-  constructor(private dialog: MatDialog, private productService: ProductService) {}
+  constructor(private dialog: MatDialog, private productService: ProductService, private snackBar: MatSnackBar) { }
   ngOnInit(): void {
-    this.products$ = this.productService.getAll();
+    this.loadProducts();
   }
   openAddProduct() {
     const dialogRef = this.dialog.open(ProductFormDialogComponent, {
@@ -28,11 +29,37 @@ export class ProductManagementComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.productService.create(result).subscribe(() => {
-          this.products$ = this.productService.getAll();
+        this.productService.create(result).subscribe({
+          next: () => {
+            this.loadProducts();
+            this.snackBar.open('Product created successfully', 'Close', {
+              duration: 3000,
+              panelClass: ['snackbar-success']
+            });
+          },
+          error: (error) => {
+            this.snackBar.open('Failed to create product', 'Close', {
+              duration: 3000,
+              panelClass: ['snackbar-error'],
+            });
+            console.error('Error creating product:', error);
+          }
         });
       }
     });
+  }
+
+  loadProducts() {
+    this.products$ = this.productService.getAll().pipe(
+      catchError(error => {
+        this.snackBar.open('Failed to load products', 'Close', {
+          duration: 3000,
+          panelClass: ['snackbar-error'],
+        });
+        console.error('Error loading products:', error);
+        return of([]); // Return an empty array on error
+      })
+    );
   }
 
   openEditProduct(product: Product) {
@@ -41,8 +68,21 @@ export class ProductManagementComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.productService.update(product.id, result).subscribe(() => {
-          this.products$ = this.productService.getAll();
+        this.productService.update(product.id, result).subscribe({
+          next: () => {
+            this.loadProducts();
+            this.snackBar.open('Product updated successfully', 'Close', {
+              duration: 3000,
+              panelClass: ['snackbar-success'],
+            });
+          },
+          error: (error) => {
+            this.snackBar.open('Failed to update product', 'Close', {
+              duration: 3000,
+              panelClass: ['snackbar-error'],
+            });
+            console.error('Error updating product:', error);
+          }
         });
       }
     });
@@ -54,8 +94,21 @@ export class ProductManagementComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.productService.delete(product.id).subscribe(() => {
-          this.products$ = this.productService.getAll();
+        this.productService.delete(product.id).subscribe({
+          next: () => {
+            this.loadProducts();
+            this.snackBar.open('Product deleted successfully', 'Close', {
+              duration: 3000,
+              panelClass: ['snackbar-success'],
+            });
+          },
+          error: (error) => {
+            this.snackBar.open('Failed to delete product', 'Close', {
+              duration: 3000,
+              panelClass: ['snackbar-error'],
+            });
+            console.error('Error deleting product:', error);
+          }
         });
       }
     });
