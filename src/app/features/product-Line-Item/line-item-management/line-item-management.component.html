@@ -1,0 +1,7 @@
+<pos-card-wrapper width="75">
+<header mat-header class="m-4 text-center">
+  <h1>Line Item Management</h1>
+</header>
+<button mat-raised-button color="primary" (click)="onAdd()" class="add-line-item-btn">Add Line Item</button>
+<pos-line-item-table [lineItems$]="lineItems$" (editLineItem)="onEdit($event)" (deleteLineItem)="onDelete($event)"></pos-line-item-table>
+</pos-card-wrapper>

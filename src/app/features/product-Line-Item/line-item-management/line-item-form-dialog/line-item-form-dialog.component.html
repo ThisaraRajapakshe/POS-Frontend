@@ -1,0 +1,57 @@
+<pos-card-wrapper width="75">
+    <h2 mat-dialog-title>{{ data.mode === 'edit' ? 'Edit Product Line Item' : 'Add Product Line Item' }}</h2>
+
+    <form [formGroup]="lineItemForm" (ngSubmit)="onSave()">
+
+        <mat-form-field appearance="outline">
+            <mat-label>ID</mat-label>
+            <input matInput formControlName="id" required>
+            <mat-error *ngIf="lineItemForm.get('id')?.hasError('required')">
+                ID is required.
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Barcode</mat-label>
+            <input matInput formControlName="barCodeId" required>
+            <mat-error *ngIf="lineItemForm.get('barCodeId')?.hasError('required')">
+                Barcode is required.
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Product ID</mat-label>
+            <input matInput formControlName="productId" required>
+            <mat-error *ngIf="lineItemForm.get('productId')?.hasError('required')">
+                Product ID is required.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Cost</mat-label>
+            <input matInput formControlName="cost" required>
+            <mat-error *ngIf="lineItemForm.get('cost')?.hasError('required')">
+                Cost is required.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Display Price</mat-label>
+            <input matInput formControlName="displayPrice" required>
+            <mat-error *ngIf="lineItemForm.get('displayPrice')?.hasError('required')">
+                Display Price is required.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Discounted Price</mat-label>
+            <input matInput formControlName="discountedPrice" required>
+            <mat-error *ngIf="lineItemForm.get('discountedPrice')?.hasError('required')">
+                Discounted Price is required.
+            </mat-error>
+        </mat-form-field>
+
+        <div mat-dialog-actions>
+            <button mat-raised-button (click)="onClose()" >Cancel</button>
+            <button mat-raised-button color="primary" class="submit-button" type="submit" [disabled]="lineItemForm.invalid">Save</button>
+        </div>
+    </form>
+</pos-card-wrapper>

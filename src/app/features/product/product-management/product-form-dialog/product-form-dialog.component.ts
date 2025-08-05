@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'pos-product-form-dialog',
   imports: [MatSelectModule, MatInputModule, MatDialogContent, MatDialogModule,
-    FormsModule, MatFormFieldModule, ReactiveFormsModule, MatLabel, MatFormFieldModule, MatButtonModule, CommonModule],
+    FormsModule, ReactiveFormsModule, MatLabel, MatFormFieldModule, MatButtonModule, CommonModule],
   templateUrl: './product-form-dialog.component.html',
   styleUrl: './product-form-dialog.component.scss'
 })

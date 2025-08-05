@@ -14,6 +14,7 @@ import { CategoryDeleteComponent } from './features/category/category-delete/cat
 import { ProductManagementComponent } from './features/product/product-management/product-management.component';
 import { CatalogComponent } from './features/catalog/catalog.component';
 import { CategoryManagementComponent } from './features/category/category-management/category-management.component';
+import { LineItemManagementComponent } from './features/product-Line-Item/line-item-management/line-item-management.component';
 
 export const routes: Routes = [
     {path: 'product-line-item-list', component: ProductLineItemListComponent },
@@ -31,4 +32,5 @@ export const routes: Routes = [
     {path: 'product-management', component: ProductManagementComponent },
     {path: 'catalog', component: CatalogComponent },
     {path: 'category-management', component: CategoryManagementComponent },
+    {path: 'product-line-item-management', component: LineItemManagementComponent },
 ];
