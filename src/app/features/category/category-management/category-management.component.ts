@@ -28,7 +28,9 @@ export class CategoryManagementComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.categoryService.create(result).subscribe(); // handle success + refresh logic
+        this.categoryService.create(result).subscribe(() => {
+          this.categories$ = this.categoryService.getAll();
+        });
       }
     });
   }
@@ -38,7 +40,9 @@ export class CategoryManagementComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.categoryService.update(category.id, result).subscribe(); // handle success + refresh logic
+        this.categoryService.update(category.id, result).subscribe(() => {
+          this.categories$ = this.categoryService.getAll();
+        });
       }
     });
   }
@@ -48,7 +52,9 @@ export class CategoryManagementComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.categoryService.delete(category.id).subscribe(); // handle success + refresh logic
+        this.categoryService.delete(category.id).subscribe(() => {
+          this.categories$ = this.categoryService.getAll();
+        });
       }
     });
   }

@@ -28,7 +28,9 @@ export class ProductManagementComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.productService.create(result).subscribe(); // handle success + refresh logic
+        this.productService.create(result).subscribe(() => {
+          this.products$ = this.productService.getAll();
+        });
       }
     });
   }
@@ -39,7 +41,9 @@ export class ProductManagementComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.productService.update(product.id, result).subscribe(); // handle success + refresh logic
+        this.productService.update(product.id, result).subscribe(() => {
+          this.products$ = this.productService.getAll();
+        });
       }
     });
   }
@@ -50,7 +54,9 @@ export class ProductManagementComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.productService.delete(product.id).subscribe(); // handle success + refresh logic
+        this.productService.delete(product.id).subscribe(() => {
+          this.products$ = this.productService.getAll();
+        });
       }
     });
   }

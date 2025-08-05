@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Category } from '../../../../Core/models/Domains/category.model';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -14,7 +14,7 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
   templateUrl: './category-table.component.html',
   styleUrl: './category-table.component.scss'
 })
-export class CategoryTableComponent implements AfterViewInit {
+export class CategoryTableComponent implements OnChanges {
   @Input() categories$!: Observable<Category[]>;
   @Output() editCategory = new EventEmitter<Category>();
   @Output() deleteCategory = new EventEmitter<Category>();
@@ -25,14 +25,31 @@ export class CategoryTableComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+  private subscription!: Subscription;
 
-    this.categories$.subscribe(categories => {
-      this.dataSource.data = categories;
+  // ngAfterViewInit() {
+  //   this.dataSource.paginator = this.paginator;
+  //   this.dataSource.sort = this.sort;
+
+  //   this.categories$.subscribe(categories => {
+  //     this.dataSource.data = categories;
       
-    });
+  //   });
+  // }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['categories$'] && this.categories$) {
+      if (this.subscription) {
+        this.subscription.unsubscribe();
+      }
+
+      this.subscription = this.categories$.subscribe(data => {
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        this.dataSource.data = data;
+
+      });
+    }
   }
   onEdit(category: Category): void {
     this.editCategory.emit(category);

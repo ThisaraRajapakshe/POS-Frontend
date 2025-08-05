@@ -1,10 +1,10 @@
-import { Component, Input, OnInit, ViewChild, Output, EventEmitter, AfterViewInit } from '@angular/core';
+import { Component, Input, ViewChild, Output, EventEmitter, AfterViewInit, OnChanges } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Product } from '../../../../Core/models/Domains/product.model';
 import { CommonModule } from '@angular/common';
 
@@ -15,7 +15,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './product-table.component.html',
   styleUrl: './product-table.component.scss'
 })
-export class ProductTableComponent implements AfterViewInit {
+export class ProductTableComponent implements OnChanges {
   @Input() products$!: Observable<Product[]>;
   @Output() editProduct = new EventEmitter<Product>();
   @Output() deleteProduct = new EventEmitter<Product>();
@@ -26,8 +26,27 @@ export class ProductTableComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  ngAfterViewInit(): void {
-    this.products$.subscribe((data) => {
+  // ngAfterViewInit(): void {
+  //   this.products$.subscribe((data) => {
+  //     this.dataSource.paginator = this.paginator;
+  //     this.dataSource.sort = this.sort;
+  //     this.dataSource.sortingDataAccessor = (item, property) => {
+  //       switch (property) {
+  //         case 'category': return item.category?.name;
+  //         default: return (item as any)[property];
+  //       }
+  //     };
+  //     this.dataSource.data = data;
+  //   });
+  // }
+
+  private subscription!: Subscription;
+  ngOnChanges(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+    this.subscription = this.products$.subscribe((data) => {
+      this.dataSource.data = data;
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
       this.dataSource.sortingDataAccessor = (item, property) => {
@@ -36,7 +55,6 @@ export class ProductTableComponent implements AfterViewInit {
           default: return (item as any)[property];
         }
       };
-      this.dataSource.data = data;
     });
   }
 
