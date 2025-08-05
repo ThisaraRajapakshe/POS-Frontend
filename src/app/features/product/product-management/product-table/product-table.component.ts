@@ -26,20 +26,6 @@ export class ProductTableComponent implements OnChanges {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  // ngAfterViewInit(): void {
-  //   this.products$.subscribe((data) => {
-  //     this.dataSource.paginator = this.paginator;
-  //     this.dataSource.sort = this.sort;
-  //     this.dataSource.sortingDataAccessor = (item, property) => {
-  //       switch (property) {
-  //         case 'category': return item.category?.name;
-  //         default: return (item as any)[property];
-  //       }
-  //     };
-  //     this.dataSource.data = data;
-  //   });
-  // }
-
   private subscription!: Subscription;
   ngOnChanges(): void {
     if (this.subscription) {

@@ -27,16 +27,6 @@ export class CategoryTableComponent implements OnChanges {
 
   private subscription!: Subscription;
 
-  // ngAfterViewInit() {
-  //   this.dataSource.paginator = this.paginator;
-  //   this.dataSource.sort = this.sort;
-
-  //   this.categories$.subscribe(categories => {
-  //     this.dataSource.data = categories;
-      
-  //   });
-  // }
-
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['categories$'] && this.categories$) {
       if (this.subscription) {
