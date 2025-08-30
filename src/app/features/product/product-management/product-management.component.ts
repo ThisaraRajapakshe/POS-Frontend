@@ -6,7 +6,7 @@ import { ProductService } from '../../../Core/services/product.service';
 import { Product } from '../../../Core/models/Domains/product.model';
 import { ProductTableComponent } from './product-table/product-table.component';
 import { MatButton, MatButtonModule } from '@angular/material/button';
-import { catchError, Observable, of } from 'rxjs';
+import { catchError, Observable, of, shareReplay } from 'rxjs';
 import { CardWrapperComponent } from '../../../shared/Components/card-wrapper/card-wrapper.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -51,6 +51,7 @@ export class ProductManagementComponent implements OnInit {
 
   loadProducts() {
     this.products$ = this.productService.getAll().pipe(
+      shareReplay(1),
       catchError(error => {
         this.snackBar.open('Failed to load products', 'Close', {
           duration: 3000,
