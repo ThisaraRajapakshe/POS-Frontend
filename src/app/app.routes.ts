@@ -15,6 +15,7 @@ import { ProductManagementComponent } from './features/product/product-managemen
 import { CatalogComponent } from './features/catalog/catalog.component';
 import { CategoryManagementComponent } from './features/category/category-management/category-management.component';
 import { LineItemManagementComponent } from './features/product-Line-Item/line-item-management/line-item-management.component';
+import { LoginComponent } from './auth/login/login.component';
 
 export const routes: Routes = [
     {path: 'product-line-item-list', component: ProductLineItemListComponent },
@@ -33,4 +34,5 @@ export const routes: Routes = [
     {path: 'catalog', component: CatalogComponent },
     {path: 'category-management', component: CategoryManagementComponent },
     {path: 'product-line-item-management', component: LineItemManagementComponent },
+    {path: 'login', component: LoginComponent }
 ];
