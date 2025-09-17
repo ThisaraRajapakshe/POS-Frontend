@@ -43,7 +43,30 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return !!this.getAccessToken();
+    const token = this.getAccessToken(); // Get the access token
+    if (!token){
+      return false; // No token, user is not logged in
+    }
+    // Check if the token is expired
+    if (this.isTokenExpired(token)) {
+      console.warn('AuthService: Access token is expired');
+      return false;
+    }
+    return true; // Token exists and is not expired, user is logged in
   }
 
+  private isTokenExpired(token: string): boolean {
+    if (!token) {
+      return true;
+    }
+
+    // The token is in three parts: header.payload.signature
+    const payload = JSON.parse(atob(token.split('.')[1]));
+
+    // The 'exp' claim is in seconds, convert it to milliseconds
+    const expiry = payload.exp * 1000;
+
+    // Check if the expiration time is in the past
+    return Date.now() > expiry;
+  }
 }

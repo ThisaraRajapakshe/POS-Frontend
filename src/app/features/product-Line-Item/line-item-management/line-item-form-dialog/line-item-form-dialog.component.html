@@ -1,7 +1,7 @@
 <pos-card-wrapper width="75">
     <h2 mat-dialog-title>{{ data.mode === 'edit' ? 'Edit Product Line Item' : 'Add Product Line Item' }}</h2>
 
-    <form [formGroup]="lineItemForm" (ngSubmit)="onSave()">
+    <form [formGroup]="lineItemForm">
 
         <mat-form-field appearance="outline">
             <mat-label>ID</mat-label>
@@ -59,7 +59,7 @@
 
         <div mat-dialog-actions>
             <button mat-raised-button (click)="onClose()">Cancel</button>
-            <button mat-raised-button color="primary" class="submit-button" type="submit"
+            <button mat-raised-button (click)="onSave()" color="primary" class="submit-button" type="submit"
                 [disabled]="lineItemForm.invalid">Save</button>
         </div>
     </form>
