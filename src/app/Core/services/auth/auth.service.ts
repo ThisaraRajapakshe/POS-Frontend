@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { Observable, tap, BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +10,9 @@ export class AuthService {
   private apiurl = `${environment.apiUrl}/auth`;
   private readonly TOKEN_KEY = 'access_token';
   private readonly REFRESH_TOKEN_KEY = 'refresh_token';
+  // For handling token refresh state to prevent multiple calls
+  private isRefreshing = false;
+  private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   constructor(private http: HttpClient) { }
 
@@ -24,12 +27,10 @@ export class AuthService {
   logout(): void {
     // call the backend /logout endpoint
     this.http.post(`${this.apiurl}/logout`, {}).subscribe({
-      next: () => {
-        localStorage.removeItem(this.TOKEN_KEY);
-        localStorage.removeItem(this.REFRESH_TOKEN_KEY);
-      },
+      next: () => this.clearTokensAndNavigate(),
       error: (err) => {
         console.error('Logout failed', err);
+        this.clearTokensAndNavigate(); // Logout on frontend even if backend fails
       }
     });
   }
@@ -40,6 +41,9 @@ export class AuthService {
   }
   getAccessToken(): string | null {
     return localStorage.getItem(this.TOKEN_KEY);
+  }
+  getRefreshToken(): string | null {
+    return localStorage.getItem(this.REFRESH_TOKEN_KEY);
   }
 
   isLoggedIn(): boolean {
@@ -68,5 +72,40 @@ export class AuthService {
 
     // Check if the expiration time is in the past
     return Date.now() > expiry;
+  }
+  private clearTokensAndNavigate(): void {
+    localStorage.removeItem(this.TOKEN_KEY);
+    localStorage.removeItem(this.REFRESH_TOKEN_KEY);
+    // Force a full page reload to the login page to clear all application state
+    window.location.href = '/login';
+  }
+  // REFRESHING THE TOKEN
+  refreshToken(): Observable<any> {
+    const refreshToken = this.getRefreshToken();
+    const accessToken = this.getAccessToken();
+
+    if (!refreshToken || !accessToken) {
+      return new Observable(observer => observer.error('No refresh token available'));
+    }
+
+    return this.http.post(`${environment.apiUrl}/refresh`, { accessToken, refreshToken }).pipe(
+      tap((response: any) => {
+        console.log('Tokens refreshed successfully!');
+        this.storeTokens(response.accessToken, response.refreshToken);
+      })
+    );
+  }
+  
+  // --- Methods for the Advanced Interceptor ---
+  getIsRefreshing() {
+    return this.isRefreshing;
+  }
+
+  setIsRefreshing(value: boolean) {
+    this.isRefreshing = value;
+  }
+
+  getRefreshTokenSubject() {
+    return this.refreshTokenSubject;
   }
 }
