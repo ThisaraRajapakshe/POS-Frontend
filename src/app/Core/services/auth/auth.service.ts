@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap, BehaviorSubject } from 'rxjs';
+import { UserProfile } from '../../models/Domains/UserProfile';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -13,27 +15,52 @@ export class AuthService {
   // For handling token refresh state to prevent multiple calls
   private isRefreshing = false;
   private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  private currentUserSubject = new BehaviorSubject<UserProfile | null>(null);
+  public currentUser$ = this.currentUserSubject.asObservable();
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { 
+    this.loadInitialUser();
+  }
+  private loadInitialUser(): void {
+    const token = this.getAccessToken();
+    if (token) {
+      this.http.get<UserProfile>(`${environment.apiUrl}/Auth/profile`).subscribe({
+        next: user => {
+          // If successful, broadcast the user's data to all subscribers.
+          this.currentUserSubject.next(user);
+        },
+        error: () => {
+          // If the token is invalid (backend returns 401), clear tokens.
+          this.clearTokensAndNavigate();
+          this.currentUserSubject.next(null);
+        }
+      });
+    }
+  }
 
   login(credentials: any): Observable<any> {
     return this.http.post(`${this.apiurl}/login`, credentials).pipe(
       tap((response: any)=>{
         this.storeTokens(response.accessToken, response.refreshToken);
+        this.loadInitialUser();
       })
     );
   }
  
-  logout(): void {
-    // call the backend /logout endpoint
-    this.http.post(`${this.apiurl}/logout`, {}).subscribe({
-      next: () => this.clearTokensAndNavigate(),
-      error: (err) => {
-        console.error('Logout failed', err);
-        this.clearTokensAndNavigate(); // Logout on frontend even if backend fails
-      }
-    });
-  }
+  // Corrected version
+logout(): void {
+  this.http.post(`${this.apiurl}/logout`, {}).subscribe({
+    next: () => {
+      this.currentUserSubject.next(null);
+      this.clearTokensAndNavigate(); // This does the full reload and redirect
+    },
+    error: (err) => {
+      console.error('Logout failed on server, but logging out on client.', err);
+      this.currentUserSubject.next(null);
+      this.clearTokensAndNavigate(); // Logout on the frontend even if the backend call fails
+    }
+  });
+}
 
   private storeTokens(accessToken: string, refreshToken: string) {
     localStorage.setItem(this.TOKEN_KEY, accessToken);
@@ -108,4 +135,5 @@ export class AuthService {
   getRefreshTokenSubject() {
     return this.refreshTokenSubject;
   }
+  // User Profile Observable
 }
