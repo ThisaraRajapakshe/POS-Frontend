@@ -13,7 +13,7 @@ The frontend is responsible for:
 
 ### Related Project
 
-  * **Backend Repository:** [POS\_System API (.NET Core 8)](/link/to/your/pos-backend-repo)
+  * **Backend Repository:** [POS\_System API (.NET Core 8)](https://github.com/ThisaraRajapakshe/POS_System)
       * **Note:** The backend API must be running for this application to function correctly.
 
 -----
