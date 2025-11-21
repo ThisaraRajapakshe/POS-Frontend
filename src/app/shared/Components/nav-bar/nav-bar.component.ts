@@ -7,7 +7,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { Observable } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
+import { filter, map, shareReplay } from 'rxjs/operators';
 import { RouterLink } from '@angular/router';
 import { RouterOutlet } from '@angular/router';
 import { AuthService } from '../../../Core/services/auth/auth.service';
@@ -39,7 +39,9 @@ export class NavBarComponent {
       shareReplay()
     );
     constructor(private authService: AuthService) {
-      this.currentUser$ = this.authService.currentUser$;
+      this.currentUser$ = this.authService.currentUser$.pipe(
+        filter(userState => userState !== undefined) // Only emit when userState is defined (not undefined)
+      ) as Observable<UserProfile | null>; // Type assertion to ensure correct type
     }
     onLogout(): void {
       this.authService.logout();
