@@ -1,5 +1,5 @@
 // src/app/auth/auth.interceptor.ts
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import {
   HttpRequest,
   HttpHandler,
@@ -14,10 +14,11 @@ import { AuthService } from '../services/auth/auth.service';
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-  constructor(private authService: AuthService) {}
+  constructor(private injector: Injector) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    const accessToken = this.authService.getAccessToken();
+    const authService = this.injector.get(AuthService);
+    const accessToken = authService.getAccessToken();
 
 if (accessToken) {
       request = this.addTokenHeader(request, accessToken);
@@ -27,36 +28,36 @@ if (accessToken) {
       catchError((error: HttpErrorResponse) => {
         // We only handle 401 errors and ignore login/refresh endpoints to avoid loops
         if (error.status === 401 && !request.url.includes('/auth/login') && !request.url.includes('/auth/refresh')) {
-          return this.handle401Error(request, next);
+          return this.handle401Error(request, next, authService);
         }
         return throwError(() => error);
       })
     );
   }
 
-  private handle401Error(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (!this.authService.getIsRefreshing()) {
-      this.authService.setIsRefreshing(true);
-      this.authService.getRefreshTokenSubject().next(null);
+  private handle401Error(request: HttpRequest<any>, next: HttpHandler, authService: AuthService): Observable<HttpEvent<any>> {
+    if (!authService.getIsRefreshing()) {
+      authService.setIsRefreshing(true);
+      authService.getRefreshTokenSubject().next(null);
 
       // First request triggers the refresh
-      return this.authService.refreshToken().pipe(
+      return authService.refreshToken().pipe(
         switchMap((tokenResponse: any) => {
-          this.authService.setIsRefreshing(false);
-          this.authService.getRefreshTokenSubject().next(tokenResponse.accessToken);
+          authService.setIsRefreshing(false);
+          authService.getRefreshTokenSubject().next(tokenResponse.accessToken);
           // Retry the original request with the new token
           return next.handle(this.addTokenHeader(request, tokenResponse.accessToken));
         }),
         catchError((err) => {
-          this.authService.setIsRefreshing(false);
+          authService.setIsRefreshing(false);
           // If refresh fails (e.g., refresh token expired), log the user out
-          this.authService.logout();
+          authService.logout();
           return throwError(() => err);
         })
       );
     } else {
       // If a refresh is already in progress, wait for it to complete
-      return this.authService.getRefreshTokenSubject().pipe(
+      return authService.getRefreshTokenSubject().pipe(
         filter(token => token != null),
         take(1),
         switchMap(jwt => next.handle(this.addTokenHeader(request, jwt)))

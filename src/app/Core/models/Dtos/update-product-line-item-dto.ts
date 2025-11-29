@@ -4,4 +4,5 @@ productId: string;
 cost: number;
 displayPrice: number;
 discountedPrice: number;
+quantity: number;
 }

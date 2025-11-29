@@ -5,4 +5,5 @@ export interface CreateProductLineItemDto {
     cost: number;
     displayPrice: number;
     discountedPrice: number;
+    quantity: number;
 }

@@ -9,6 +9,7 @@ export interface ProductLineItem{
     cost : number;
     displayPrice: number;
     discountedPrice: number;
+    quantity: number;
     // Navigation properties
     product : Product;
 
