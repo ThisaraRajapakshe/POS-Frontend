@@ -19,7 +19,7 @@ export class LineItemTableComponent implements OnChanges {
   @Output() editLineItem = new EventEmitter<ProductLineItem>();
   @Output() deleteLineItem = new EventEmitter<ProductLineItem>();
 
-  displayedColumns: string[] = ['id', 'barCodeId', 'productId', 'productName', 'cost', 'displayPrice', 'discountedPrice', 'actions'];
+  displayedColumns: string[] = ['id', 'barCodeId', 'productId', 'productName', 'cost', 'displayPrice', 'discountedPrice', 'quantity', 'actions'];
   dataSource = new MatTableDataSource<ProductLineItem>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;

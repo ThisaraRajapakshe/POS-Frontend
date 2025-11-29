@@ -41,6 +41,7 @@ export class LineItemFormDialogComponent {
       cost: [data?.lineItem?.cost || '', Validators.required],
       displayPrice: [data?.lineItem?.displayPrice || '', Validators.required],
       discountedPrice: [data?.lineItem?.discountedPrice || '', Validators.required],
+      quantity: [data?.lineItem?.quantity || '', Validators.required],
     });
   }
   onClose(): void {
