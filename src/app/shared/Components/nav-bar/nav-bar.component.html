@@ -7,6 +7,7 @@
       <a mat-list-item [routerLink]="['/category-management']">Category Management</a>
       <a mat-list-item [routerLink]="['/product-management']">Product Management</a>
       <a mat-list-item [routerLink]="['/product-line-item-management']">Product Line Item Management</a>
+      <a mat-list-item [routerLink]="['/pos-sales']">POS Sales</a>
       <a mat-list-item [routerLink]="['/product-list']">Product List</a>
       <a mat-list-item [routerLink]="['/product-create']">Product Create</a>
       <a mat-list-item [routerLink]="['/product-edit']">Product Edit</a>
@@ -32,14 +33,14 @@
       <span class="spacer"></span>
 
       <div *ngIf="currentUser$ | async as user" class="user-controls">
-          <span class="welcome-message">Welcome, {{ user.fullName }}</span>
+        <span class="welcome-message">Welcome, {{ user.fullName }}</span>
 
-          <mat-divider [vertical]="true"></mat-divider>
+        <mat-divider [vertical]="true"></mat-divider>
 
-          <button mat-flat-button (click)="onLogout()" aria-label="logout-button">
-            <mat-icon>logout</mat-icon>
-            <span>Logout</span>
-          </button>
+        <button mat-flat-button (click)="onLogout()" aria-label="logout-button">
+          <mat-icon>logout</mat-icon>
+          <span>Logout</span>
+        </button>
       </div>
     </mat-toolbar>
     <!-- Add Content Here -->

@@ -18,9 +18,10 @@ import { LineItemManagementComponent } from './features/product-Line-Item/line-i
 import { LoginComponent } from './auth/login/login.component';
 import { authGuard } from './Core/guards/auth.guard';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
+import { PosSalesComponent } from './features/sales/components/pos-sales/pos-sales.component';
 
 export const routes: Routes = [
-    {path: 'login', component: LoginComponent},
+    { path: 'login', component: LoginComponent },
     {
         path: '',
         component: MainLayoutComponent,
@@ -43,6 +44,7 @@ export const routes: Routes = [
             { path: 'catalog', component: CatalogComponent, canActivate: [authGuard] },
             { path: 'category-management', component: CategoryManagementComponent, canActivate: [authGuard] },
             { path: 'product-line-item-management', component: LineItemManagementComponent, canActivate: [authGuard] },
+            { path: 'pos-sales', component: PosSalesComponent, canActivate: [authGuard] },
         ]
     }
 ];
