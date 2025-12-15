@@ -1,15 +1,15 @@
-import { Product } from "./product.model";
+import { Product } from "../product/product.model";
 
-export interface ProductLineItem{
-    
-  
+export interface ProductLineItem {
+
+
     id: string,
     barCodeId: string,
     productId: string;
-    cost : number;
+    cost: number;
     displayPrice: number;
     discountedPrice: number;
     // Navigation properties
-    product : Product;
+    product: Product;
 
 }

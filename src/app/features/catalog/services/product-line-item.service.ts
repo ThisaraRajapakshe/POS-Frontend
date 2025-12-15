@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { BaseHttpService } from './base-http.service';
-import { ProductLineItem } from '../models/Domains/product-line-item.model';
+import { BaseHttpService } from '../../../Core/services/base-http.service';
+import { ProductLineItem } from '../models/line-item/product-line-item.model';
 import { catchError, Observable, shareReplay, throwError } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { CreateProductLineItemDto } from '../models/Dtos/create-product-line-item-dto';
-import { UpdateProductLineItemDto } from '../models/Dtos/update-product-line-item-dto';
+import { CreateProductLineItemDto } from '../models/line-item/create-product-line-item-dto';
+import { UpdateProductLineItemDto } from '../models/line-item/update-product-line-item-dto';
 
 
 @Injectable({

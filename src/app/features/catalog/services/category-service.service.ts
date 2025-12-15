@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Category } from '../models/Domains/category.model';
-import { BaseHttpService } from './base-http.service';
+import { Category } from '../models/category/category.model';
+import { BaseHttpService } from '../../../Core/services/base-http.service';
 import { catchError, Observable, shareReplay, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment.prod';
-import { UpdateCategoryDto } from '../models/Dtos/update-category-dto';
+import { environment } from '../../../../environments/environment.prod';
+import { UpdateCategoryDto } from '../models/category/update-category-dto';
 
 @Injectable({
   providedIn: 'root'

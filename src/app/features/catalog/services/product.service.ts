@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BaseHttpService } from './base-http.service';
-import { Product } from '../models/Domains/product.model';
-import { environment } from '../../../environments/environment';
+import { BaseHttpService } from '../../../Core/services/base-http.service';
+import { Product } from '../models/product/product.model';
+import { environment } from '../../../../environments/environment';
 import { Observable } from 'rxjs/internal/Observable';
 import { catchError, shareReplay, throwError } from 'rxjs';
 
@@ -11,7 +11,7 @@ import { catchError, shareReplay, throwError } from 'rxjs';
 })
 export class ProductService extends BaseHttpService<Product> {
 
-  private products$: Observable<Product[]> ;
+  private products$: Observable<Product[]>;
   constructor(http: HttpClient) {
     super(http, `${environment.apiUrl}/Product`);
     this.products$ = this.getAll().pipe(
@@ -22,7 +22,7 @@ export class ProductService extends BaseHttpService<Product> {
       })
     );
   }
-  getByCategory(categoryId: string): Observable<Product[]>{
+  getByCategory(categoryId: string): Observable<Product[]> {
     const url = `${environment.apiUrl}/product/category/${categoryId}`;
     return this.http.get<Product[]>(url).pipe(
       catchError((error) => {
