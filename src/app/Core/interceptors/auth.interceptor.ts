@@ -14,13 +14,13 @@ import { AuthService } from '../services/auth/auth.service';
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-  constructor(private injector: Injector) {}
+  constructor(private injector: Injector) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const authService = this.injector.get(AuthService);
     const accessToken = authService.getAccessToken();
 
-if (accessToken) {
+    if (accessToken) {
       request = this.addTokenHeader(request, accessToken);
     }
 
