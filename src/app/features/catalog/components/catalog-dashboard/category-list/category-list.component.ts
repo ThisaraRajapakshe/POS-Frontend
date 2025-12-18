@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output, ChangeDetectionStrategy, signal } from '@angular/core';
 import { Observable, tap, catchError, of } from 'rxjs';
-import { Category } from '../../../Core/models/Domains/category.model';
-import { CategoryService } from '../../../Core/services/category-service.service';
+import { Category } from '../../../models';
+import { CategoryService } from '../../../services';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { CommonModule } from '@angular/common';
 import { ProductListComponent } from "./product-list/product-list.component";

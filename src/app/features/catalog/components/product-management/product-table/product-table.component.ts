@@ -5,7 +5,7 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Observable, Subscription } from 'rxjs';
-import { Product } from '../../../../Core/models/Domains/product.model';
+import { Product } from '../../../models';
 import { CommonModule } from '@angular/common';
 
 

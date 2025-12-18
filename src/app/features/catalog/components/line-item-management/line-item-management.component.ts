@@ -1,19 +1,19 @@
 import { Component } from '@angular/core';
-import { CardWrapperComponent } from '../../../shared/Components/card-wrapper/card-wrapper.component';
 import { catchError, Observable, of, shareReplay } from 'rxjs';
-import { ProductLineItem } from '../../../Core/models/Domains/product-line-item.model';
-import { ProductLineItemService } from '../../../Core/services/product-line-item.service';
+import { ProductLineItem } from '../../models';
+import { ProductLineItemService } from '../../services';
 import { MatDialog } from '@angular/material/dialog';
-import { ConfirmDialogComponent } from '../../../shared/dialogs/confirm-dialog.component';
 import { LineItemFormDialogComponent } from './line-item-form-dialog/line-item-form-dialog.component';
 import { LineItemTableComponent } from './line-item-table/line-item-table.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ConfirmDialogComponent } from '../../../../shared/dialogs/confirm-dialog.component';
+import { CardWrapperComponent } from '../../../../shared/Components/card-wrapper/card-wrapper.component';
 
 @Component({
   selector: 'pos-line-item-management',
-  imports: [CardWrapperComponent, LineItemTableComponent, MatTableModule, MatButtonModule],
+  imports: [LineItemTableComponent, MatTableModule, MatButtonModule, CardWrapperComponent],
   templateUrl: './line-item-management.component.html',
   styleUrl: './line-item-management.component.scss'
 })

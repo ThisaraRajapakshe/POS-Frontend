@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { catchError, Observable, of } from 'rxjs';
-import { Category } from '../../../Core/models/Domains/category.model';
-import { CategoryService } from '../../../Core/services/category-service.service';
+import { Category } from '../../models';
+import { CategoryService } from '../../services';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { CategoryFormDialogComponent } from './category-form-dialog/category-form-dialog.component';
-import { ConfirmDialogComponent } from '../../../shared/dialogs/confirm-dialog.component';
 import { CategoryTableComponent } from './category-table/category-table.component';
-import { CardWrapperComponent } from '../../../shared/Components/card-wrapper/card-wrapper.component';
 import { MatButton, MatButtonModule } from '@angular/material/button';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CardWrapperComponent } from '../../../../shared/Components/card-wrapper/card-wrapper.component';
+import { ConfirmDialogComponent } from '../../../../shared/dialogs/confirm-dialog.component';
 
 @Component({
   selector: 'pos-category-management',

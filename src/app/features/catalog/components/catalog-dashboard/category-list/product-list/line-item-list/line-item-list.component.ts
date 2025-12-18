@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { ProductLineItemService } from '../../../../../Core/services/product-line-item.service';
+import { ProductLineItemService } from '../../../../../services';
 import { Observable } from 'rxjs/internal/Observable';
-import { ProductLineItem } from '../../../../../Core/models/Domains/product-line-item.model';
+import { ProductLineItem } from '../../../../../models';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 

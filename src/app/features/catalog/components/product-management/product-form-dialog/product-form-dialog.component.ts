@@ -6,8 +6,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
-import { CategoryService } from '../../../../Core/services/category-service.service';
-import { Category } from '../../../../Core/models/Domains/category.model';
+import { CategoryService } from '../../../services';
+import { Category } from '../../../models';
 
 
 @Component({

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Observable, tap, catchError, of } from 'rxjs';
-import { Product } from '../../../../Core/models/Domains/product.model';
-import { ProductService } from '../../../../Core/services/product.service';
+import { Product } from '../../../../models';
+import { ProductService } from '../../../../services';
 import { CommonModule } from '@angular/common';
 import { MatAccordion, MatExpansionModule, MatExpansionPanel } from "@angular/material/expansion";
 import { LineItemListComponent } from './line-item-list/line-item-list.component';

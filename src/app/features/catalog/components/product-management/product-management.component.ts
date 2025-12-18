@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ProductFormDialogComponent } from './product-form-dialog/product-form-dialog.component';
-import { ConfirmDialogComponent } from '../../../shared/dialogs/confirm-dialog.component';
-import { ProductService } from '../../../Core/services/product.service';
-import { Product } from '../../../Core/models/Domains/product.model';
+import { ProductService } from '../../services';
+import { Product } from './../../models';
 import { ProductTableComponent } from './product-table/product-table.component';
 import { MatButton, MatButtonModule } from '@angular/material/button';
 import { catchError, Observable, of, shareReplay } from 'rxjs';
-import { CardWrapperComponent } from '../../../shared/Components/card-wrapper/card-wrapper.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CardWrapperComponent } from '../../../../shared/Components/card-wrapper/card-wrapper.component';
+import { ConfirmDialogComponent } from '../../../../shared/dialogs/confirm-dialog.component';
 
 @Component({
   selector: 'pos-product-management',

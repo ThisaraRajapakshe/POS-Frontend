@@ -6,10 +6,10 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from '@angular/material/select';
-import { CardWrapperComponent } from "../../../../shared/Components/card-wrapper/card-wrapper.component";
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { ProductService } from '../../../../Core/services/product.service';
-import { Product } from '../../../../Core/models/Domains/product.model';
+import { ProductService } from './../../../services';
+import { Product } from './../../../models';
+import { CardWrapperComponent } from '../../../../../shared/Components/card-wrapper/card-wrapper.component';
 
 @Component({
   selector: 'pos-line-item-form-dialog',

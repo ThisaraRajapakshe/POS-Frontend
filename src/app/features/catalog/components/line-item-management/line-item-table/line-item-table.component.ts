@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { ProductLineItem } from '../../../../Core/models/Domains/product-line-item.model';
+import { ProductLineItem } from '../../../models';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
