@@ -4,11 +4,12 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { CartItem, PosProduct } from '../../models';
 import { CartService, InventoryService } from '../../services';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'pos-pos-sales',
   standalone: true, // <--- You are using Standalone
-  imports: [CommonModule], // <--- FIX 1: This unlocks the HTML errors
+  imports: [CommonModule, FormsModule], // <--- FIX 1: This unlocks the HTML errors
   templateUrl: './pos-sales.component.html',
   styleUrl: './pos-sales.component.scss'
 })
@@ -18,6 +19,7 @@ export class PosSalesComponent implements OnInit {
   cartItems$: Observable<CartItem[]>;
   cartTotal$!: Observable<number>;
   products$!: Observable<PosProduct[]>;
+  quantity: number = 1;
 
   constructor(private cartService: CartService, private inventoryService: InventoryService) {
     this.cartItems$ = this.cartService.cartItems$;
@@ -31,6 +33,7 @@ export class PosSalesComponent implements OnInit {
 
   addToCart(product: PosProduct, quantity: number) {
     this.cartService.addToCart(product, quantity);
+    this.quantity = 1;
   }
 
   removeFromCart(item: CartItem) {

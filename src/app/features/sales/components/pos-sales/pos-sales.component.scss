@@ -1,75 +1,203 @@
 .pos-container {
   display: flex;
-  height: 100vh; /* Full Screen Application */
+  height: 100vh;
+  /* Full Screen Application */
   font-family: 'Segoe UI', sans-serif;
-  overflow: hidden; /* No window scrollbars */
+  overflow: hidden;
+  /* No window scrollbars */
 }
 
 /* LEFT SIDE: CATALOG */
 .catalog-section {
-  flex: 7; /* Takes 70% of width */
+  flex: 7;
+  /* Takes 70% of width */
   background-color: #f4f6f8;
   padding: 20px;
   display: flex;
   flex-direction: column;
 
-  .search-bar input {
-    width: 100%;
-    padding: 15px;
-    font-size: 1.2rem;
+  .controls-row {
+    display: flex;
+    gap: 15px;
     margin-bottom: 20px;
+    height: 60px;
+  }
+
+  .search-bar {
+    flex: 1;
+
+    input {
+      width: 100%;
+      height: 100%;
+      padding: 0 15px;
+      font-size: 1.2rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      outline: none;
+
+      &:focus {
+        border-color: #28a745;
+        /* Green focus ring */
+      }
+    }
+  }
+
+  .qty-control {
+    display: flex;
+    align-items: center;
+    background: white;
     border: 1px solid #ddd;
     border-radius: 8px;
+    padding: 0 15px;
+    width: 180px;
+
+    label {
+      font-weight: bold;
+      color: #555;
+      margin-right: 10px;
+      white-space: nowrap;
+    }
+
+    input {
+      width: 100%;
+      border: none;
+      font-size: 1.5rem;
+      font-weight: bold;
+      text-align: center;
+      outline: none;
+      color: #333;
+    }
+
+    &:focus-within {
+      border-color: #28a745;
+      box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.1);
+    }
   }
 
   .product-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Auto-responsive */
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    /* Auto-responsive */
     gap: 15px;
-    overflow-y: auto; /* Internal scroll only */
+    overflow-y: auto;
+    /* Internal scroll only */
   }
 
   .product-card {
     background: white;
-    height: 120px;
-    border-radius: 10px;
+    height: 160px;
+    border-radius: 12px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 15px;
     cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    transition: transform 0.1s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
 
-    &:active { transform: scale(0.95); } /* Button press effect */
-    
-    .product-name { font-weight: bold; margin-bottom: 5px; text-align: center; }
-    .product-price { color: #666; }
+    &:hover {
+      transform: scale(0.96);
+      border-color: #28a745;
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+
+    /* Button press effect */
+
+    .product-name {
+      font-weight: 700;
+      font-size: 1rem;
+      color: #2c3e50;
+      margin-bottom: 8px;
+      text-align: center;
+      line-height: 1.2;
+
+      /* Cut off text if it's too long (Professional touch) */
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* 2. PRICE (The Highlight) */
+    .product-price {
+      color: #28a745;
+      /* Green for money */
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 6px;
+    }
+
+    /* 3. BARCODE (The Subtle Data) */
+    .product-barcode {
+      font-size: 0.8rem;
+      color: #95a5a6;
+      /* Light grey */
+      margin-bottom: 4px;
+      font-family: 'Consolas', monospace;
+      /* Monospace looks like code */
+      letter-spacing: 1px;
+    }
+
+    /* 4. STOCK (The Inventory Check) */
+    .product-stock {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #7f8c8d;
+
+      /* Add a label-like look */
+      background: #f8f9fa;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-top: auto;
+      /* Pushes it to the bottom if there is space */
+
+      &.low-stock {
+        background: #fadbd8;
+        color: #e74c3c;
+      }
+
+    }
   }
 }
 
 /* RIGHT SIDE: CART */
 .cart-section {
-  flex: 3; /* Takes 30% of width */
+  flex: 3;
+  /* Takes 30% of width */
   background-color: white;
   border-left: 1px solid #ddd;
   display: flex;
   flex-direction: column;
   padding: 20px;
 
-  h2 { margin-top: 0; color: #333; }
+  h2 {
+    margin-top: 0;
+    color: #333;
+  }
 
   .cart-items {
-    flex: 1; /* Pushes footer down */
+    flex: 1;
+    /* Pushes footer down */
     overflow-y: auto;
-    
+
     .cart-row {
       display: flex;
       justify-content: space-between;
       padding: 10px 0;
       border-bottom: 1px solid #eee;
-      
-      .delete-btn { background: none; border: none; color: red; cursor: pointer; }
+
+      .delete-btn {
+        background: none;
+        border: none;
+        color: red;
+        cursor: pointer;
+      }
     }
   }
 
@@ -89,14 +217,17 @@
     .pay-btn {
       width: 100%;
       padding: 20px;
-      background-color: #28a745; /* Green */
+      background-color: #28a745;
+      /* Green */
       color: white;
       font-size: 1.5rem;
       border: none;
       border-radius: 8px;
       cursor: pointer;
-      
-      &:hover { background-color: #218838; }
+
+      &:hover {
+        background-color: #218838;
+      }
     }
   }
 }
