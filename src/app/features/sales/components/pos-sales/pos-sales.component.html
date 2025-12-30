@@ -6,9 +6,9 @@
     </div>
 
     <div class="product-grid">
-      <div class="product-card" (click)="addToCart(p)" *ngFor="let p of products">
+      <div class="product-card" (click)="addToCart(p, 1)" *ngFor="let p of products$ | async">
         <div class="product-name">{{ p.name }}</div>
-        <div class="product-price">{{ p.salesPrice | currency:'LKR ' }}</div>
+        <div class="product-price">{{ p.salePrice | currency:'LKR ' }}</div>
       </div>
     </div>
   </div>

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { CartItem } from '../models';
+import { CartItem, PosProduct } from '../models';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { ProductLineItem } from '../../catalog/models';
 
 @Injectable({
   providedIn: 'root'
@@ -12,29 +11,29 @@ export class CartService {
 
   constructor() { }
 
-  addToCart(product: ProductLineItem, quantity: number) {
+  addToCart(product: PosProduct, quantity: number) {
     const currentItems = this.cartItems.value;
-    const existingItem = currentItems.find(item => item.productLineItemId === product.id);
+    const existingItem = currentItems.find(item => item.lineItemId === product.lineItemId);
     if (existingItem) {
-      if (existingItem.quantity + quantity > product.quantity) {
+      if (existingItem.quantity + quantity > product.stock) {
         alert("Out of stock");
         return;
       }
       existingItem.quantity += quantity;
       existingItem.subTotal = existingItem.quantity * existingItem.price;
     } else {
-      if (product.quantity < quantity) {
+      if (product.stock < quantity) {
         alert("Out of stock");
         return;
       }
       const newItem: CartItem = {
-        productLineItemId: product.id,
-        productName: product.product.name,
-        barcode: product.barCodeId,
+        lineItemId: product.lineItemId,
+        productName: product.name,
+        barcode: product.barcode,
         quantity: quantity,
-        price: product.discountedPrice,
-        subTotal: quantity * product.discountedPrice,
-        maxStock: product.quantity
+        price: product.salePrice,
+        subTotal: quantity * product.salePrice,
+        maxStock: product.stock
       };
       currentItems.push(newItem);
     }
@@ -42,12 +41,12 @@ export class CartService {
   }
   removeFromCart(productId: string): boolean {
     const currentItems = this.cartItems.value;
-    const itemIndex = currentItems.findIndex(item => item.productLineItemId === productId);
+    const itemIndex = currentItems.findIndex(item => item.lineItemId === productId);
     if (itemIndex === -1) {
       console.warn("Item not found in cart");
       return false;
     }
-    const updatedItems = currentItems.filter(item => item.productLineItemId !== productId);
+    const updatedItems = currentItems.filter(item => item.lineItemId !== productId);
     this.cartItems.next(updatedItems);
     return true;
   }

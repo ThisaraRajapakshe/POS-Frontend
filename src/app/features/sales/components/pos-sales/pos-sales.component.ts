@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common'; // <--- FIX 1: Needed for *ngFor, async, currency
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { CartItem } from '../../models';
-import { CartService } from '../../services';
+import { CartItem, PosProduct } from '../../models';
+import { CartService, InventoryService } from '../../services';
 
 @Component({
   selector: 'pos-pos-sales',
@@ -16,40 +16,21 @@ export class PosSalesComponent implements OnInit {
 
   // Data Streams
   cartItems$: Observable<CartItem[]>;
-  cartTotal$: Observable<number>;
+  cartTotal$!: Observable<number>;
+  products$!: Observable<PosProduct[]>;
 
-  // Dummy Data
-  products = [
-    { productLineItemId: '1', name: 'Rice Packet', salesPrice: 450, quantity: 100 },
-    { productLineItemId: '2', name: 'Coca Cola', salesPrice: 150, quantity: 100 },
-    { productLineItemId: '3', name: 'Short Eats', salesPrice: 80, quantity: 50 },
-  ];
-
-  constructor(private cartService: CartService) {
+  constructor(private cartService: CartService, private inventoryService: InventoryService) {
     this.cartItems$ = this.cartService.cartItems$;
-
-    // FIX 3: Calculate total dynamically from the stream
     this.cartTotal$ = this.cartItems$.pipe(
-      map(items => items.reduce((acc, item) => acc + (item.price * item.quantity), 0))
-    );
+      map(items => items.reduce((total, item) => total + item.subTotal, 0)));
   }
 
   ngOnInit(): void {
+    this.products$ = this.inventoryService.getProductsForPos();
   }
 
-  addToCart(product: any) {
-    // FIX 2: Call the service exactly as it is defined in your screenshot
-    // Your service wants: (product, quantity)
-    // We map your dummy product to the shape the service expects
-    const productToSend = {
-      productLineItemId: product.productLineItemId,
-      name: product.name,
-      salesPrice: product.salesPrice,
-      quantity: product.quantity
-      // Add other fields if your ProductLineItem model requires them
-    };
-
-    this.cartService.addToCart(productToSend as any, 1);
+  addToCart(product: PosProduct, quantity: number) {
+    this.cartService.addToCart(product, quantity);
   }
 
   removeFromCart(item: CartItem) {
