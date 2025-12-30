@@ -37,7 +37,7 @@ export class PosSalesComponent implements OnInit {
   }
 
   removeFromCart(item: CartItem) {
-    console.log('Remove not implemented yet', item);
+    this.cartService.removeFromCart(item.lineItemId);
   }
 
   onCheckout() {
