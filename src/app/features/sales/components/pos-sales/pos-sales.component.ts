@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, computed, OnInit, Signal } from '@angular/core';
 import { CommonModule } from '@angular/common'; // <--- FIX 1: Needed for *ngFor, async, currency
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -16,24 +16,30 @@ import { FormsModule } from '@angular/forms';
 export class PosSalesComponent implements OnInit {
 
   // Data Streams
-  cartItems$: Observable<CartItem[]>;
-  cartTotal$!: Observable<number>;
+  cartItems: Signal<CartItem[]>;
+  cartTotal: Signal<number>;
   products$!: Observable<PosProduct[]>;
   quantity: number = 1;
 
   constructor(private cartService: CartService, private inventoryService: InventoryService) {
-    this.cartItems$ = this.cartService.cartItems$;
-    this.cartTotal$ = this.cartItems$.pipe(
-      map(items => items.reduce((total, item) => total + item.subTotal, 0)));
+    this.cartItems = this.cartService.items;
+    this.cartTotal = computed(() => {
+      const items = this.cartItems();
+      return items.reduce((total, item) => total + item.subTotal, 0);
+    });
   }
 
   ngOnInit(): void {
     this.products$ = this.inventoryService.getProductsForPos();
   }
 
-  addToCart(product: PosProduct, quantity: number) {
-    this.cartService.addToCart(product, quantity);
-    this.quantity = 1;
+  addToCart(product: PosProduct, quantity: number): { success: boolean, message?: string } {
+    const result = this.cartService.addToCart(product, quantity);
+    if (!result.success) {
+      alert(result.message);
+      this.quantity = 1;
+    }
+    return result;
   }
 
   removeFromCart(item: CartItem) {

@@ -25,7 +25,7 @@
     <h2>Current Order</h2>
 
     <div class="cart-items">
-      <div class="cart-row" *ngFor="let item of cartItems$ | async">
+      <div class="cart-row" *ngFor="let item of cartItems()">
         <span>{{ item.productName }} (x{{ item.quantity }})</span>
         <span>{{ item.subTotal | currency:'LKR ' }}</span>
         <button class="delete-btn" (click)="removeFromCart(item)">X</button>
@@ -35,7 +35,7 @@
     <div class="cart-footer">
       <div class="total-row">
         <span>Total:</span>
-        <span class="total-amount">{{ cartTotal$ | async | currency:'LKR ' }}</span>
+        <span class="total-amount">{{ cartTotal() | currency:'LKR ' }}</span>
       </div>
       <button class="pay-btn" (click)="onCheckout()">CHARGE</button>
     </div>

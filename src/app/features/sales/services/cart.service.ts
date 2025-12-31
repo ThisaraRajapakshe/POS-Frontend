@@ -1,60 +1,69 @@
-import { Injectable } from '@angular/core';
+import { computed, Injectable, signal } from '@angular/core';
 import { CartItem, PosProduct } from '../models';
-import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
-  private cartItems = new BehaviorSubject<CartItem[]>([]);
-  cartItems$ = this.cartItems.asObservable();
+  readonly items = signal<CartItem[]>([]);
+  readonly totalAmount = computed(() =>
+    this.items().reduce((total, item) => total + item.subTotal, 0));
+  readonly totalCount = computed(() =>
+    this.items().reduce((total, item) => total + item.quantity, 0));
 
-  constructor() { }
 
-  addToCart(product: PosProduct, quantity: number) {
-    const currentItems = this.cartItems.value;
-    const existingItem = currentItems.find(item => item.lineItemId === product.lineItemId);
-    if (existingItem) {
-      if (existingItem.quantity + quantity > product.stock) {
-        alert("Out of stock");
-        return;
-      }
-      existingItem.quantity += quantity;
-      existingItem.subTotal = existingItem.quantity * existingItem.price;
-    } else {
-      if (product.stock < quantity) {
-        alert("Out of stock");
-        return;
-      }
-      const newItem: CartItem = {
-        lineItemId: product.lineItemId,
-        productName: product.name,
-        barcode: product.barcode,
-        quantity: quantity,
-        price: product.salePrice,
-        subTotal: quantity * product.salePrice,
-        maxStock: product.stock
-      };
-      currentItems.push(newItem);
+  //Add to cart function
+  addToCart(product: PosProduct, quantity: number): { success: boolean, message?: string } {
+    const currentItems = this.items();
+    const existingItem = currentItems.find(i => i.lineItemId === product.lineItemId);
+
+    // Stock Check for New Items
+    if (!existingItem && quantity > product.stock) {
+      return { success: false, message: 'Not enough stock!' };
     }
-    this.cartItems.next([...currentItems]);
-  }
-  removeFromCart(productId: string): boolean {
-    const currentItems = this.cartItems.value;
-    const itemIndex = currentItems.findIndex(item => item.lineItemId === productId);
-    if (itemIndex === -1) {
-      console.warn("Item not found in cart");
-      return false;
+
+    // Stock Check for Existing Items
+    if (existingItem && (existingItem.quantity + quantity > product.stock)) {
+      return { success: false, message: 'Not enough stock!' };
     }
-    const updatedItems = currentItems.filter(item => item.lineItemId !== productId);
-    this.cartItems.next(updatedItems);
-    return true;
+
+    // STATE UPDATE (Immutable)
+    this.items.update(items => {
+      // If item exists, map through and update ONLY that specific item
+      if (existingItem) {
+        return items.map(item =>
+          item.lineItemId === product.lineItemId
+            ? {
+              ...item,
+              quantity: item.quantity + quantity,
+              subTotal: (item.quantity + quantity) * item.price
+            }
+            : item
+
+        );
+      } else {
+        // If item is a new item, add it to the array
+        const newItem: CartItem = {
+          lineItemId: product.lineItemId,
+          productName: product.name,
+          barcode: product.barcode,
+          quantity: quantity,
+          price: product.salePrice,
+          subTotal: quantity * product.salePrice,
+          maxStock: product.stock
+        };
+        return [...items, newItem];
+      }
+    });
+    return { success: true };
   }
+
+  // Remove from cart function
+  removeFromCart(lineItemId: string) {
+    this.items.update(items => items.filter(i => i.lineItemId !== lineItemId));
+  }
+  // Clear cart function
   clearCart(): void {
-    this.cartItems.next([]);
-  }
-  getTotalAmount(): number {
-    const currentItems = this.cartItems.value;
-    return currentItems.reduce((total, item) => total + item.subTotal, 0);
+    this.items.set([]);
   }
 }
