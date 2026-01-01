@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="product-grid">
-      <div class="product-card" (click)="addToCart(p, quantity)" *ngFor="let p of products$ | async">
+      <div class="product-card" (click)="addToCart(p, quantity)" *ngFor="let p of products()">
         <div class="product-name">{{ p.name }}</div>
         <div class="product-price">{{ p.salePrice | currency:'LKR ' }}</div>
         <div class="product-barcode">Barcode : {{ p.barcode }}</div>
@@ -26,7 +26,8 @@
 
     <div class="cart-items">
       <div class="cart-row" *ngFor="let item of cartItems()">
-        <span>{{ item.productName }} (x{{ item.quantity }})</span>
+        <span>{{ item.productName }} <input type="number" name="quantity" id="quantity" min="1"
+            max="{{ item.maxStock }}" [(ngModel)]="item.quantity"></span>
         <span>{{ item.subTotal | currency:'LKR ' }}</span>
         <button class="delete-btn" (click)="removeFromCart(item)">X</button>
       </div>

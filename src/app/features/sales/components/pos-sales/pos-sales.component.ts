@@ -1,6 +1,5 @@
-import { Component, computed, OnInit, Signal } from '@angular/core';
+import { Component, computed, OnInit, signal, Signal, WritableSignal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Observable } from 'rxjs';
 import { CartItem, PosProduct } from '../../models';
 import { CartService, InventoryService, OrderService } from '../../services';
 import { FormsModule } from '@angular/forms';
@@ -17,7 +16,7 @@ export class PosSalesComponent implements OnInit {
   // Data Streams
   cartItems: Signal<CartItem[]>;
   cartTotal: Signal<number>;
-  products$!: Observable<PosProduct[]>;
+  products: WritableSignal<PosProduct[]> = signal([]);
   quantity: number = 1;
 
   constructor(
@@ -33,7 +32,18 @@ export class PosSalesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.products$ = this.inventoryService.getProductsForPos();
+    this.loadProducts();
+  }
+
+  loadProducts() {
+    this.inventoryService.getProductsForPos().subscribe({
+      next: (data) => {
+        this.products.set(data);
+      },
+      error: (err) => {
+        console.error("Failed to load products", err);
+      }
+    });
   }
 
   addToCart(product: PosProduct, quantity: number): { success: boolean, message?: string } {
@@ -53,6 +63,7 @@ export class PosSalesComponent implements OnInit {
     this.orderService.createOrder(this.cartItems(), this.cartTotal()).subscribe({
       next: () => {
         alert("Order created successfully");
+        this.loadProducts();
       },
       error: (err) => {
         console.error("Failed to create order", err);
