@@ -71,4 +71,9 @@ export class PosSalesComponent implements OnInit {
     });
     console.log("Checkout Clicked")
   }
+
+  updateQuantity(item: CartItem, newQuantity: number) {
+    if (!newQuantity || newQuantity < 1) return;
+    this.cartService.UpdateQuantity(item.lineItemId, newQuantity);
+  }
 }

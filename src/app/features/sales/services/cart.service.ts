@@ -58,6 +58,25 @@ export class CartService {
     return { success: true };
   }
 
+  // Update Quantity function
+  UpdateQuantity(lineItemId: string, newQuantity: number) {
+    this.items.update(currentItems => {
+      return currentItems.map(item => {
+        if (item.lineItemId === lineItemId) {
+          if (newQuantity < 0 || newQuantity > item.maxStock) {
+            return item;
+          }
+          return {
+            ...item,
+            quantity: newQuantity,
+            subTotal: newQuantity * item.price
+          };
+        }
+        return item;
+      });
+    });
+  }
+
   // Remove from cart function
   removeFromCart(lineItemId: string) {
     this.items.update(items => items.filter(i => i.lineItemId !== lineItemId));

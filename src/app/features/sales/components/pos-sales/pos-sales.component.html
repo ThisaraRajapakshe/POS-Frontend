@@ -26,8 +26,10 @@
 
     <div class="cart-items">
       <div class="cart-row" *ngFor="let item of cartItems()">
-        <span>{{ item.productName }} <input type="number" name="quantity" id="quantity" min="1"
-            max="{{ item.maxStock }}" [(ngModel)]="item.quantity"></span>
+        <span>{{ item.productName }}
+          <input type="number" name="quantity" id="quantity" min="1" max="{{ item.maxStock }}"
+            [(ngModel)]="item.quantity" (ngModelChange)="updateQuantity(item, $event)">
+        </span>
         <span>{{ item.subTotal | currency:'LKR ' }}</span>
         <button class="delete-btn" (click)="removeFromCart(item)">X</button>
       </div>
