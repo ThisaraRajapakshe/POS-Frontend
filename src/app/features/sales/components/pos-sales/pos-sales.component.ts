@@ -1,15 +1,14 @@
 import { Component, computed, OnInit, Signal } from '@angular/core';
-import { CommonModule } from '@angular/common'; // <--- FIX 1: Needed for *ngFor, async, currency
+import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { CartItem, PosProduct } from '../../models';
-import { CartService, InventoryService } from '../../services';
+import { CartService, InventoryService, OrderService } from '../../services';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'pos-pos-sales',
-  standalone: true, // <--- You are using Standalone
-  imports: [CommonModule, FormsModule], // <--- FIX 1: This unlocks the HTML errors
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './pos-sales.component.html',
   styleUrl: './pos-sales.component.scss'
 })
@@ -21,7 +20,11 @@ export class PosSalesComponent implements OnInit {
   products$!: Observable<PosProduct[]>;
   quantity: number = 1;
 
-  constructor(private cartService: CartService, private inventoryService: InventoryService) {
+  constructor(
+    private cartService: CartService,
+    private inventoryService: InventoryService,
+    private orderService: OrderService
+  ) {
     this.cartItems = this.cartService.items;
     this.cartTotal = computed(() => {
       const items = this.cartItems();
@@ -47,6 +50,14 @@ export class PosSalesComponent implements OnInit {
   }
 
   onCheckout() {
-    console.log('Checkout clicked');
+    this.orderService.createOrder(this.cartItems(), this.cartTotal()).subscribe({
+      next: () => {
+        alert("Order created successfully");
+      },
+      error: (err) => {
+        console.error("Failed to create order", err);
+      }
+    });
+    console.log("Checkout Clicked")
   }
 }

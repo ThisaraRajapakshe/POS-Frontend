@@ -2,7 +2,7 @@ export interface OrderCreateRequestDto {
     totalAmount: number;
     paymentMethod: string;
     isPending: boolean;
-    oderItems: OrderRequestItemDto[];
+    orderItems: OrderRequestItemDto[];
 }
 
 export interface OrderRequestItemDto {
