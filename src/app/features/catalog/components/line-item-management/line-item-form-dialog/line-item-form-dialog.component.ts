@@ -9,11 +9,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ProductService } from './../../../services';
 import { Product } from './../../../models';
-import { CardWrapperComponent } from '../../../../../shared/Components/card-wrapper/card-wrapper.component';
 
 @Component({
   selector: 'pos-line-item-form-dialog',
-  imports: [CommonModule, ReactiveFormsModule, MatInputModule, MatFormFieldModule, MatButtonModule, MatSelectModule, CardWrapperComponent, MatSnackBarModule],
+  imports: [CommonModule, ReactiveFormsModule, MatInputModule, MatFormFieldModule, MatButtonModule, MatSelectModule, MatSnackBarModule],
   templateUrl: './line-item-form-dialog.component.html',
   styleUrl: './line-item-form-dialog.component.scss'
 })
@@ -41,6 +40,7 @@ export class LineItemFormDialogComponent {
       cost: [data?.lineItem?.cost || '', Validators.required],
       displayPrice: [data?.lineItem?.displayPrice || '', Validators.required],
       discountedPrice: [data?.lineItem?.discountedPrice || '', Validators.required],
+      quantity: [data?.lineItem?.quantity || '', Validators.required],
     });
   }
   onClose(): void {

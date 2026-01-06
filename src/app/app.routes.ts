@@ -5,7 +5,7 @@ import { MainLayoutComponent } from './layouts/main-layout/main-layout.component
 
 export const routes: Routes = [
     // Public Routes
-    {path: 'login', component: LoginComponent},
+    { path: 'login', component: LoginComponent },
     // Private Routes
     {
         path: '',
@@ -14,20 +14,33 @@ export const routes: Routes = [
         children: [
             { path: '', redirectTo: 'catalog', pathMatch: 'full' },
 
-            { path: 'catalog', loadComponent: () => import('./features/catalog/components/catalog-dashboard/catalog.component')
-                .then(m => m.CatalogComponent) },
+            {
+                path: 'catalog', loadComponent: () => import('./features/catalog/components/catalog-dashboard/catalog.component')
+                    .then(m => m.CatalogComponent)
+            },
 
-            { path: 'product-management',
-                 loadComponent: () => import ('./features/catalog/components/product-management/product-management.component')
-                .then(m => m.ProductManagementComponent) },
-            { path: 'category-management',
-                 loadComponent: () => import ('./features/catalog/components/category-management/category-management.component')
-                .then(m => m.CategoryManagementComponent) },
-            { path: 'product-line-item-management',
-                 loadComponent: () => import ('./features/catalog/components/line-item-management/line-item-management.component')
-                .then(m => m.LineItemManagementComponent) },
+            {
+                path: 'product-management',
+                loadComponent: () => import('./features/catalog/components/product-management/product-management.component')
+                    .then(m => m.ProductManagementComponent)
+            },
+            {
+                path: 'category-management',
+                loadComponent: () => import('./features/catalog/components/category-management/category-management.component')
+                    .then(m => m.CategoryManagementComponent)
+            },
+            {
+                path: 'product-line-item-management',
+                loadComponent: () => import('./features/catalog/components/line-item-management/line-item-management.component')
+                    .then(m => m.LineItemManagementComponent)
+            },
+            {
+                path: 'sales',
+                loadComponent: () => import('./features/sales/components/pos-sales/pos-sales.component')
+                    .then(m => m.PosSalesComponent)
+            },
         ]
     },
     //Catch all 404
-    {path: '**', redirectTo: 'login', pathMatch: 'full'}
+    { path: '**', redirectTo: 'login', pathMatch: 'full' }
 ];

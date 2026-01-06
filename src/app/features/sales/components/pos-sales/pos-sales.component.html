@@ -1,0 +1,47 @@
+<div class="pos-container">
+
+  <div class="catalog-section">
+    <div class="controls-row">
+      <div class="search-bar">
+        <input type="text" placeholder="Search products..." #searchInput>
+      </div>
+
+      <div class="qty-control">
+        <label>Quantity:</label>
+        <input type="number" [(ngModel)]="quantity" min="1" class="qty-input">
+      </div>
+    </div>
+    <div class="product-grid">
+      <div class="product-card" (click)="addToCart(p, quantity)" *ngFor="let p of products()">
+        <div class="product-name">{{ p.name }}</div>
+        <div class="product-price">{{ p.salePrice | currency:'LKR ' }}</div>
+        <div class="product-barcode">Barcode : {{ p.barcode }}</div>
+        <div class="product-stock" [class.low-stock]="p.stock < 10">Stock : {{ p.stock }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cart-section">
+    <h2>Current Order</h2>
+
+    <div class="cart-items">
+      <div class="cart-row" *ngFor="let item of cartItems()">
+        <span>{{ item.productName }}
+          <input type="number" name="quantity" id="quantity" min="1" max="{{ item.maxStock }}"
+            [(ngModel)]="item.quantity" (ngModelChange)="updateQuantity(item, $event)">
+        </span>
+        <span>{{ item.subTotal | currency:'LKR ' }}</span>
+        <button class="delete-btn" (click)="removeFromCart(item)">X</button>
+      </div>
+    </div>
+
+    <div class="cart-footer">
+      <div class="total-row">
+        <span>Total:</span>
+        <span class="total-amount">{{ cartTotal() | currency:'LKR ' }}</span>
+      </div>
+      <button class="pay-btn" (click)="onCheckout()">CHARGE</button>
+    </div>
+  </div>
+
+</div>

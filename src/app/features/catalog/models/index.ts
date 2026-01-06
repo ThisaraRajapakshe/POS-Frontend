@@ -4,4 +4,6 @@ export * from './line-item/product-line-item.model';
 export * from './line-item/create-product-line-item-dto';
 export * from './line-item/update-product-line-item-dto';
 export * from './category/update-category-dto';
-
+export * from './product/product-dto';
+export * from './category/category-dto';
+export * from './line-item/product-line-item-dto';

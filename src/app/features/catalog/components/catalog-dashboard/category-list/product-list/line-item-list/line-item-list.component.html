@@ -40,10 +40,15 @@
     <th mat-header-cell *matHeaderCellDef> Category Name </th>
     <td mat-cell *matCellDef="let item"> {{item.product.category.name}} </td>
   </ng-container>
+  <!-- Quantity Column -->
+  <ng-container matColumnDef="quantity">
+    <th mat-header-cell *matHeaderCellDef> Quantity </th>
+    <td mat-cell *matCellDef="let item"> {{item.quantity}} </td>
+  </ng-container>
   <tr mat-header-row
-    *matHeaderRowDef="['id', 'barCodeId', 'cost', 'displayPrice', 'discountedPrice', 'productName', 'categoryName']">
+    *matHeaderRowDef="['id', 'barCodeId', 'cost', 'displayPrice', 'discountedPrice', 'productName', 'categoryName', 'quantity'];">
   </tr>
   <tr mat-row
-    *matRowDef="let row; columns: ['id', 'barCodeId', 'cost', 'displayPrice', 'discountedPrice', 'productName', 'categoryName'];">
+    *matRowDef="let row; columns: ['id', 'barCodeId', 'cost', 'displayPrice', 'discountedPrice', 'productName', 'categoryName', 'quantity'];">
   </tr>
 </table>

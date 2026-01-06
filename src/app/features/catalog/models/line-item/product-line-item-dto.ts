@@ -1,4 +1,6 @@
-export interface CreateProductLineItemDto {
+import { ProductDto } from "../product/product-dto";
+
+export interface ProductLineItemDto {
     id: string;
     barCodeId: string;
     productId: string;
@@ -6,4 +8,5 @@ export interface CreateProductLineItemDto {
     displayPrice: number;
     discountedPrice: number;
     quantity: number;
+    product: ProductDto;
 }
