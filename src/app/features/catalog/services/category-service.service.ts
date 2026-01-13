@@ -3,7 +3,7 @@ import { Category } from '../models/category/category.model';
 import { BaseHttpService } from '../../../Core/services/base-http.service';
 import { catchError, Observable, shareReplay, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../environments/environment.prod';
+import { environment } from '../../../../environments/environment';
 import { UpdateCategoryDto } from '../models/category/update-category-dto';
 
 @Injectable({
