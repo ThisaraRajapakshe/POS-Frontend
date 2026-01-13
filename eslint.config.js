@@ -31,6 +31,17 @@ module.exports = defineConfig([
           style: "kebab-case",
         },
       ],
+      "no-restricted-syntax": [
+        "error",
+        {
+          selector: "ImportDeclaration[source.value=/environment\\.prod/]",
+          message: "⛔ STOP! Do not import environment.prod directly. Import 'src/environments/environment' instead."
+        },
+        {
+          selector: "ImportDeclaration[source.value=/environment\\.development/]",
+          message: "⛔ STOP! Do not import environment.development directly. Import 'src/environments/environment' instead."
+        }
+      ],
     },
   },
   {
