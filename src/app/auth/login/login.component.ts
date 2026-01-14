@@ -3,14 +3,14 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../Core/services/auth/auth.service';
 import { Router } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import { MatCard, MatCardModule } from "@angular/material/card";
 import { MatInputModule } from "@angular/material/input";
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'pos-login',
-  imports: [ReactiveFormsModule, CommonModule, MatCard, MatCardModule, MatInputModule, MatButtonModule],
+  imports: [ReactiveFormsModule, MatCard, MatCardModule, MatInputModule, MatButtonModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })

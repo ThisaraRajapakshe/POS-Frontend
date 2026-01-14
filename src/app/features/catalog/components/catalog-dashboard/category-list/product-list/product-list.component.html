@@ -1,11 +1,13 @@
-<mat-accordion *ngIf="products$ | async as products">
-  <mat-expansion-panel *ngFor="let product of products">
-    <mat-expansion-panel-header>
-      <mat-panel-title>{{ product.name }}</mat-panel-title>
-    </mat-expansion-panel-header>
-
-    <!-- line items list -->
-    <pos-line-item-list [productId]="product.id"></pos-line-item-list>
-
-  </mat-expansion-panel>
-</mat-accordion>
+@if (products$ | async; as products) {
+  <mat-accordion>
+    @for (product of products; track product) {
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>{{ product.name }}</mat-panel-title>
+        </mat-expansion-panel-header>
+        <!-- line items list -->
+        <pos-line-item-list [productId]="product.id"></pos-line-item-list>
+      </mat-expansion-panel>
+    }
+  </mat-accordion>
+}

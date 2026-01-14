@@ -6,12 +6,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Observable, Subscription } from 'rxjs';
 import { Product } from '../../../models';
-import { CommonModule } from '@angular/common';
+
 
 
 @Component({
   selector: 'pos-product-table',
-  imports: [MatTableModule, MatPaginatorModule, MatSortModule, MatIconModule, MatButtonModule, CommonModule],
+  imports: [MatTableModule, MatPaginatorModule, MatSortModule, MatIconModule, MatButtonModule],
   templateUrl: './product-table.component.html',
   styleUrl: './product-table.component.scss'
 })

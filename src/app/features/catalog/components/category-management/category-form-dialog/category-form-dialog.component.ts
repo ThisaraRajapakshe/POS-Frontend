@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButton, MatButtonModule } from '@angular/material/button';
@@ -7,7 +7,7 @@ import { MatInputModule } from "@angular/material/input";
 
 @Component({
   selector: 'pos-category-form-dialog',
-  imports: [CommonModule, ReactiveFormsModule, MatDialogModule, MatInputModule, MatButton, MatButtonModule],
+  imports: [ReactiveFormsModule, MatDialogModule, MatInputModule, MatButton, MatButtonModule],
   templateUrl: './category-form-dialog.component.html',
   styleUrl: './category-form-dialog.component.scss'
 })

@@ -5,31 +5,39 @@
       <mat-label>ID</mat-label>
       <input matInput type="text" formControlName="id" placeholder="ID" [readonly]="data.mode === 'edit'" />
       <!-- show error message -->
-      <mat-error *ngIf="productForm.get('id')?.hasError('required')">
-        ID is <strong>required</strong>
-      </mat-error>
+      @if (productForm.get('id')?.hasError('required')) {
+        <mat-error>
+          ID is <strong>required</strong>
+        </mat-error>
+      }
     </mat-form-field>
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Name</mat-label>
       <input matInput type="text" formControlName="name" placeholder="Name" />
-      <mat-error *ngIf="productForm.get('name')?.hasError('required')">
-        Product Name is <strong>required</strong>
-      </mat-error>
+      @if (productForm.get('name')?.hasError('required')) {
+        <mat-error>
+          Product Name is <strong>required</strong>
+        </mat-error>
+      }
     </mat-form-field>
     <!-- <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Category</mat-label>
-      <input matInput type="text" formControlName="categoryId" placeholder="Category" />
-    </mat-form-field> -->
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Category</mat-label>
-      <mat-select formControlName="categoryId">
-        <mat-option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</mat-option>
-      </mat-select>
-      <mat-error *ngIf="productForm.get('categoryId')?.hasError('required')">
+    <mat-label>Category</mat-label>
+    <input matInput type="text" formControlName="categoryId" placeholder="Category" />
+  </mat-form-field> -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Category</mat-label>
+    <mat-select formControlName="categoryId">
+      @for (category of categories; track category) {
+        <mat-option [value]="category.id">{{ category.name }}</mat-option>
+      }
+    </mat-select>
+    @if (productForm.get('categoryId')?.hasError('required')) {
+      <mat-error>
         Category is <strong>required</strong>
       </mat-error>
-    </mat-form-field>
-  </form>
+    }
+  </mat-form-field>
+</form>
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button (click)="onClose()">Cancel</button>

@@ -5,15 +5,14 @@ import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
-import { CommonModule } from '@angular/common';
+
 import { CategoryService } from '../../../services';
 import { Category } from '../../../models';
 
 
 @Component({
   selector: 'pos-product-form-dialog',
-  imports: [MatSelectModule, MatInputModule, MatDialogContent, MatDialogModule,
-    FormsModule, ReactiveFormsModule, MatLabel, MatFormFieldModule, MatButtonModule, CommonModule],
+  imports: [MatSelectModule, MatInputModule, MatDialogContent, MatDialogModule, FormsModule, ReactiveFormsModule, MatLabel, MatFormFieldModule, MatButtonModule],
   templateUrl: './product-form-dialog.component.html',
   styleUrl: './product-form-dialog.component.scss'
 })

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -12,7 +12,7 @@ import { Product } from './../../../models';
 
 @Component({
   selector: 'pos-line-item-form-dialog',
-  imports: [CommonModule, ReactiveFormsModule, MatInputModule, MatFormFieldModule, MatButtonModule, MatSelectModule, MatSnackBarModule],
+  imports: [ReactiveFormsModule, MatInputModule, MatFormFieldModule, MatButtonModule, MatSelectModule, MatSnackBarModule],
   templateUrl: './line-item-form-dialog.component.html',
   styleUrl: './line-item-form-dialog.component.scss'
 })
