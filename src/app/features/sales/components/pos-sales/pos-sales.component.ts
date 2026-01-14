@@ -17,7 +17,7 @@ export class PosSalesComponent implements OnInit {
   cartItems: Signal<CartItem[]>;
   cartTotal: Signal<number>;
   products: WritableSignal<PosProduct[]> = signal([]);
-  quantity: number = 1;
+  quantity = 1;
 
   constructor(
     private cartService: CartService,

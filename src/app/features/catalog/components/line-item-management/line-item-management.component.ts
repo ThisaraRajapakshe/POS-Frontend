@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { catchError, Observable, of, shareReplay } from 'rxjs';
 import { ProductLineItem } from '../../models';
 import { ProductLineItemService } from '../../services';
@@ -17,7 +17,7 @@ import { CardWrapperComponent } from '../../../../shared/Components/card-wrapper
   templateUrl: './line-item-management.component.html',
   styleUrl: './line-item-management.component.scss'
 })
-export class LineItemManagementComponent {
+export class LineItemManagementComponent implements OnInit {
   lineItems$!: Observable<ProductLineItem[]>;
 
   constructor(private dialog: MatDialog, private lineItemService: ProductLineItemService, private snackBar: MatSnackBar) { }

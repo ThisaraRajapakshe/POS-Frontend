@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnChanges } from '@angular/core';
 import { Observable, tap, catchError, of } from 'rxjs';
 import { Product } from '../../../../models';
 import { ProductService } from '../../../../services';
@@ -12,7 +12,7 @@ import { LineItemListComponent } from './line-item-list/line-item-list.component
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss'
 })
-export class ProductListComponent {
+export class ProductListComponent implements OnChanges {
   @Input() categoryId!: string;
   @Output() productSelected = new EventEmitter<string>();
   products$!: Observable<Product[]>;
