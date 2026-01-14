@@ -30,6 +30,8 @@ import { UserProfile } from '../../../Core/models/Domains/UserProfile';
   ]
 })
 export class NavBarComponent {
+  private authService = inject(AuthService);
+
   private breakpointObserver = inject(BreakpointObserver);
   currentUser$: Observable<UserProfile | null>;
 
@@ -38,7 +40,7 @@ export class NavBarComponent {
       map(result => result.matches),
       shareReplay()
     );
-    constructor(private authService: AuthService) {
+    constructor() {
       this.currentUser$ = this.authService.currentUser$.pipe(
         filter(userState => userState !== undefined) // Only emit when userState is defined (not undefined)
       ) as Observable<UserProfile | null>; // Type assertion to ensure correct type

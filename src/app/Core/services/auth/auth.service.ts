@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap, BehaviorSubject, throwError } from 'rxjs';
@@ -9,6 +9,9 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class AuthService {
+  private http = inject(HttpClient);
+  private router = inject(Router);
+
   private apiurl = `${environment.apiUrl}/auth`;
   private readonly TOKEN_KEY = 'access_token';
   private readonly REFRESH_TOKEN_KEY = 'refresh_token';
@@ -18,7 +21,7 @@ export class AuthService {
   private currentUserSubject = new BehaviorSubject<UserProfile | null | undefined>(undefined);
   public currentUser$ = this.currentUserSubject.asObservable();
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor() {
     this.loadInitialUser();
   }
   private loadInitialUser(): void {

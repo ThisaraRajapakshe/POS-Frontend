@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ProductFormDialogComponent } from './product-form-dialog/product-form-dialog.component';
 import { ProductService } from '../../services';
@@ -18,8 +18,11 @@ import { ConfirmDialogComponent } from '../../../../shared/dialogs/confirm-dialo
   imports: [ProductTableComponent, MatButton, CardWrapperComponent, MatButtonModule],
 })
 export class ProductManagementComponent implements OnInit {
+  private dialog = inject(MatDialog);
+  private productService = inject(ProductService);
+  private snackBar = inject(MatSnackBar);
+
   products$!: Observable<Product[]>;
-  constructor(private dialog: MatDialog, private productService: ProductService, private snackBar: MatSnackBar) { }
   ngOnInit(): void {
     this.loadProducts();
   }

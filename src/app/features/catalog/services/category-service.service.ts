@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Category } from '../models/category/category.model';
 import { BaseHttpService } from '../../../Core/services/base-http.service';
 import { catchError, Observable, shareReplay, throwError } from 'rxjs';
@@ -11,7 +11,9 @@ import { UpdateCategoryDto } from '../models/category/update-category-dto';
 })
 export class CategoryService extends BaseHttpService<Category, Category, UpdateCategoryDto> {
   private categories$!: Observable<Category[]>;
-  constructor(http: HttpClient) {
+  constructor() {
+    const http = inject(HttpClient);
+
     super(http, `${environment.apiUrl}/Category`);
     this.categories$ = this.getAll().pipe(
       shareReplay(1), // Cache the result for subsequent subscribers

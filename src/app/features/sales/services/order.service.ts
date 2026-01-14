@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
@@ -9,10 +9,11 @@ import { CartService } from './cart.service';
   providedIn: 'root'
 })
 export class OrderService {
+  private http = inject(HttpClient);
+  private cartService = inject(CartService);
+
 
   private apiUrl = `${environment.apiUrl}/Orders`;
-
-  constructor(private http: HttpClient, private cartService: CartService) { }
 
   createOrder(items: CartItem[], totalAmount: number) {
     if (!items || items.length === 0) {

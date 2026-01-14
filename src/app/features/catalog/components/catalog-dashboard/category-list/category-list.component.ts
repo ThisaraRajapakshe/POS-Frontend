@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, ChangeDetectionStrategy, signal, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output, ChangeDetectionStrategy, signal, OnInit, inject } from '@angular/core';
 import { Observable, tap, catchError, of } from 'rxjs';
 import { Category } from '../../../models';
 import { CategoryService } from '../../../services';
@@ -14,10 +14,11 @@ import { ProductListComponent } from "./product-list/product-list.component";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CategoryListComponent implements OnInit {
+  private categoryService = inject(CategoryService);
+
   categories$!: Observable<Category[]>;
   message = '';
   @Output() categorySelected = new EventEmitter<string>();
-  constructor(private categoryService: CategoryService) { }
   ngOnInit(): void {
     this.loadCategories();
   }

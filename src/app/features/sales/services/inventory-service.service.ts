@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ProductLineItemDto } from '../../catalog/models';
 import { PosProduct } from '../models';
 import { environment } from '../../../../environments/environment';
@@ -9,8 +9,8 @@ import { map } from 'rxjs';
   providedIn: 'root'
 })
 export class InventoryService {
+  private http = inject(HttpClient);
 
-  constructor(private http: HttpClient) { }
 
   getProductsForPos() {
     return this.http.get<ProductLineItemDto[]>(`${environment.apiUrl}/ProductLineItem`).pipe(

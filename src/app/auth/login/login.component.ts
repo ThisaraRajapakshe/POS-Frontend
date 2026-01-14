@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../Core/services/auth/auth.service';
 import { Router } from '@angular/router';
@@ -15,10 +15,14 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
+  private fb = inject(FormBuilder);
+  private authService = inject(AuthService);
+  private router = inject(Router);
+
   loginForm: FormGroup;
   errorMessage: string | null = null;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+  constructor() {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required]

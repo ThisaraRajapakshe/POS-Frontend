@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { catchError, Observable, of } from 'rxjs';
 import { Category } from '../../models';
 import { CategoryService } from '../../services';
@@ -17,8 +17,11 @@ import { ConfirmDialogComponent } from '../../../../shared/dialogs/confirm-dialo
   styleUrl: './category-management.component.scss'
 })
 export class CategoryManagementComponent implements OnInit {
+  private categoryService = inject(CategoryService);
+  private dialog = inject(MatDialog);
+  private snackBar = inject(MatSnackBar);
+
   categories$!: Observable<Category[]>;
-  constructor(private categoryService: CategoryService, private dialog: MatDialog, private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.loadCategories();

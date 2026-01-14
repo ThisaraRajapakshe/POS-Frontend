@@ -1,5 +1,5 @@
 
-import { Component, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -17,17 +17,18 @@ import { Product } from './../../../models';
   styleUrl: './line-item-form-dialog.component.scss'
 })
 export class LineItemFormDialogComponent {
+  data = inject(MAT_DIALOG_DATA);
+  private fb = inject(FormBuilder);
+  private dialogRef = inject<MatDialogRef<LineItemFormDialogComponent>>(MatDialogRef);
+  private snackBar = inject(MatSnackBar);
+  private productService = inject(ProductService);
+
   lineItemForm!: FormGroup;
   products: Product[] = [];
 
-  constructor(
-    // Injecting MAT_DIALOG_DATA to access data passed to the dialog
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private fb: FormBuilder,
-    private dialogRef: MatDialogRef<LineItemFormDialogComponent>,
-    private snackBar: MatSnackBar,
-    private productService: ProductService
-  ) {
+  constructor() {
+    const data = this.data;
+
     // Load products for the select dropdown
     this.productService.getAll().subscribe((products) => {
       this.products = products;
