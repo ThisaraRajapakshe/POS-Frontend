@@ -7,18 +7,19 @@
       </div>
 
       <div class="qty-control">
-        <label>Quantity:</label>
-        <input type="number" [(ngModel)]="quantity" min="1" class="qty-input">
+        <label>Quantity:
+          <input type="number" [(ngModel)]="quantity" min="1" class="qty-input">
+        </label>
       </div>
     </div>
     <div class="product-grid">
       @for (p of products(); track p) {
-        <div class="product-card" (click)="addToCart(p, quantity)">
+        <button type="button" class="product-card" (click)="addToCart(p, quantity)">
           <div class="product-name">{{ p.name }}</div>
           <div class="product-price">{{ p.salePrice | currency:'LKR ' }}</div>
           <div class="product-barcode">Barcode : {{ p.barcode }}</div>
           <div class="product-stock" [class.low-stock]="p.stock < 10">Stock : {{ p.stock }}</div>
-        </div>
+        </button>
       }
     </div>
   </div>
