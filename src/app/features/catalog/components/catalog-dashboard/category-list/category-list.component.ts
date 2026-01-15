@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, ChangeDetectionStrategy, signal, OnInit, inject } from '@angular/core';
+import { Component, EventEmitter, Output, ChangeDetectionStrategy, OnInit, inject } from '@angular/core';
 import { Observable, tap, catchError, of } from 'rxjs';
 import { Category } from '../../../models';
 import { CategoryService } from '../../../services';

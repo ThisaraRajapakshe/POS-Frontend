@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output, OnChanges, inject } from '@angular/core';
-import { Observable, tap, catchError, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Product } from '../../../../models';
 import { ProductService } from '../../../../services';
 import { CommonModule } from '@angular/common';
