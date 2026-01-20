@@ -10,10 +10,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmDialogComponent } from '../../../../shared/dialogs/confirm-dialog.component';
 import { CardWrapperComponent } from '../../../../shared/Components/card-wrapper/card-wrapper.component';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'pos-line-item-management',
-  imports: [LineItemTableComponent, MatTableModule, MatButtonModule, CardWrapperComponent],
+  imports: [LineItemTableComponent, MatTableModule, MatButtonModule, CardWrapperComponent, AsyncPipe],
   templateUrl: './line-item-management.component.html',
   styleUrl: './line-item-management.component.scss'
 })
