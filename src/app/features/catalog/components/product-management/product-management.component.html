@@ -1,5 +1,9 @@
 <h1 class="text-center my-4">Product Management</h1>
 <pos-card-wrapper width="75">
   <button mat-raised-button color="primary" (click)="openAddProduct()" class="add-product-btn">Add Product</button>
-  <pos-product-table  [products$]="products$" (editProduct)="openEditProduct($event)" (deleteProduct)="confirmDelete($event)"></pos-product-table>
+  <pos-product-table  
+  [products]="(products$ | async) || []" 
+  (editProduct)="openEditProduct($event)" 
+  (deleteProduct)="confirmDelete($event)">
+</pos-product-table>
 </pos-card-wrapper>

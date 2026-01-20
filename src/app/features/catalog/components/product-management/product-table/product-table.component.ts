@@ -1,10 +1,9 @@
-import { Component, Input, ViewChild, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, Input, ViewChild, Output, EventEmitter, AfterViewInit } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { Observable, Subscription } from 'rxjs';
 import { Product } from '../../../models';
 
 
@@ -15,8 +14,10 @@ import { Product } from '../../../models';
   templateUrl: './product-table.component.html',
   styleUrl: './product-table.component.scss'
 })
-export class ProductTableComponent implements OnChanges {
-  @Input() products$!: Observable<Product[]>;
+export class ProductTableComponent implements AfterViewInit {
+  @Input() set products(products: Product[]) {
+    this.dataSource.data = products;
+  }
   @Output() editProduct = new EventEmitter<Product>();
   @Output() deleteProduct = new EventEmitter<Product>();
 
@@ -26,22 +27,23 @@ export class ProductTableComponent implements OnChanges {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  private subscription!: Subscription;
-  ngOnChanges(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-    this.subscription = this.products$.subscribe((data) => {
-      this.dataSource.data = data;
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-      this.dataSource.sortingDataAccessor = (item, property) => {
-        switch (property) {
-          case 'category': return item.category?.name;
-          default: return (item as any)[property];
+  ngAfterViewInit(){
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+    this.configureSorting();
+  }
+
+  private configureSorting(){
+    this.dataSource.sortingDataAccessor = (item: Product, property: string): string | number => {
+      switch (property) {
+        case 'category': return item.category?.name || '';
+        default: 
+        {
+          const value = item[property as keyof Product];
+          return ( typeof value === 'string' || typeof value === 'number' ) ? value : '';
         }
-      };
-    });
+      }
+    };
   }
 
   onEdit(product: Product): void {

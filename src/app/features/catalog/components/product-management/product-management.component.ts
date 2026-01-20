@@ -9,13 +9,14 @@ import { catchError, Observable, of, shareReplay } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CardWrapperComponent } from '../../../../shared/Components/card-wrapper/card-wrapper.component';
 import { ConfirmDialogComponent } from '../../../../shared/dialogs/confirm-dialog.component';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'pos-product-management',
   templateUrl: './product-management.component.html',
   styleUrl: './product-management.component.scss',
   standalone: true,
-  imports: [ProductTableComponent, MatButton, CardWrapperComponent, MatButtonModule],
+  imports: [ProductTableComponent, MatButton, CardWrapperComponent, MatButtonModule, AsyncPipe],
 })
 export class ProductManagementComponent implements OnInit {
   private dialog = inject(MatDialog);
