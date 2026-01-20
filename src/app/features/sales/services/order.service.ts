@@ -1,50 +1,46 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
-import { CartItem, OrderCreateRequestDto } from '../models';
+import { map, Observable, tap, throwError } from 'rxjs';
+import { CartItem, Order, OrderCreateRequestDto, OrderResponseDto } from '../models';
 import { CartService } from './cart.service';
+import { OrderMapper } from '../mappers/order.mapper';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderService {
+  private http = inject(HttpClient);
+  private cartService = inject(CartService);
+
 
   private apiUrl = `${environment.apiUrl}/Orders`;
 
-  constructor(private http: HttpClient, private cartService: CartService) { }
-
-  createOrder(items: CartItem[], totalAmount: number) {
+  createOrder(items: CartItem[], totalAmount: number): Observable<Order> {
     if (!items || items.length === 0) {
-      throw new Error('No items provided');
+      // throw new Error('No items provided');
+      return throwError(() => new Error('No items provided'));
     }
     if (totalAmount <= 0) {
-      throw new Error('Invalid total amount');
+      return throwError(() => new Error('Invalid total amount'));
     }
-    const payload = this.mapToOrderRequest(items, totalAmount);
+    const payload: OrderCreateRequestDto = OrderMapper.mapToOrderRequest(items,totalAmount);
 
-    return this.http.post(this.apiUrl, payload).pipe(
-      tap(() => this.cartService.clearCart()) // clear cart at end of a sale
+    return this.http.post<OrderResponseDto>(this.apiUrl, payload).pipe(
+      tap(() => this.cartService.clearCart()), // clear cart at end of a sale
+      map((dto: OrderResponseDto) => OrderMapper.fromDto(dto))
     );
   }
-  mapToOrderRequest(items: CartItem[], totalAmount: number): OrderCreateRequestDto {
-    return {
-      totalAmount: totalAmount,
-      paymentMethod: 'Cash',
-      isPending: false,
-      orderItems: items.map(item => ({
-        productLineItemId: item.lineItemId,
-        salesPrice: item.price,
-        quantity: item.quantity
-      }))
-    }
+
+  getOrders(): Observable<Order[]> {
+    return this.http.get<OrderResponseDto[]>(this.apiUrl).pipe(
+      map((dtos: OrderResponseDto[]) => dtos.map(dto => OrderMapper.fromDto(dto)))
+    );
   }
 
-  getOrders(): Observable<any> {
-    return this.http.get(this.apiUrl);
-  }
-
-  getOrderById(id: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}`);
+  getOrderById(id: string): Observable<Order> {
+    return this.http.get<OrderResponseDto>(`${this.apiUrl}/${id}`).pipe(
+      map((dto: OrderResponseDto) => OrderMapper.fromDto(dto))
+    ) ;
   }
 }

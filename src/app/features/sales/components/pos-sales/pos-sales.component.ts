@@ -1,4 +1,4 @@
-import { Component, computed, OnInit, signal, Signal, WritableSignal } from '@angular/core';
+import { Component, computed, OnInit, signal, Signal, WritableSignal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CartItem, PosProduct } from '../../models';
 import { CartService, InventoryService, OrderService } from '../../services';
@@ -12,18 +12,18 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './pos-sales.component.scss'
 })
 export class PosSalesComponent implements OnInit {
+  private cartService = inject(CartService);
+  private inventoryService = inject(InventoryService);
+  private orderService = inject(OrderService);
+
 
   // Data Streams
   cartItems: Signal<CartItem[]>;
   cartTotal: Signal<number>;
   products: WritableSignal<PosProduct[]> = signal([]);
-  quantity: number = 1;
+  quantity = 1;
 
-  constructor(
-    private cartService: CartService,
-    private inventoryService: InventoryService,
-    private orderService: OrderService
-  ) {
+  constructor() {
     this.cartItems = this.cartService.items;
     this.cartTotal = computed(() => {
       const items = this.cartItems();

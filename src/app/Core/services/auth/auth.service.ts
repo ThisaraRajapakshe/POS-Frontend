@@ -1,72 +1,79 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap, BehaviorSubject, throwError } from 'rxjs';
+import { Observable, tap, BehaviorSubject, throwError, catchError, switchMap } from 'rxjs';
 import { UserProfile } from '../../models/Domains/UserProfile';
 import { Router } from '@angular/router';
+import { LoginRequest, LoginResponse, TokenResponse } from '../../models/Domains/auth.types';
+import { jwtDecode, JwtPayload } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiurl = `${environment.apiUrl}/auth`;
+  private http = inject(HttpClient);
+  private router = inject(Router);
+
+  private apiUrl = `${environment.apiUrl}/auth`;
   private readonly TOKEN_KEY = 'access_token';
   private readonly REFRESH_TOKEN_KEY = 'refresh_token';
-  // For handling token refresh state to prevent multiple calls
+
   private isRefreshing = false;
-  private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  private refreshTokenSubject: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
+
   private currentUserSubject = new BehaviorSubject<UserProfile | null | undefined>(undefined);
   public currentUser$ = this.currentUserSubject.asObservable();
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor() {
     this.loadInitialUser();
   }
+
+  private fetchUserProfile(): Observable<UserProfile> {
+    return this.http.get<UserProfile>(`${this.apiUrl}/profile`).pipe(
+      tap(user => {
+        console.log('User Profile Loaded:', user.fullName);
+        this.currentUserSubject.next(user);
+      }),
+      catchError(error => {
+        console.error('Failed to load user profile:', error);
+        this.currentUserSubject.next(null);
+        return throwError(() => error);
+      })
+    );
+  }
+
   private loadInitialUser(): void {
     const token = this.getAccessToken();
-    if (token && !this.isTokenExpired(token)) {
-      this.http.get<UserProfile>(`${environment.apiUrl}/Auth/profile`).subscribe({
-        next: user => {
-          // If successful, broadcast the user's data to all subscribers.
-          console.log('Session restored for user:', user.fullName);
-          this.currentUserSubject.next(user);
-        },
-        error: (err) => {
-          // If the token is invalid (backend returns 401), clear tokens.
-          console.error('Profile fetch failed, session may be invalid.', err);
-          this.currentUserSubject.next(null);
-        }
-      });
-    } else if (token && this.isTokenExpired(token)) {
-      console.log('AuthService: Found an expired token. Waiting for interceptor to refresh.');
-      this.currentUserSubject.next(null);
-    } else {
+    if (token) {
+      this.fetchUserProfile().subscribe();
+    }
+    else {
       this.currentUserSubject.next(null);
     }
   }
 
-  login(credentials: any): Observable<any> {
-    return this.http.post<any>(`${this.apiurl}/login`, credentials).pipe(
-      tap((response: any) => {
+  login(credentials: LoginRequest): Observable<UserProfile> {
+    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, credentials).pipe(
+      tap((response: LoginResponse) => {
         this.storeTokens(response.accessToken, response.refreshToken);
-        this.currentUserSubject.next(response.profile);
-        this.loadInitialUser();
-      })
+      }),
+      switchMap(() => this.fetchUserProfile())
     );
   }
 
   // Corrected version
   logout(): void {
-    this.http.post(`${this.apiurl}/logout`, {}).subscribe({
-      next: () => {
-        this.currentUserSubject.next(null);
-        this.clearTokensAndNavigate(); // This does the full reload and redirect
-      },
+    this.http.post(`${this.apiUrl}/logout`, {}).subscribe({
+      next: () => this.doLogoutCleanUp(),
       error: (err) => {
         console.error('Logout failed on server, but logging out on client.', err);
-        this.currentUserSubject.next(null);
-        this.clearTokensAndNavigate(); // Logout on the frontend even if the backend call fails
+        this.doLogoutCleanUp();
       }
     });
+  }
+  private doLogoutCleanUp(): void {
+    this.currentUserSubject.next(null);
+    this.clearTokensAndNavigate();
   }
 
   private storeTokens(accessToken: string, refreshToken: string) {
@@ -97,15 +104,16 @@ export class AuthService {
     if (!token) {
       return true;
     }
+    try{
+      const decoded = jwtDecode<JwtPayload>(token);
+      if(!decoded.exp) return true;
 
-    // The token is in three parts: header.payload.signature
-    const payload = JSON.parse(atob(token.split('.')[1]));
-
-    // The 'exp' claim is in seconds, convert it to milliseconds
-    const expiry = payload.exp * 1000;
-
-    // Check if the expiration time is in the past
-    return Date.now() > expiry;
+      return Date.now() > decoded.exp * 1000;
+    }
+    catch(e){
+      console.error('Failed to decode token:', e);
+      return true;
+    }
   }
   private clearTokensAndNavigate(): void {
     localStorage.removeItem(this.TOKEN_KEY);
@@ -114,7 +122,7 @@ export class AuthService {
     window.location.href = '/login';
   }
   // REFRESHING THE TOKEN
-  refreshToken(): Observable<any> {
+  refreshToken(): Observable<TokenResponse> {
     const refreshToken = this.getRefreshToken();
     const accessToken = this.getAccessToken();
 
@@ -122,8 +130,8 @@ export class AuthService {
       return throwError(() => new Error('No refresh token available'));
     }
 
-    return this.http.post(`${environment.apiUrl}/Auth/refresh`, { accessToken, refreshToken }).pipe(
-      tap((response: any) => {
+    return this.http.post<TokenResponse>(`${this.apiUrl}/refresh`, { accessToken, refreshToken }).pipe(
+      tap((response: TokenResponse) => {
         console.log('Tokens refreshed successfully!');
         this.storeTokens(response.accessToken, response.refreshToken);
       })
@@ -142,7 +150,5 @@ export class AuthService {
   getRefreshTokenSubject() {
     return this.refreshTokenSubject;
   }
-  // User Profile Observable
-
 
 }

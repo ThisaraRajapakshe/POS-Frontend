@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { BaseHttpService } from '../../../Core/services/base-http.service';
 import { ProductLineItem } from '../models/line-item/product-line-item.model';
 import { catchError, Observable, shareReplay, throwError } from 'rxjs';
@@ -14,7 +14,9 @@ import { UpdateProductLineItemDto } from '../models/line-item/update-product-lin
 export class ProductLineItemService extends BaseHttpService<ProductLineItem, CreateProductLineItemDto, UpdateProductLineItemDto> {
 
   private productLineItems$!: Observable<ProductLineItem[]>;
-  constructor(http: HttpClient) {
+  constructor() {
+    const http = inject(HttpClient);
+
     super(http, `${environment.apiUrl}/ProductLineItem`);
     this.productLineItems$ = this.getAll().pipe(
       shareReplay(1), // Cache the result for subsequent subscribers

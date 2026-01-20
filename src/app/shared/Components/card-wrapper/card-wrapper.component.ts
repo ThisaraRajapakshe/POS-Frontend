@@ -9,5 +9,5 @@ import { MatCardModule } from '@angular/material/card';
   styleUrl: './card-wrapper.component.scss'
 })
 export class CardWrapperComponent {
-  @Input() width: string = '50%';
+  @Input() width = '50%';
 }

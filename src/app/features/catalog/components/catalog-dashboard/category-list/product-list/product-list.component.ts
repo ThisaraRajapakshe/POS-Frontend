@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Observable, tap, catchError, of } from 'rxjs';
+import { Component, EventEmitter, Input, Output, OnChanges, inject } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Product } from '../../../../models';
 import { ProductService } from '../../../../services';
 import { CommonModule } from '@angular/common';
@@ -12,12 +12,12 @@ import { LineItemListComponent } from './line-item-list/line-item-list.component
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss'
 })
-export class ProductListComponent {
+export class ProductListComponent implements OnChanges {
+  private productService = inject(ProductService);
+
   @Input() categoryId!: string;
   @Output() productSelected = new EventEmitter<string>();
   products$!: Observable<Product[]>;
-
-  constructor(private productService: ProductService) { }
 
   ngOnChanges() {
     if (this.categoryId) {

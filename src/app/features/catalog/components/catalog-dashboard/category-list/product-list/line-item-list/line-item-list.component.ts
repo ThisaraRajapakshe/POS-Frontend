@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, inject } from '@angular/core';
 import { ProductLineItemService } from '../../../../../services';
 import { Observable } from 'rxjs/internal/Observable';
 import { ProductLineItem } from '../../../../../models';
@@ -11,11 +11,11 @@ import { MatTableModule } from '@angular/material/table';
   templateUrl: './line-item-list.component.html',
   styleUrl: './line-item-list.component.scss'
 })
-export class LineItemListComponent {
+export class LineItemListComponent implements OnChanges {
+  private lineItemService = inject(ProductLineItemService);
+
   @Input() productId!: string;
   lineItems$!: Observable<ProductLineItem[]>;
-
-  constructor(private lineItemService: ProductLineItemService) { }
 
   ngOnChanges(): void {
     if (this.productId) {

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BaseHttpService } from '../../../Core/services/base-http.service';
 import { Product } from '../models/product/product.model';
@@ -12,7 +12,9 @@ import { catchError, shareReplay, throwError } from 'rxjs';
 export class ProductService extends BaseHttpService<Product> {
 
   private products$: Observable<Product[]>;
-  constructor(http: HttpClient) {
+  constructor() {
+    const http = inject(HttpClient);
+
     super(http, `${environment.apiUrl}/Product`);
     this.products$ = this.getAll().pipe(
       shareReplay(1), // Cache the result for subsequent subscribers

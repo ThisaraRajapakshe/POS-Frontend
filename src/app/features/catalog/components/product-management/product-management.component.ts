@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ProductFormDialogComponent } from './product-form-dialog/product-form-dialog.component';
 import { ProductService } from '../../services';
@@ -9,17 +9,21 @@ import { catchError, Observable, of, shareReplay } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CardWrapperComponent } from '../../../../shared/Components/card-wrapper/card-wrapper.component';
 import { ConfirmDialogComponent } from '../../../../shared/dialogs/confirm-dialog.component';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'pos-product-management',
   templateUrl: './product-management.component.html',
   styleUrl: './product-management.component.scss',
   standalone: true,
-  imports: [ProductTableComponent, MatButton, CardWrapperComponent, MatButtonModule],
+  imports: [ProductTableComponent, MatButton, CardWrapperComponent, MatButtonModule, AsyncPipe],
 })
 export class ProductManagementComponent implements OnInit {
+  private dialog = inject(MatDialog);
+  private productService = inject(ProductService);
+  private snackBar = inject(MatSnackBar);
+
   products$!: Observable<Product[]>;
-  constructor(private dialog: MatDialog, private productService: ProductService, private snackBar: MatSnackBar) { }
   ngOnInit(): void {
     this.loadProducts();
   }

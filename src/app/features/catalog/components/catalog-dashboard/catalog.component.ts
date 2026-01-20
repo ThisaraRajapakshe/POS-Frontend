@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { CategoryListComponent } from './category-list/category-list.component';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'pos-catalog',
-  imports: [CategoryListComponent, CommonModule],
+  imports: [CategoryListComponent],
   templateUrl: './catalog.component.html',
   styleUrl: './catalog.component.scss'
 })

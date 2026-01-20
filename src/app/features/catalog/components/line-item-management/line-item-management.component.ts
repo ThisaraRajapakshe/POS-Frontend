@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { catchError, Observable, of, shareReplay } from 'rxjs';
 import { ProductLineItem } from '../../models';
 import { ProductLineItemService } from '../../services';
@@ -10,17 +10,20 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmDialogComponent } from '../../../../shared/dialogs/confirm-dialog.component';
 import { CardWrapperComponent } from '../../../../shared/Components/card-wrapper/card-wrapper.component';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'pos-line-item-management',
-  imports: [LineItemTableComponent, MatTableModule, MatButtonModule, CardWrapperComponent],
+  imports: [LineItemTableComponent, MatTableModule, MatButtonModule, CardWrapperComponent, AsyncPipe],
   templateUrl: './line-item-management.component.html',
   styleUrl: './line-item-management.component.scss'
 })
-export class LineItemManagementComponent {
-  lineItems$!: Observable<ProductLineItem[]>;
+export class LineItemManagementComponent implements OnInit {
+  private dialog = inject(MatDialog);
+  private lineItemService = inject(ProductLineItemService);
+  private snackBar = inject(MatSnackBar);
 
-  constructor(private dialog: MatDialog, private lineItemService: ProductLineItemService, private snackBar: MatSnackBar) { }
+  lineItems$!: Observable<ProductLineItem[]>;
 
   ngOnInit(): void {
     this.loadLineItems();

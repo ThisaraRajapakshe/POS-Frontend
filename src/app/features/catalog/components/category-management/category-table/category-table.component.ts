@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -10,7 +10,7 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 
 @Component({
   selector: 'pos-category-table',
-  imports: [CommonModule, MatTableModule, MatIconModule, MatButtonModule, MatPaginatorModule, MatSortModule],
+  imports: [MatTableModule, MatIconModule, MatButtonModule, MatPaginatorModule, MatSortModule],
   templateUrl: './category-table.component.html',
   styleUrl: './category-table.component.scss'
 })
