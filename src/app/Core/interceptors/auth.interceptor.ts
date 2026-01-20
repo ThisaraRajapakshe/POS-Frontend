@@ -10,7 +10,7 @@ import {
 import { Observable, throwError } from 'rxjs';
 import { catchError, switchMap, filter, take } from 'rxjs/operators';
 import { AuthService } from '../services/auth/auth.service';
-import { TockenResponse } from '../models';
+import { TokenResponse } from '../models';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -43,7 +43,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
       // First request triggers the refresh
       return authService.refreshToken().pipe(
-        switchMap((tokenResponse: TockenResponse) => {
+        switchMap((tokenResponse: TokenResponse) => {
           authService.setIsRefreshing(false);
           authService.getRefreshTokenSubject().next(tokenResponse.accessToken);
           // Retry the original request with the new token
