@@ -6,6 +6,7 @@ import { UserProfile } from '../../models/Domains/UserProfile';
 import { Router } from '@angular/router';
 import { LoginRequest, LoginResponse, TokenResponse } from '../../models/Domains/auth.types';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
+import { TokenService } from './token.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,10 +14,9 @@ import { jwtDecode, JwtPayload } from 'jwt-decode';
 export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
+  private tokenService = inject(TokenService);
 
   private apiUrl = `${environment.apiUrl}/auth`;
-  private readonly TOKEN_KEY = 'access_token';
-  private readonly REFRESH_TOKEN_KEY = 'refresh_token';
 
   private isRefreshing = false;
   private refreshTokenSubject: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
@@ -55,13 +55,12 @@ export class AuthService {
   login(credentials: LoginRequest): Observable<UserProfile> {
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, credentials).pipe(
       tap((response: LoginResponse) => {
-        this.storeTokens(response.accessToken, response.refreshToken);
+        this.tokenService.storeTokens(response.accessToken, response.refreshToken);
       }),
       switchMap(() => this.fetchUserProfile())
     );
   }
 
-  // Corrected version
   logout(): void {
     this.http.post(`${this.apiUrl}/logout`, {}).subscribe({
       next: () => this.doLogoutCleanUp(),
@@ -76,15 +75,11 @@ export class AuthService {
     this.clearTokensAndNavigate();
   }
 
-  private storeTokens(accessToken: string, refreshToken: string) {
-    localStorage.setItem(this.TOKEN_KEY, accessToken);
-    localStorage.setItem(this.REFRESH_TOKEN_KEY, refreshToken);
-  }
   getAccessToken(): string | null {
-    return localStorage.getItem(this.TOKEN_KEY);
+    return this.tokenService.getAccessToken();
   }
   getRefreshToken(): string | null {
-    return localStorage.getItem(this.REFRESH_TOKEN_KEY);
+    return this.tokenService.getRefreshToken();
   }
 
   isLoggedIn(): boolean {
@@ -116,8 +111,7 @@ export class AuthService {
     }
   }
   private clearTokensAndNavigate(): void {
-    localStorage.removeItem(this.TOKEN_KEY);
-    localStorage.removeItem(this.REFRESH_TOKEN_KEY);
+    this.tokenService.clearTokens();
     // Force a full page reload to the login page to clear all application state
     window.location.href = '/login';
   }
@@ -133,7 +127,7 @@ export class AuthService {
     return this.http.post<TokenResponse>(`${this.apiUrl}/refresh`, { accessToken, refreshToken }).pipe(
       tap((response: TokenResponse) => {
         console.log('Tokens refreshed successfully!');
-        this.storeTokens(response.accessToken, response.refreshToken);
+        this.tokenService.storeTokens(response.accessToken, response.refreshToken);
       })
     );
   }

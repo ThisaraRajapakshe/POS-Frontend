@@ -1,15 +1,17 @@
 import { HttpInterceptorFn, HttpRequest, HttpHandlerFn, HttpErrorResponse } from '@angular/common/http';
-import { inject } from '@angular/core';
+import { inject, Injector } from '@angular/core';
 import { AuthService } from '../services/auth/auth.service';
 import { catchError, switchMap, filter, take, throwError } from 'rxjs';
 import { TokenResponse } from '../models';
+import { TokenService } from '../services/auth/token.service';
 
 // 1. Define "Ignored" endpoints to prevent circular loops
 const IGNORED_URLS = ['/auth/login', '/auth/refresh'];
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  const authService = inject(AuthService);
-  const accessToken = authService.getAccessToken();
+  const tokenService = inject(TokenService);
+  const accessToken = tokenService.getAccessToken();
+  const injector = inject(Injector);
   const authReq = accessToken ? addTokenHeader(req, accessToken) : req;
 
   // 2. Handle Request & Errors
@@ -18,6 +20,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       // Check for 401, but ignore Login/Refresh calls to prevent infinite loops
       const isIgnoredUrl = IGNORED_URLS.some(url => req.url.includes(url));
       if (error.status === 401 && !isIgnoredUrl) {
+        const authService = injector.get(AuthService);
         return handle401Error(authReq, next, authService);
       }
       return throwError(() => error);
