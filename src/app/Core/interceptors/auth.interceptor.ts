@@ -1,74 +1,70 @@
-// src/app/auth/auth.interceptor.ts
-import { Injectable, Injector, inject } from '@angular/core';
-import {
-  HttpRequest,
-  HttpHandler,
-  HttpEvent,
-  HttpInterceptor,
-  HttpErrorResponse
-} from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, switchMap, filter, take } from 'rxjs/operators';
+import { HttpInterceptorFn, HttpRequest, HttpHandlerFn, HttpErrorResponse } from '@angular/common/http';
+import { inject } from '@angular/core';
 import { AuthService } from '../services/auth/auth.service';
+import { catchError, switchMap, filter, take, throwError } from 'rxjs';
 import { TokenResponse } from '../models';
 
-@Injectable()
-export class AuthInterceptor implements HttpInterceptor {
-  private injector = inject(Injector);
+// 1. Define "Ignored" endpoints to prevent circular loops
+const IGNORED_URLS = ['/auth/login', '/auth/refresh'];
 
+export const authInterceptor: HttpInterceptorFn = (req, next) => {
+  const authService = inject(AuthService);
+  const accessToken = authService.getAccessToken();
+  const authReq = accessToken ? addTokenHeader(req, accessToken) : req;
 
-  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    const authService = this.injector.get(AuthService);
-    const accessToken = authService.getAccessToken();
+  // 2. Handle Request & Errors
+  return next(authReq).pipe(
+    catchError((error: HttpErrorResponse) => {
+      // Check for 401, but ignore Login/Refresh calls to prevent infinite loops
+      const isIgnoredUrl = IGNORED_URLS.some(url => req.url.includes(url));
+      if (error.status === 401 && !isIgnoredUrl) {
+        return handle401Error(authReq, next, authService);
+      }
+      return throwError(() => error);
+    })
+  );
+};
 
-    if (accessToken) {
-      request = this.addTokenHeader(request, accessToken);
-    }
+// --- HELPER FUNCTIONS ---
 
-    return next.handle(request).pipe(
-      catchError((error: HttpErrorResponse) => {
-        // We only handle 401 errors and ignore login/refresh endpoints to avoid loops
-        if (error.status === 401 && !request.url.includes('/auth/login') && !request.url.includes('/auth/refresh')) {
-          return this.handle401Error(request, next, authService);
-        }
-        return throwError(() => error);
+const addTokenHeader = (request: HttpRequest<unknown>, token: string): HttpRequest<unknown> => {
+  return request.clone({
+    headers: request.headers.set('Authorization', `Bearer ${token}`)
+  });
+};
+
+const handle401Error = (
+  request: HttpRequest<unknown>, 
+  next: HttpHandlerFn, 
+  authService: AuthService
+) => {
+  
+  if (!authService.getIsRefreshing()) {
+    // A. Start Refresh Process
+    authService.setIsRefreshing(true);
+    authService.getRefreshTokenSubject().next(null);
+
+    return authService.refreshToken().pipe(
+      switchMap((tokenResponse: TokenResponse) => {
+        authService.setIsRefreshing(false);
+        authService.getRefreshTokenSubject().next(tokenResponse.accessToken);
+        
+        // Retry with new token
+        return next(addTokenHeader(request, tokenResponse.accessToken));
+      }),
+      catchError((err) => {
+        authService.setIsRefreshing(false);
+        authService.logout();
+        return throwError(() => err);
       })
     );
-  }
 
-  private handle401Error(request: HttpRequest<unknown>, next: HttpHandler, authService: AuthService): Observable<HttpEvent<unknown>> {
-    if (!authService.getIsRefreshing()) {
-      authService.setIsRefreshing(true);
-      authService.getRefreshTokenSubject().next(null);
-
-      // First request triggers the refresh
-      return authService.refreshToken().pipe(
-        switchMap((tokenResponse: TokenResponse) => {
-          authService.setIsRefreshing(false);
-          authService.getRefreshTokenSubject().next(tokenResponse.accessToken);
-          // Retry the original request with the new token
-          return next.handle(this.addTokenHeader(request, tokenResponse.accessToken));
-        }),
-        catchError((err) => {
-          authService.setIsRefreshing(false);
-          // If refresh fails (e.g., refresh token expired), log the user out
-          authService.logout();
-          return throwError(() => err);
-        })
-      );
-    } else {
-      // If a refresh is already in progress, wait for it to complete
-      return authService.getRefreshTokenSubject().pipe(
-        filter(token => token != null),
-        take(1),
-        switchMap(jwt => next.handle(this.addTokenHeader(request, jwt)))
-      );
-    }
+  } else {
+    // B. Queue Request (Wait for refresh to finish)
+    return authService.getRefreshTokenSubject().pipe(
+      filter(token => token != null),
+      take(1),
+      switchMap(jwt => next(addTokenHeader(request, jwt!)))
+    );
   }
-
-  private addTokenHeader(request: HttpRequest<unknown>, token: string): HttpRequest<unknown> {
-    return request.clone({
-      headers: request.headers.set('Authorization', `Bearer ${token}`)
-    });
-  }
-}
+};
