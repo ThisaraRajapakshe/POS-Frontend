@@ -186,17 +186,30 @@ describe('AuthService', () => {
     const validToken = createMockJwt(3600); // Expires in 1 hour
     tokenServiceSpy.getAccessToken.and.returnValue(validToken);
     service = TestBed.inject(AuthService);
-
+    const req = httpTestingController.expectOne(`${environment.apiUrl}/auth/profile`);
+    req.flush(mockUser);
     expect(service.isLoggedIn()).toBeTrue();
   });
 
   it('should return false if token is expired', () => {
+    // 1. Arrange: Create an expired token string
     const expiredToken = createMockJwt(-3600); // Expired 1 hour ago
     tokenServiceSpy.getAccessToken.and.returnValue(expiredToken);
+
+    // 2. Act: Injecting service triggers the Constructor -> GET Request
     service = TestBed.inject(AuthService);
 
+    // 3. CATCH THE GHOST REQUEST
+    // The constructor sees a token string, so it fires /auth/profile. 
+    // We must expect it to prevent the "Open Request" error.
+    const req = httpTestingController.expectOne(`${environment.apiUrl}/auth/profile`);
+
+    // 4. Resolve the request (Simulate the backend rejecting the expired token)
+    req.flush('Unauthorized', { status: 401, statusText: 'Unauthorized' });
+
+    // 5. Assert: Finally check if isLoggedIn returns false
     expect(service.isLoggedIn()).toBeFalse();
-  });
+});
 
   it('should return false if no token exists', () => {
     tokenServiceSpy.getAccessToken.and.returnValue(null);
