@@ -9,6 +9,9 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CategoryTableComponent } from './category-table/category-table.component';
 import { CardWrapperComponent } from '../../../../shared/Components/card-wrapper/card-wrapper.component';
 import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 // --- 1. Mock Child Components ---
 // Isolate the test from child dependencies
@@ -56,14 +59,27 @@ describe('CategoryManagementComponent', () => {
     // Default Service Behavior
     categoryServiceSpy.getAll.and.returnValue(of(mockCategories));
 
+    dialogSpy.open.and.returnValue({
+      afterClosed: () => of(true)
+    } as MatDialogRef<unknown>);
+
     await TestBed.configureTestingModule({
-      imports: [CategoryManagementComponent], // Standalone component
+      imports: [
+        CategoryManagementComponent,// Standalone component
+        NoopAnimationsModule // Prevent animation errors if real components leak through
+      ], 
       providers: [
         { provide: CategoryService, useValue: categoryServiceSpy },
-        { provide: MatDialog, useValue: dialogSpy },
-        { provide: MatSnackBar, useValue: snackBarSpy }
+        provideHttpClient(),
+        provideHttpClientTesting()
       ]
     })
+
+    // 3. FORCE OVERRIDE
+    // This tells Angular: "I don't care what the component imports, use THIS spy."
+    .overrideProvider(MatDialog, { useValue: dialogSpy })
+    .overrideProvider(MatSnackBar, { useValue: snackBarSpy })
+
     // 3. Override Imports to use Mock Children
     .overrideComponent(CategoryManagementComponent, {
       remove: { imports: [CategoryTableComponent, CardWrapperComponent] },
@@ -95,6 +111,10 @@ describe('CategoryManagementComponent', () => {
       
       // Act
       component.loadCategories(); // Call manually to test specific error flow
+
+      // 3. TRIGGER SUBSCRIPTION
+      // We manually subscribe here so the 'catchError' block inside the component actually executes.
+      component.categories$.subscribe();
       
       // Assert
       expect(snackBarSpy.open).toHaveBeenCalledWith(
