@@ -1,3 +1,3 @@
 export * from './cart.service';
 export * from './order.service';
-export * from './inventory-service.service';
+export * from './inventory.service';
