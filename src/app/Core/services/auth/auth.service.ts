@@ -45,7 +45,11 @@ export class AuthService {
   private loadInitialUser(): void {
     const token = this.getAccessToken();
     if (token) {
-      this.fetchUserProfile().subscribe();
+      this.fetchUserProfile().subscribe({
+        error: (err) => {
+          console.error('Failed to load user profile:', err);
+        }
+      });
     }
     else {
       this.currentUserSubject.next(null);

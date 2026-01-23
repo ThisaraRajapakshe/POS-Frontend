@@ -1,5 +1,5 @@
-@if (message) {
-  <div class="alert alert-danger">{{ message }}</div>
+@if (message()) {
+  <div class="alert alert-danger">{{ message() }}</div>
 }
 @if (categories$ | async; as categories) {
   <mat-accordion>
