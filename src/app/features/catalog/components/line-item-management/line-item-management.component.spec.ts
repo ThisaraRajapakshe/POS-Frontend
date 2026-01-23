@@ -102,6 +102,9 @@ describe('LineItemManagementComponent', () => {
       // Act
       component.loadLineItems();
 
+      // Force Subscription
+      component.lineItems$.subscribe();
+      
       // Assert
       expect(snackBarSpy.open).toHaveBeenCalledWith(
         'Failed to load line items', 

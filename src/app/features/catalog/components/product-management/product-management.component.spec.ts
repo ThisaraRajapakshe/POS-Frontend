@@ -98,6 +98,9 @@ describe('ProductManagementComponent', () => {
       // Act
       component.loadProducts();
 
+      // Force Subscription
+      component.products$.subscribe();
+      
       // Assert
       expect(snackBarSpy.open).toHaveBeenCalledWith(
         'Failed to load products', 
