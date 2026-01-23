@@ -73,7 +73,7 @@ describe('CategoryListComponent', () => {
 
       // Assert Logic
       expect(categoryServiceSpy.getAll).toHaveBeenCalled();
-      expect(component.message).toBe('');
+      expect(component.message()).toBe('');
 
       // Assert Template (Async Pipe)
       const panels = fixture.debugElement.queryAll(By.css('mat-expansion-panel'));
@@ -89,7 +89,7 @@ describe('CategoryListComponent', () => {
       fixture.detectChanges();
 
       // Assert Logic
-      expect(component.message).toBe('Error loading categories');
+      expect(component.message()).toBe('Error loading categories');
 
       // Assert Template
       const alertBox = fixture.debugElement.query(By.css('.alert.alert-danger'));

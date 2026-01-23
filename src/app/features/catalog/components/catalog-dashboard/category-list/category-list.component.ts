@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, ChangeDetectionStrategy, OnInit, inject } from '@angular/core';
+import { Component, EventEmitter, Output, ChangeDetectionStrategy, OnInit, inject, signal } from '@angular/core';
 import { Observable, tap, catchError, of } from 'rxjs';
 import { Category } from '../../../models';
 import { CategoryService } from '../../../services';
@@ -17,7 +17,7 @@ export class CategoryListComponent implements OnInit {
   private categoryService = inject(CategoryService);
 
   categories$!: Observable<Category[]>;
-  message = '';
+  message = signal('');
   @Output() categorySelected = new EventEmitter<string>();
   ngOnInit(): void {
     this.loadCategories();
@@ -25,10 +25,10 @@ export class CategoryListComponent implements OnInit {
   loadCategories() {
     this.categories$ = this.categoryService.getAll().pipe(
       tap(() => {
-        this.message = '';
+        this.message.set('');
       }),
       catchError((error) => {
-        this.message = 'Error loading categories';
+        this.message.set('Error loading categories');
         console.error('Error loading categories:', error);
         return of([]); // Return an empty array on error
       }));
