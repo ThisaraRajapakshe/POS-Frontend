@@ -3,3 +3,43 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+// Print feature styles
+
+@media print {
+  /* 1. Reset the entire page to white background and zero margins */
+  html, body {
+    height: 100vh;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: white !important;
+    overflow: hidden !important; /* Stop scrollbars printing */
+  }
+
+  /* 2. THE NUCLEAR SWITCH: Hide every single element in the body */
+  body * {
+    visibility: hidden !important;
+  }
+
+  /* 3. THE RESCUE: Find the receipt and make it (and its children) visible */
+  /* We use ID targeting because it is specific and strong */
+  #invoice-POS, #invoice-POS * {
+    visibility: visible !important;
+  }
+
+  /* 4. POSITIONING: Rip the receipt out of the layout and stick it to the paper */
+  #invoice-POS {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important; /* Use 100% for A4, or approx 78mm for thermal */
+    margin: 0 !important;
+    padding: 0 !important;
+    z-index: 99999 !important; /* Force it to the very front */
+    background: white !important; /* Ensure it has a background */
+    
+    /* Optional: Force browser to print background colors if you have them */
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
