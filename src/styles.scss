@@ -31,6 +31,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     }
 
     #invoice-POS {
+        /* FIX: This overrides the 'display: none' from the component */
+        display: block !important; 
         position: absolute;
         left: 0;
         top: 0;
