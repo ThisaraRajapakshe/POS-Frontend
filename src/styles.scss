@@ -7,39 +7,111 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 // Print feature styles
 
 @media print {
-  /* 1. Reset the entire page to white background and zero margins */
-  html, body {
-    height: 100vh;
-    margin: 0 !important;
-    padding: 0 !important;
-    background: white !important;
-    overflow: hidden !important; /* Stop scrollbars printing */
-  }
+    /* 1. PAGE SETUP */
+    @page {
+        margin: 0;
+        size: auto;
+    }
 
-  /* 2. THE NUCLEAR SWITCH: Hide every single element in the body */
-  body * {
-    visibility: hidden !important;
-  }
+    html, body {
+        margin: 0;
+        padding: 0;
+        background-color: #fff;
+        overflow: hidden;
+    }
 
-  /* 3. THE RESCUE: Find the receipt and make it (and its children) visible */
-  /* We use ID targeting because it is specific and strong */
-  #invoice-POS, #invoice-POS * {
-    visibility: visible !important;
-  }
+    /* 2. HIDE EVERYTHING ELSE */
+    body * {
+        visibility: hidden;
+    }
 
-  /* 4. POSITIONING: Rip the receipt out of the layout and stick it to the paper */
-  #invoice-POS {
-    position: absolute !important;
-    left: 0 !important;
-    top: 0 !important;
-    width: 100% !important; /* Use 100% for A4, or approx 78mm for thermal */
-    margin: 0 !important;
-    padding: 0 !important;
-    z-index: 99999 !important; /* Force it to the very front */
-    background: white !important; /* Ensure it has a background */
+    /* 3. THE RECEIPT CONTAINER */
+    #invoice-POS, #invoice-POS * {
+        visibility: visible;
+    }
+
+    #invoice-POS {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 78mm; /* Standard Thermal Width (approx 3 inches) */
+        margin: 0 auto;
+        padding: 2mm;
+        background: #fff;
+        font-family: 'Courier New', Courier, monospace; /* Monospace aligns numbers better */
+        font-size: 12px; /* Standard receipt font size */
+        color: #000;
+        overflow: hidden; /* Prevents overflow from creating a 2nd page */
+    }
+
+    /* 4. HEADER STYLING */
+    #invoice-POS .header, #invoice-POS .info {
+        text-align: center;
+        margin-bottom: 5px;
+    }
     
-    /* Optional: Force browser to print background colors if you have them */
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
+    #invoice-POS h2 {
+        font-size: 1.2em;
+        font-weight: bold;
+        margin: 5px 0;
+        text-transform: uppercase;
+    }
+    
+    #invoice-POS p {
+        margin: 2px 0;
+        line-height: 1.2;
+    }
+
+    /* 5. TABLE STYLING (The Critical Fix) */
+    #invoice-POS table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed; /* <--- THIS FIXES THE COLUMN WIDTHS */
+    }
+
+    /* 6. COLUMN WIDTHS */
+    /* We define exact percentages so they never shift */
+    .col-item { width: 55%; }  /* Product Name gets the most space */
+    .col-qty  { width: 15%; text-align: center; }
+    .col-price { width: 30%; text-align: right; }
+
+    /* 7. ROW STYLING */
+    .tabletitle td {
+        border-top: 1px dashed #000;
+        border-bottom: 1px dashed #000;
+        font-weight: bold;
+        padding: 5px 0;
+        text-transform: uppercase;
+        font-size: 0.9em;
+    }
+
+    .service td {
+        padding: 5px 0;
+        border-bottom: 1px solid #eee;
+        vertical-align: top; /* Aligns text to top if name wraps */
+    }
+
+    .itemtext {
+        font-size: 0.9em;
+        line-height: 1.2;
+        /* Force long words to wrap instead of breaking layout */
+        word-wrap: break-word; 
+        overflow-wrap: break-word; 
+    }
+
+    /* 8. TOTAL & FOOTER */
+    .payment td {
+        border-top: 1px dashed #000;
+        padding: 8px 0;
+        font-weight: bold;
+        font-size: 1.1em;
+    }
+    
+    .legal {
+        margin-top: 15px;
+        text-align: center;
+        font-size: 0.8em;
+        border-top: 1px dotted #000;
+        padding-top: 5px;
+    }
 }

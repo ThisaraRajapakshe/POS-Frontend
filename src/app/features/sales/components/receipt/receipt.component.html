@@ -25,14 +25,14 @@
                         <tr class="service">
                             <td class="tableitem"><p class="itemtext">{{item.name}}</p></td>
                             <td class="tableitem"><p class="itemtext">{{item.quantity}}</p></td>
-                            <td class="tableitem"><p class="itemtext">${{item.price| number:'1.2-2'}}</p></td>
+                            <td class="tableitem"><p class="itemtext">Rs. {{item.price| number:'1.2-2'}}</p></td>
                         </tr>
                     }
 
                     <tr class="tabletitle">
                         <td></td>
                         <td class="rate"><h2>Total</h2></td>
-                        <td class="payment"><h2>${{orderData.totalAmount | number:'1.2-2'}}</h2></td>
+                        <td class="payment"><h2>Rs.{{orderData.totalAmount | number:'1.2-2'}}</h2></td>
                     </tr>
                 </table>
             </div>
