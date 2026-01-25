@@ -14,10 +14,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     }
 
     html, body {
-        margin: 0;
-        padding: 0;
+        height: 100vh;
+        margin: 0 !important;
+        padding: 0 !important;
         background-color: #fff;
-        overflow: hidden;
+        overflow: hidden !important;
     }
 
     /* 2. HIDE EVERYTHING ELSE */
@@ -27,23 +28,24 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
     /* 3. THE RECEIPT CONTAINER */
     #invoice-POS, #invoice-POS * {
-        visibility: visible;
+        visibility: visible !important;
     }
 
     #invoice-POS {
         /* FIX: This overrides the 'display: none' from the component */
         display: block !important; 
-        position: absolute;
-        left: 0;
-        top: 0;
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
         width: 78mm; /* Standard Thermal Width (approx 3 inches) */
-        margin: 0 auto;
-        padding: 2mm;
-        background: #fff;
+        margin: 0 auto !important;
+        padding: 2mm !important;
+        background: #fff !important;
         font-family: 'Courier New', Courier, monospace; /* Monospace aligns numbers better */
         font-size: 12px; /* Standard receipt font size */
-        color: #000;
-        overflow: hidden; /* Prevents overflow from creating a 2nd page */
+        color: #000 !important;
+        overflow: hidden !important; /* Prevents overflow from creating a 2nd page */
+        z-index: 999999999 !important;
     }
 
     /* 4. HEADER STYLING */
