@@ -1,5 +1,6 @@
 <h1 class="text-center m-4">Category Management</h1>
 <pos-card-wrapper width="75">
+  <pos-search-bar placeholder="Search by Name..." (searchTerm)="onSearchCategories($event)"></pos-search-bar>
   <button mat-raised-button color="primary" (click)="openAddCategory()" class="add-category-btn">Add Category</button>
-  <pos-category-table [categories$]="categories$" (editCategory)="openEditCategory($event)" (deleteCategory)="confirmDelete($event)"></pos-category-table>
+  <pos-category-table [categories]="categories()" (editCategory)="openEditCategory($event)" (deleteCategory)="confirmDelete($event)"></pos-category-table>
 </pos-card-wrapper>

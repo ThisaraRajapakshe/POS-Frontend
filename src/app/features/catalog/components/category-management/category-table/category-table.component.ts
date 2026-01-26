@@ -1,9 +1,8 @@
 
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, effect, EventEmitter, input, Output, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { Observable, Subscription } from 'rxjs';
 import { Category } from './../../../models';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -14,8 +13,9 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
   templateUrl: './category-table.component.html',
   styleUrl: './category-table.component.scss'
 })
-export class CategoryTableComponent implements OnChanges {
-  @Input() categories$!: Observable<Category[]>;
+export class CategoryTableComponent implements AfterViewInit {
+  categories =  input<Category[]>([]);
+
   @Output() editCategory = new EventEmitter<Category>();
   @Output() deleteCategory = new EventEmitter<Category>();
 
@@ -25,22 +25,19 @@ export class CategoryTableComponent implements OnChanges {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  private subscription!: Subscription;
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['categories$'] && this.categories$) {
-      if (this.subscription) {
-        this.subscription.unsubscribe();
-      }
-
-      this.subscription = this.categories$.subscribe(data => {
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-        this.dataSource.data = data;
-
-      });
-    }
+  constructor(){
+    effect(()=> {
+      const data = this.categories();
+      this.dataSource.data = data;
+    })
   }
+
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
   onEdit(category: Category): void {
     this.editCategory.emit(category);
   } 
