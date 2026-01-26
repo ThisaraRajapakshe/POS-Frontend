@@ -1,5 +1,4 @@
 import { AfterViewInit, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { Subscription } from 'rxjs';
 import { ProductLineItem } from '../../../models';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
@@ -30,7 +29,6 @@ export class LineItemTableComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  private subscription!: Subscription;
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;

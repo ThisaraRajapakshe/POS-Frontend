@@ -3,7 +3,7 @@ import { CategoryManagementComponent } from './category-management.component';
 import { CategoryService } from '../../services';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { of, throwError, Observable } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { Category } from '../../models';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CategoryTableComponent } from './category-table/category-table.component';
@@ -21,7 +21,7 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
   template: ''
 })
 class MockCategoryTableComponent {
-  @Input() categories$!: Observable<Category[]>;
+  @Input() categories: Category[] = [];
   @Output() editCategory = new EventEmitter<Category>();
   @Output() deleteCategory = new EventEmitter<Category>();
 }
@@ -100,9 +100,7 @@ describe('CategoryManagementComponent', () => {
     it('should load categories on init', () => {
       expect(categoryServiceSpy.getAll).toHaveBeenCalled();
       // Subscribe to the observable public property to verify data
-      component.categories$.subscribe(data => {
-        expect(data).toEqual(mockCategories);
-      });
+      expect(component.categories()).toEqual(mockCategories);
     });
 
     it('should handle error when loading categories fails', () => {
@@ -111,10 +109,6 @@ describe('CategoryManagementComponent', () => {
       
       // Act
       component.loadCategories(); // Call manually to test specific error flow
-
-      // 3. TRIGGER SUBSCRIPTION
-      // We manually subscribe here so the 'catchError' block inside the component actually executes.
-      component.categories$.subscribe();
       
       // Assert
       expect(snackBarSpy.open).toHaveBeenCalledWith(

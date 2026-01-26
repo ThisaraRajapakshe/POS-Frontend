@@ -1,5 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { catchError, Observable, of } from 'rxjs';
+import { Component, OnInit, WritableSignal, inject, signal } from '@angular/core';
 import { Category } from '../../models';
 import { CategoryService } from '../../services';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -9,10 +8,12 @@ import { MatButton, MatButtonModule } from '@angular/material/button';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CardWrapperComponent } from '../../../../shared/Components/card-wrapper/card-wrapper.component';
 import { ConfirmDialogComponent } from '../../../../shared/dialogs/confirm-dialog.component';
+import { SearchBarComponent } from '../../../../shared/Components/search-bar/search-bar.component';
+import { filterData } from '../../../../shared/utils/search-helper';
 
 @Component({
   selector: 'pos-category-management',
-  imports: [CategoryTableComponent, CardWrapperComponent, MatButtonModule, MatButton, MatDialogModule],
+  imports: [CategoryTableComponent, CardWrapperComponent, MatButtonModule, MatButton, MatDialogModule, SearchBarComponent],
   templateUrl: './category-management.component.html',
   styleUrl: './category-management.component.scss'
 })
@@ -21,7 +22,8 @@ export class CategoryManagementComponent implements OnInit {
   private dialog = inject(MatDialog);
   private snackBar = inject(MatSnackBar);
 
-  categories$!: Observable<Category[]>;
+  categories: WritableSignal<Category[]> = signal([]);
+  private allCategories: Category[] = [];
 
   ngOnInit(): void {
     this.loadCategories();
@@ -55,17 +57,19 @@ export class CategoryManagementComponent implements OnInit {
 
 
   loadCategories() {
-    this.categories$ = this.categoryService.getAll().pipe(
-      // error handling here
-      catchError(error => {
+    this.categoryService.getAll().subscribe({
+      next: (data) => {
+        this.categories.set(data);
+        this.allCategories = data;
+      },
+      error: (error) => {
         this.snackBar.open('Failed to load categories', 'Close', {
           duration: 3000,
           panelClass: ['snackbar-error'],
         });
         console.error('Error loading categories:', error);
-        return of([]); // Return an empty array on error
-      })
-    );
+      }
+    });
   }
 
   openEditCategory(category: Category) {
@@ -119,5 +123,11 @@ export class CategoryManagementComponent implements OnInit {
         console.error('Error deleting category:', error);
       }
     });
+  }
+
+  // Search Functionality
+  onSearchCategories(searchTerm: string){
+    const filtered = filterData(searchTerm, this.allCategories, ['name']);
+    this.categories.set(filtered);
   }
 }

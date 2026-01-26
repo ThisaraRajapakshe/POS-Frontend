@@ -3,7 +3,10 @@
   <div class="catalog-section">
     <div class="controls-row">
       <div class="search-bar">
-        <input type="text" placeholder="Search products..." #searchInput>
+        <pos-search-bar 
+        placeholder="Search by Name or Barcode..."
+        (searchTerm)="onSearchProducts($event)">
+      </pos-search-bar>
       </div>
 
       <div class="qty-control">

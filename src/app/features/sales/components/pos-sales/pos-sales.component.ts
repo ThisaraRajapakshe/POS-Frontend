@@ -4,11 +4,13 @@ import { CartItem, Order, PosProduct } from '../../models';
 import { CartService, InventoryService, OrderService } from '../../services';
 import { FormsModule } from '@angular/forms';
 import { ReceiptComponent } from "../receipt/receipt.component";
+import { SearchBarComponent } from '../../../../shared/Components/search-bar/search-bar.component';
+import { filterData } from '../../../../shared/utils/search-helper';
 
 @Component({
   selector: 'pos-pos-sales',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReceiptComponent],
+  imports: [CommonModule, FormsModule, ReceiptComponent, SearchBarComponent],
   templateUrl: './pos-sales.component.html',
   styleUrl: './pos-sales.component.scss'
 })
@@ -22,6 +24,7 @@ export class PosSalesComponent implements OnInit {
   cartItems: Signal<CartItem[]>;
   cartTotal: Signal<number>;
   products: WritableSignal<PosProduct[]> = signal([]);
+  private allProducts: PosProduct[] = [];
   quantity = 1;
   lastCompletedOrder: WritableSignal<Order | null> = signal(null);
 
@@ -41,6 +44,7 @@ export class PosSalesComponent implements OnInit {
     this.inventoryService.getProductsForPos().subscribe({
       next: (data) => {
         this.products.set(data);
+        this.allProducts = data;
       },
       error: (err) => {
         console.error("Failed to load products", err);
@@ -83,4 +87,10 @@ export class PosSalesComponent implements OnInit {
     if (!newQuantity || newQuantity < 1) return;
     this.cartService.UpdateQuantity(item.lineItemId, newQuantity);
   }
+
+  onSearchProducts(searchTerm: string){
+    const filteredProducts = filterData(searchTerm, this.allProducts, ['name', 'barcode']);
+    this.products.set(filteredProducts);
+  }
+
 }

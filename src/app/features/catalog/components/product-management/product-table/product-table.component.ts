@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, Output, EventEmitter, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, Output, EventEmitter, AfterViewInit, input, effect } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -15,9 +15,7 @@ import { Product } from '../../../models';
   styleUrl: './product-table.component.scss'
 })
 export class ProductTableComponent implements AfterViewInit {
-  @Input() set products(products: Product[]) {
-    this.dataSource.data = products;
-  }
+  products = input<Product[]>([]);
   @Output() editProduct = new EventEmitter<Product>();
   @Output() deleteProduct = new EventEmitter<Product>();
 
@@ -26,6 +24,13 @@ export class ProductTableComponent implements AfterViewInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+
+constructor() {
+  effect(()=> {
+    const data = this.products();
+    this.dataSource.data = data;
+  })
+}
 
   ngAfterViewInit(){
     this.dataSource.paginator = this.paginator;

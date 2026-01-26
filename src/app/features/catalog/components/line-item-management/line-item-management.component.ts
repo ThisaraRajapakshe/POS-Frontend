@@ -1,5 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { catchError, Observable, of, shareReplay } from 'rxjs';
+import { Component, OnInit, WritableSignal, inject, signal } from '@angular/core';
 import { ProductLineItem } from '../../models';
 import { ProductLineItemService } from '../../services';
 import { MatDialog } from '@angular/material/dialog';
@@ -10,11 +9,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmDialogComponent } from '../../../../shared/dialogs/confirm-dialog.component';
 import { CardWrapperComponent } from '../../../../shared/Components/card-wrapper/card-wrapper.component';
-import { AsyncPipe } from '@angular/common';
+import { filterData } from '../../../../shared/utils/search-helper';
+import { SearchBarComponent } from "../../../../shared/Components/search-bar/search-bar.component";
 
 @Component({
   selector: 'pos-line-item-management',
-  imports: [LineItemTableComponent, MatTableModule, MatButtonModule, CardWrapperComponent, AsyncPipe],
+  imports: [LineItemTableComponent, MatTableModule, MatButtonModule, CardWrapperComponent, SearchBarComponent],
   templateUrl: './line-item-management.component.html',
   styleUrl: './line-item-management.component.scss'
 })
@@ -23,25 +23,29 @@ export class LineItemManagementComponent implements OnInit {
   private lineItemService = inject(ProductLineItemService);
   private snackBar = inject(MatSnackBar);
 
-  lineItems$!: Observable<ProductLineItem[]>;
+  lineItems: WritableSignal<ProductLineItem[]> = signal([]);
+  private allLineItems: ProductLineItem[] = [];
 
   ngOnInit(): void {
     this.loadLineItems();
   }
 
   loadLineItems() {
-    this.lineItems$ = this.lineItemService.getAll().pipe(
-      shareReplay(1), // Cache the result for performance
-      catchError((error) => {
-
+    this.lineItemService.getAll().subscribe({
+      next: (data) => {
+        this.lineItems.set(data);
+        this.allLineItems = data;
+      },
+      error: (error) => {
+        console.error('Error loading line items:', error);
+        this.lineItems.set([]); 
+        this.allLineItems = [];
         this.snackBar.open('Failed to load line items', 'Close', {
           duration: 3000,
           panelClass: ['snackbar-error'],
         });
-        console.error('Error loading line items:', error);
-        return of([]); // Return an empty array on error
-      })
-    );
+      }
+    });
   }
 
   onAdd() {
@@ -82,7 +86,7 @@ export class LineItemManagementComponent implements OnInit {
               duration: 3000,
               panelClass: ['snackbar-success'],
             });
-            this.lineItems$ = this.lineItemService.getAll();
+            this.loadLineItems();
           },
           error: (error) => {
             this.snackBar.open('Failed to update line item', 'Close', {
@@ -119,5 +123,10 @@ export class LineItemManagementComponent implements OnInit {
         });
       }
     });
+  }
+  // Search Functionality
+  onSearchLineItems(searchTerm: string) {
+    const filtered = filterData(searchTerm, this.allLineItems, ['product.name', 'barCodeId']);
+    this.lineItems.set(filtered);
   }
 }
