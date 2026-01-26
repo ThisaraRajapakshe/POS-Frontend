@@ -68,7 +68,7 @@ describe('ReceiptComponent', () => {
     // The mock total is 5000.00.
     // Ensure this matches the exact spacing in your HTML (e.g., "Rs.5,000.00" or "Rs. 5,000.00")
     // Based on your previous code "Rs.{{val}}", it's likely without space, but we check for the number.
-    expect(compiled.textContent).toContain('5,000.00'); 
+    expect(compiled.textContent).toContain('Rs.5,000.00'); 
   });
 
   it('should render a table row for each item', () => {

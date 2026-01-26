@@ -37,7 +37,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
         position: absolute !important;
         left: 0 !important;
         top: 0 !important;
-        width: 78mm; /* Standard Thermal Width (approx 3 inches) */
+        width: 95mm; /* Standard Thermal Width (approx 3 inches) */
         margin: 0 auto !important;
         padding: 2mm !important;
         background: #fff !important;
@@ -75,9 +75,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
     /* 6. COLUMN WIDTHS */
     /* We define exact percentages so they never shift */
-    .col-item { width: 55%; }  /* Product Name gets the most space */
-    .col-qty  { width: 15%; text-align: center; }
-    .col-price { width: 30%; text-align: right; }
+    .col-item { width: 40%; text-align: center;}  /* Product Name gets the most space */
+    .col-qty  { width: 10%; text-align: center;}
+    .col-price { width: 20%; text-align: center; }
+    .col-total { width: 30%; text-align: center; }
 
     /* 7. ROW STYLING */
     .tabletitle td {
