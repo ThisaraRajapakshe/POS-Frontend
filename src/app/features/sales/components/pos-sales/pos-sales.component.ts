@@ -5,6 +5,7 @@ import { CartService, InventoryService, OrderService } from '../../services';
 import { FormsModule } from '@angular/forms';
 import { ReceiptComponent } from "../receipt/receipt.component";
 import { SearchBarComponent } from '../../../../shared/Components/search-bar/search-bar.component';
+import { filterData } from '../../../../shared/utils/search-helper';
 
 @Component({
   selector: 'pos-pos-sales',
@@ -88,22 +89,8 @@ export class PosSalesComponent implements OnInit {
   }
 
   onSearchProducts(searchTerm: string){
-    if(!searchTerm || searchTerm.trim() === ''){
-      this.products.set(this.allProducts);
-      return;
-    }
-
-    // Normalize text for case-insensitive search
-    const lowerTerm = searchTerm.toLowerCase();
-
-    // Filter the Master Backup
-    const filtered = this.allProducts.filter(p => 
-      p.name.toLowerCase().includes(lowerTerm) ||
-      (p.barcode && p.barcode.toLowerCase().includes(lowerTerm))
-    );
-
-    // Update the displayed list
-    this.products.set(filtered);
+    const filteredProducts = filterData(searchTerm, this.allProducts, ['name', 'barcode']);
+    this.products.set(filteredProducts);
   }
 
 }

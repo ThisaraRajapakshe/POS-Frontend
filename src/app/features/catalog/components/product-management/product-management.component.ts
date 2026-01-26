@@ -5,18 +5,18 @@ import { ProductService } from '../../services';
 import { Product } from './../../models';
 import { ProductTableComponent } from './product-table/product-table.component';
 import { MatButton, MatButtonModule } from '@angular/material/button';
-import { of } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CardWrapperComponent } from '../../../../shared/Components/card-wrapper/card-wrapper.component';
 import { ConfirmDialogComponent } from '../../../../shared/dialogs/confirm-dialog.component';
-import { AsyncPipe } from '@angular/common';
+import { filterData } from '../../../../shared/utils/search-helper';
+import { SearchBarComponent } from '../../../../shared/Components/search-bar/search-bar.component';
 
 @Component({
   selector: 'pos-product-management',
   templateUrl: './product-management.component.html',
   styleUrl: './product-management.component.scss',
   standalone: true,
-  imports: [ProductTableComponent, MatButton, CardWrapperComponent, MatButtonModule, AsyncPipe],
+  imports: [ProductTableComponent, MatButton, CardWrapperComponent, MatButtonModule, SearchBarComponent],
 })
 export class ProductManagementComponent implements OnInit {
   private dialog = inject(MatDialog);
@@ -24,6 +24,7 @@ export class ProductManagementComponent implements OnInit {
   private snackBar = inject(MatSnackBar);
 
   products: WritableSignal<Product[]> = signal([]);
+  private allProducts: Product[] = [];
   ngOnInit(): void {
     this.loadProducts();
   }
@@ -57,6 +58,7 @@ export class ProductManagementComponent implements OnInit {
     this.productService.getAll().subscribe({
       next: (products) => {
         this.products.set(products);
+        this.allProducts = products;
       },
       error: (error) => {
         this.snackBar.open('Failed to load products', 'Close', {
@@ -64,7 +66,7 @@ export class ProductManagementComponent implements OnInit {
           panelClass: ['snackbar-error'],
         });
         console.error('Error loading products:', error);
-        return of([]); // Return an empty array on error
+        return ([]); // Return an empty array on error
       }
     });
   }
@@ -119,5 +121,28 @@ export class ProductManagementComponent implements OnInit {
         });
       }
     });
+  }
+
+  // Search Functionality
+  onSearchProducts(searchTerm: string){
+    // if(!searchTerm || searchTerm.trim() === ''){
+    //   this.products.set(this.allProducts);
+    //   return;
+    // }
+
+    // // Normalize text for case-insensitive search
+    // const lowerTerm = searchTerm.toLowerCase();
+
+    // // Filter the Master Backup
+    // const filtered = this.allProducts.filter(p => 
+    //   p.name.toLowerCase().includes(lowerTerm)
+    // );
+
+    // // Update the displayed list
+    // this.products.set(filtered);
+
+    const filtered = filterData(searchTerm, this.allProducts, ['name', 'category.name']);
+  
+    this.products.set(filtered);
   }
 }

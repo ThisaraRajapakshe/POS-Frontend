@@ -9,6 +9,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { CardWrapperComponent } from '../../../../shared/Components/card-wrapper/card-wrapper.component';
 import { ConfirmDialogComponent } from '../../../../shared/dialogs/confirm-dialog.component';
 import { SearchBarComponent } from '../../../../shared/Components/search-bar/search-bar.component';
+import { filterData } from '../../../../shared/utils/search-helper';
 
 @Component({
   selector: 'pos-category-management',
@@ -126,20 +127,7 @@ export class CategoryManagementComponent implements OnInit {
 
   // Search Functionality
   onSearchCategories(searchTerm: string){
-    if(!searchTerm || searchTerm.trim() === ''){
-      this.categories.set(this.allCategories);
-      return;
-    }
-
-    // Normalize text for case-insensitive search
-    const lowerTerm = searchTerm.toLowerCase();
-
-    // Filter the Master Backup
-    const filtered = this.allCategories.filter(p => 
-      p.name.toLowerCase().includes(lowerTerm)
-    );
-
-    // Update the displayed list
+    const filtered = filterData(searchTerm, this.allCategories, ['name']);
     this.categories.set(filtered);
   }
 }
