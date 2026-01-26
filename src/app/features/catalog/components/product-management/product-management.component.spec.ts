@@ -84,11 +84,9 @@ describe('ProductManagementComponent', () => {
   describe('Initialization', () => {
     it('should load products on init', () => {
       expect(productServiceSpy.getAll).toHaveBeenCalled();
-      
-      component.products$.subscribe(data => {
-        expect(data.length).toBe(1);
-        expect(data[0]).toEqual(mockProduct);
-      });
+      expect(component.products().length).toBe(1);
+      expect(component.products()[0]).toEqual(mockProduct);
+
     });
 
     it('should handle error when loading fails', () => {
@@ -97,9 +95,6 @@ describe('ProductManagementComponent', () => {
       
       // Act
       component.loadProducts();
-
-      // Force Subscription
-      component.products$.subscribe();
       
       // Assert
       expect(snackBarSpy.open).toHaveBeenCalledWith(
@@ -109,9 +104,7 @@ describe('ProductManagementComponent', () => {
       );
       
       // Should return empty array on error
-      component.products$.subscribe(data => {
-        expect(data).toEqual([]);
-      });
+      expect(component.products().length).toBe(0);
     });
   });
 

@@ -13,28 +13,28 @@ describe('ProductTableComponent', () => {
     {
       id: 'p-1',
       name: 'Apple',
-      category: { id: 'c-1', name: 'Fruits' }
-    },
+      category: { id: 'c-1', name: 'Fruits' },
+      // Add other required Product fields if your interface is strict (e.g., price, stock)
+    } as Product, 
     {
       id: 'p-2',
       name: 'Carrot',
-      category: { id: 'c-2', name: 'Vegetables' }
-    }
+      category: { id: 'c-2', name: 'Vegetables' },
+    } as Product
   ];
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
         ProductTableComponent,
-        // Material Table/Paginator require animations module
-        NoopAnimationsModule
+        NoopAnimationsModule // Required for Material Table
       ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(ProductTableComponent);
     component = fixture.componentInstance;
     
-    // Trigger initial detection to run ngAfterViewInit (paginator/sort setup)
+    // Trigger initial detection to run ngAfterViewInit
     fixture.detectChanges();
   });
 
@@ -44,9 +44,9 @@ describe('ProductTableComponent', () => {
 
   describe('Input: products', () => {
     it('should update dataSource when input is set', () => {
-      // Act
-      component.products = mockProducts;
-      fixture.detectChanges();
+      // Act: Use setInput for Signals
+      fixture.componentRef.setInput('products', mockProducts);
+      fixture.detectChanges(); // Trigger the effect()
 
       // Assert
       expect(component.dataSource.data).toEqual(mockProducts);
@@ -56,7 +56,6 @@ describe('ProductTableComponent', () => {
 
   describe('View Initialization', () => {
     it('should attach paginator and sort to dataSource after view init', () => {
-      // ngAfterViewInit runs automatically after the first fixture.detectChanges()
       expect(component.dataSource.paginator).toBeTruthy();
       expect(component.dataSource.sort).toBeTruthy();
     });
@@ -64,12 +63,12 @@ describe('ProductTableComponent', () => {
 
   describe('Sorting Logic (Custom Accessor)', () => {
     beforeEach(() => {
-      component.products = mockProducts;
+      // Setup data for sorting tests
+      fixture.componentRef.setInput('products', mockProducts);
       fixture.detectChanges();
     });
 
     it('should sort by nested "category" name', () => {
-      // Access the custom accessor defined in configureSorting()
       const accessor = component.dataSource.sortingDataAccessor;
       const item = mockProducts[0]; // Category: Fruits
 
@@ -107,7 +106,7 @@ describe('ProductTableComponent', () => {
   describe('User Interaction', () => {
     beforeEach(() => {
       // Setup data to render rows
-      component.products = mockProducts;
+      fixture.componentRef.setInput('products', mockProducts);
       fixture.detectChanges();
     });
 
@@ -140,7 +139,7 @@ describe('ProductTableComponent', () => {
 
   describe('Template Rendering', () => {
     it('should render correct number of rows', () => {
-      component.products = mockProducts;
+      fixture.componentRef.setInput('products', mockProducts);
       fixture.detectChanges();
 
       const rows = fixture.debugElement.queryAll(By.css('tr[mat-row]'));
@@ -148,11 +147,13 @@ describe('ProductTableComponent', () => {
     });
 
     it('should render nested category name in cell', () => {
-      component.products = mockProducts;
+      fixture.componentRef.setInput('products', mockProducts);
       fixture.detectChanges();
 
       // Column indices: 0: ID, 1: Name, 2: Category, 3: Actions
       const firstRowCells = fixture.debugElement.queryAll(By.css('tr[mat-row] td'));
+      // Adjust index based on your displayedColumns array. 
+      // If displayedColumns = ['id', 'name', 'category', 'actions'], category is index 2.
       const categoryCell = firstRowCells[2];
 
       expect(categoryCell.nativeElement.textContent.trim()).toBe('Fruits');
