@@ -66,7 +66,8 @@ export class ProductManagementComponent implements OnInit {
           panelClass: ['snackbar-error'],
         });
         console.error('Error loading products:', error);
-        return ([]); // Return an empty array on error
+        this.products.set([]); 
+        this.allProducts = [];
       }
     });
   }

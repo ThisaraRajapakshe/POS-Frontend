@@ -1,5 +1,4 @@
 import { Component, OnInit, WritableSignal, inject, signal } from '@angular/core';
-import { of } from 'rxjs';
 import { ProductLineItem } from '../../models';
 import { ProductLineItemService } from '../../services';
 import { MatDialog } from '@angular/material/dialog';
@@ -38,12 +37,13 @@ export class LineItemManagementComponent implements OnInit {
         this.allLineItems = data;
       },
       error: (error) => {
+        console.error('Error loading line items:', error);
+        this.lineItems.set([]); 
+        this.allLineItems = [];
         this.snackBar.open('Failed to load line items', 'Close', {
           duration: 3000,
           panelClass: ['snackbar-error'],
         });
-        console.error('Error loading line items:', error);
-        return of([]); // Return an empty array on error
       }
     });
   }
