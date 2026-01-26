@@ -1,0 +1,14 @@
+<div class="search-container">
+  <span class="search-icon">🔍</span>
+
+  <input 
+    type="text" 
+    [formControl]="searchControl" 
+    [placeholder]="placeholder"
+    class="search-input"
+  >
+
+  @if (searchControl.value) {
+    <button class="clear-btn" (click)="clearSearch()">×</button>
+  }
+</div>
