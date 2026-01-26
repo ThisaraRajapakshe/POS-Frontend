@@ -48,5 +48,5 @@
         <button class="pay-btn" (click)="onCheckout()">CHARGE</button>
       </div>
     </div>
-
-  </div>
+</div>    
+<pos-receipt [orderData]="lastCompletedOrder()"></pos-receipt>

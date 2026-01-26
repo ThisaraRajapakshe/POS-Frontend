@@ -3,3 +3,120 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+// Print feature styles
+
+@media print {
+    /* 1. PAGE SETUP */
+    @page {
+        margin: 0;
+        size: auto;
+    }
+
+    html, body {
+        height: 100vh;
+        margin: 0 !important;
+        padding: 0 !important;
+        background-color: #fff;
+        overflow: hidden !important;
+    }
+
+    /* 2. HIDE EVERYTHING ELSE */
+    body * {
+        visibility: hidden;
+    }
+
+    /* 3. THE RECEIPT CONTAINER */
+    #invoice-POS, #invoice-POS * {
+        visibility: visible !important;
+    }
+
+    #invoice-POS {
+        /* FIX: This overrides the 'display: none' from the component */
+        display: block !important; 
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 95mm; /* Standard Thermal Width (approx 3 inches) */
+        margin: 0 auto !important;
+        padding: 2mm !important;
+        background: #fff !important;
+        font-family: 'Courier New', Courier, monospace; /* Monospace aligns numbers better */
+        font-size: 12px; /* Standard receipt font size */
+        color: #000 !important;
+        overflow: hidden !important; /* Prevents overflow from creating a 2nd page */
+        z-index: 999999999 !important;
+    }
+
+    /* 4. HEADER STYLING */
+    #invoice-POS .header, #invoice-POS .info {
+        text-align: center;
+        margin-bottom: 5px;
+    }
+    
+    #invoice-POS h2 {
+        font-size: 1.2em;
+        font-weight: bold;
+        margin: 5px 0;
+        text-transform: uppercase;
+    }
+    
+    #invoice-POS p {
+        margin: 2px 0;
+        line-height: 1.2;
+    }
+
+    /* 5. TABLE STYLING (The Critical Fix) */
+    #invoice-POS table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed; /* <--- THIS FIXES THE COLUMN WIDTHS */
+    }
+
+    /* 6. COLUMN WIDTHS */
+    /* We define exact percentages so they never shift */
+    .col-item { width: 40%; text-align: center;}  /* Product Name gets the most space */
+    .col-qty  { width: 10%; text-align: center;}
+    .col-price { width: 20%; text-align: center; }
+    .col-total { width: 30%; text-align: center; }
+
+    /* 7. ROW STYLING */
+    .tabletitle td {
+        border-top: 1px dashed #000;
+        border-bottom: 1px dashed #000;
+        font-weight: bold;
+        padding: 5px 0;
+        text-transform: uppercase;
+        font-size: 0.9em;
+    }
+
+    .service td {
+        padding: 5px 0;
+        border-bottom: 1px solid #eee;
+        vertical-align: top; /* Aligns text to top if name wraps */
+    }
+
+    .itemtext {
+        font-size: 0.9em;
+        line-height: 1.2;
+        /* Force long words to wrap instead of breaking layout */
+        word-wrap: break-word; 
+        overflow-wrap: break-word; 
+    }
+
+    /* 8. TOTAL & FOOTER */
+    .payment td {
+        border-top: 1px dashed #000;
+        padding: 8px 0;
+        font-weight: bold;
+        font-size: 1.1em;
+    }
+    
+    .legal {
+        margin-top: 15px;
+        text-align: center;
+        font-size: 0.8em;
+        border-top: 1px dotted #000;
+        padding-top: 5px;
+    }
+}

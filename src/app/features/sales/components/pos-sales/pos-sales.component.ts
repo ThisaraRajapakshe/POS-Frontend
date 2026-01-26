@@ -1,13 +1,14 @@
 import { Component, computed, OnInit, signal, Signal, WritableSignal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CartItem, PosProduct } from '../../models';
+import { CartItem, Order, PosProduct } from '../../models';
 import { CartService, InventoryService, OrderService } from '../../services';
 import { FormsModule } from '@angular/forms';
+import { ReceiptComponent } from "../receipt/receipt.component";
 
 @Component({
   selector: 'pos-pos-sales',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ReceiptComponent],
   templateUrl: './pos-sales.component.html',
   styleUrl: './pos-sales.component.scss'
 })
@@ -22,6 +23,7 @@ export class PosSalesComponent implements OnInit {
   cartTotal: Signal<number>;
   products: WritableSignal<PosProduct[]> = signal([]);
   quantity = 1;
+  lastCompletedOrder: WritableSignal<Order | null> = signal(null);
 
   constructor() {
     this.cartItems = this.cartService.items;
@@ -61,9 +63,14 @@ export class PosSalesComponent implements OnInit {
 
   onCheckout() {
     this.orderService.createOrder(this.cartItems(), this.cartTotal()).subscribe({
-      next: () => {
+      next: (createOrder: Order) => {
+        this.lastCompletedOrder.set(createOrder);
         alert("Order created successfully");
         this.loadProducts();
+
+        setTimeout(() => {
+            window.print();
+        }, 300);
       },
       error: (err) => {
         console.error("Failed to create order", err);
