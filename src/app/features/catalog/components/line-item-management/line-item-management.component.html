@@ -2,10 +2,14 @@
 <header mat-header class="m-4 text-center">
   <h1>Line Item Management</h1>
 </header>
+<pos-search-bar 
+    placeholder="Search by Name or Category Name..."
+    (searchTerm)="onSearchLineItems($event)">
+</pos-search-bar>
 <button mat-raised-button color="primary" (click)="onAdd()" class="add-line-item-btn">Add Line Item</button>
 <!-- <pos-line-item-table [lineItems$]="lineItems$" (editLineItem)="onEdit($event)" (deleteLineItem)="onDelete($event)"></pos-line-item-table> -->
  <pos-line-item-table 
-    [lineItems]="lineItems$ | async" 
+    [lineItems]="lineItems()" 
     (editLineItem)="onEdit($event)" 
     (deleteLineItem)="onDelete($event)">
 </pos-line-item-table>
