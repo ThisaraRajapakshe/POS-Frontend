@@ -6,6 +6,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of, throwError } from 'rxjs';
 import { UserProfile } from '../../Core/models/Domains/UserProfile';
+import { UserRole } from '../../Core/models';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -79,7 +80,7 @@ describe('LoginComponent', () => {
         isActive: true,
         createdAt: '2023-01-01',
         lastLoginAt: null,
-        roles: ['User']
+        roles: [UserRole.CASHIER]
       };
 
       // Mock Success Response (Return an observable)
