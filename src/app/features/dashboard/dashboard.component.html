@@ -1,1 +1,32 @@
-<p>dashboard works!</p>
+<div class="dashboard-container">
+  @if (hasRole(Roles.ADMIN)) {
+    <pos-admin-dashboard />
+  }
+
+  @if (hasRole(Roles.CASHIER)) {
+    <pos-cashier-dashboard />
+  }
+
+  @if (hasRole(Roles.STOCK_CLERK)) {
+    <pos-stock-clerk-dashboard />
+
+  } @else {
+    <div class="unauthorized-state">
+      <div class="error-content">
+        <h1>⛔ Access Restricted</h1>
+
+        @if (userRoles()) {
+          <p>
+            Your role <strong>({{ userRoles() }})</strong> does not have a configured dashboard.
+          </p>
+        } @else {
+          <p>Unable to determine user role. Please try logging in again.</p>
+        }
+
+        <div class="actions">
+          <p class="help-text">Please contact the System Administrator.</p>
+        </div>
+      </div>
+    </div>
+  }
+</div>
