@@ -1,0 +1,118 @@
+// Variables for consistent theming
+$spacing-md: 1.5rem;
+$spacing-lg: 2rem;
+$card-radius: 12px;
+
+.dashboard-wrapper {
+  padding: $spacing-lg;
+  max-width: 1400px;
+  margin: 0 auto; // Center content on ultra-wide screens
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-lg;
+
+  h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 0;
+    color: #1f2937;
+  }
+  .subtitle {
+    color: #6b7280;
+    margin: 0;
+  }
+  .date-badge {
+    background: #f3f4f6;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 500;
+    color: #4b5563;
+  }
+}
+
+// Responsive Grid for Stats
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: $spacing-md;
+  margin-bottom: 2.5rem;
+}
+
+.kpi-card {
+  border-radius: $card-radius;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+
+  .card-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .meta {
+    display: flex;
+    flex-direction: column;
+    .label {
+      font-size: 0.875rem;
+      color: #6b7280;
+      font-weight: 500;
+    }
+    .value {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #111827;
+      margin-top: 0.25rem;
+    }
+  }
+
+  // Large background icon effect
+  .icon-bg {
+    font-size: 80px;
+    height: 80px;
+    width: 80px;
+    position: absolute;
+    right: -10px;
+    bottom: -15px;
+    opacity: 0.15;
+    z-index: 0;
+  }
+
+  // Semantic Colors
+  &.revenue {
+    border-left: 4px solid #10b981;
+    .icon-bg {
+      color: #10b981;
+    }
+  }
+  &.orders {
+    border-left: 4px solid #3b82f6;
+    .icon-bg {
+      color: #3b82f6;
+    }
+  }
+  &.alerts {
+    border-left: 4px solid #ef4444;
+    .icon-bg {
+      color: #ef4444;
+    }
+  }
+}
+
+.actions-grid {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+
+  button {
+    height: 50px; // Taller buttons for easier clicking
+    padding: 0 1.5rem;
+  }
+}
