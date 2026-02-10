@@ -3,10 +3,8 @@
   <div class="catalog-section">
     <div class="controls-row">
       <div class="search-bar">
-        <pos-search-bar 
-        placeholder="Search by Name or Barcode..."
-        (searchTerm)="onSearchProducts($event)">
-      </pos-search-bar>
+        <pos-search-bar placeholder="Search by Name or Barcode..." (searchTerm)="onSearchProducts($event)">
+        </pos-search-bar>
       </div>
 
       <div class="qty-control">
@@ -17,12 +15,12 @@
     </div>
     <div class="product-grid">
       @for (p of products(); track p) {
-        <button type="button" class="product-card" (click)="addToCart(p, quantity)">
-          <div class="product-name">{{ p.name }}</div>
-          <div class="product-price">{{ p.salePrice | currency:'LKR ' }}</div>
-          <div class="product-barcode">Barcode : {{ p.barcode }}</div>
-          <div class="product-stock" [class.low-stock]="p.stock < 10">Stock : {{ p.stock }}</div>
-        </button>
+      <button type="button" class="product-card" (click)="addToCart(p, quantity)">
+        <div class="product-name">{{ p.name }}</div>
+        <div class="product-price">{{ p.salePrice | currency:'LKR ' }}</div>
+        <div class="product-barcode">Barcode : {{ p.barcode }}</div>
+        <div class="product-stock" [class.low-stock]="p.stock < 10">Stock : {{ p.stock }}</div>
+      </button>
       }
     </div>
   </div>
@@ -32,24 +30,41 @@
 
     <div class="cart-items">
       @for (item of cartItems(); track item) {
-        <div class="cart-row">
-          <span>{{ item.productName }}
+      <div class="cart-row">
+        <!-- Product Column -->
+        <div class="cart-col product-col">
+          {{ item.productName }}
+        </div>
+
+        <!-- Quantity Column -->
+        <div class="cart-col quantity-col">
+          <div class="cart-quantity-controller">
+            <button (click)="decrementQuantity(item)">-</button>
             <input type="number" name="quantity" id="quantity" min="1" max="{{ item.maxStock }}"
               [(ngModel)]="item.quantity" (ngModelChange)="updateQuantity(item, $event)">
-            </span>
-            <span>{{ item.subTotal | currency:'LKR ' }}</span>
-            <button class="delete-btn" (click)="removeFromCart(item)">X</button>
+            <button (click)="incrementQuantity(item)">+</button>
           </div>
-        }
-      </div>
-
-      <div class="cart-footer">
-        <div class="total-row">
-          <span>Total:</span>
-          <span class="total-amount">{{ cartTotal() | currency:'LKR ' }}</span>
         </div>
-        <button class="pay-btn" (click)="onCheckout()">CHARGE</button>
+
+        <!-- Price Column -->
+        <div class="cart-col price-col">
+          {{ item.subTotal | currency:'LKR ' }}
+        </div>
+
+        <!-- Action Column -->
+        <div class="cart-col action-col">
+          <button class="delete-btn" (click)="removeFromCart(item)">×</button>
+        </div>
       </div>
+      }
     </div>
-</div>    
+    <div class="cart-footer">
+      <div class="total-row">
+        <span>Total:</span>
+        <span class="total-amount">{{ cartTotal() | currency:'LKR ' }}</span>
+      </div>
+      <button class="pay-btn" (click)="onCheckout()">CHARGE</button>
+    </div>
+  </div>
+</div>
 <pos-receipt [orderData]="lastCompletedOrder()"></pos-receipt>

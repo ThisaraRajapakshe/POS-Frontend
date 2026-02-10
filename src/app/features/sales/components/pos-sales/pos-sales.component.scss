@@ -175,31 +175,13 @@
   display: flex;
   flex-direction: column;
   padding: 20px;
+  max-width: 450px;
 
   h2 {
     margin-top: 0;
     color: #333;
   }
 
-  .cart-items {
-    flex: 1;
-    /* Pushes footer down */
-    overflow-y: auto;
-
-    .cart-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 10px 0;
-      border-bottom: 1px solid #eee;
-
-      .delete-btn {
-        background: none;
-        border: none;
-        color: red;
-        cursor: pointer;
-      }
-    }
-  }
 
   .cart-footer {
     height: 150px;
@@ -230,4 +212,144 @@
       }
     }
   }
+}
+
+/* Cart Items Container */
+.cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+
+  
+    flex: 1;
+    /* Pushes footer down */
+    overflow-y: auto;
+
+    .cart-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+
+      .delete-btn {
+        background: none;
+        border: none;
+        color: red;
+        cursor: pointer;
+      }
+    }
+}
+
+/* Cart Row - Using CSS Grid */
+.cart-row {
+  display: grid;
+  grid-template-columns: 40% 30% 15% 15%;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+/* Individual Columns */
+.cart-col {
+  display: flex;
+  align-items: center;
+}
+
+.product-col {
+  font-weight: 500;
+  color: #2c3e50;
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.quantity-col {
+  justify-content: center;
+}
+
+.price-col {
+  justify-content: flex-end;
+  font-weight: 600;
+  color: #28a745;
+  font-size: 14px;
+}
+
+.action-col {
+  justify-content: flex-end;
+}
+
+/* Quantity Controller Fix */
+.cart-quantity-controller {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: #f8f9fa;
+  padding: 4px;
+  border-radius: 6px;
+  border: 1px solid #dee2e6;
+}
+
+.cart-quantity-controller button {
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: white;
+  color: #333;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 4px;
+  border: 1px solid #ced4da;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-quantity-controller button:hover {
+  background: #e9ecef;
+}
+
+.cart-quantity-controller input {
+  width: 60px;
+  text-align: center;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  padding: 4px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.cart-quantity-controller input:focus {
+  outline: none;
+  border-color: #28a745;
+  box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.1);
+}
+
+/* Delete Button */
+.delete-btn {
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: #ff4444;
+  color: white;
+  font-size: 18px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.delete-btn:hover {
+  background: #cc0000;
+}
+
+#quantity{
+  width: 50px;
 }
