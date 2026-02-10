@@ -59,6 +59,7 @@
       }
     </div>
     <div class="cart-footer">
+      <span id="total-items-count">Total Items: {{ cartItems().length }}</span>
       <div class="total-row">
         <span>Total:</span>
         <span class="total-amount">{{ cartTotal() | currency:'LKR ' }}</span>
