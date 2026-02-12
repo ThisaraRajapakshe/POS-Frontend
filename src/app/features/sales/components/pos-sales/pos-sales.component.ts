@@ -15,19 +15,6 @@ import { filterData } from '../../../../shared/utils/search-helper';
   styleUrl: './pos-sales.component.scss'
 })
 export class PosSalesComponent implements OnInit {
-  // Quantity Change Buttons
-decrementQuantity(item: CartItem) {
-  if (item.quantity > 1) {
-    item.quantity --;
-    this.cartService.UpdateQuantity(item.lineItemId, item.quantity);
-  }
-}
-incrementQuantity(item: CartItem) {
-  if (item.quantity < item.maxStock) {
-    item.quantity ++;
-    this.cartService.UpdateQuantity(item.lineItemId, item.quantity);
-  }
-}
   private cartService = inject(CartService);
   private inventoryService = inject(InventoryService);
   private orderService = inject(OrderService);
@@ -105,5 +92,18 @@ incrementQuantity(item: CartItem) {
     const filteredProducts = filterData(searchTerm, this.allProducts, ['name', 'barcode']);
     this.products.set(filteredProducts);
   }
-
+    
+  // Quantity Change Buttons
+  decrementQuantity(item: CartItem) {
+    if (item.quantity > 1) {
+      item.quantity --;
+      this.cartService.UpdateQuantity(item.lineItemId, item.quantity);
+    }
+  }
+  incrementQuantity(item: CartItem) {
+    if (item.quantity < item.maxStock) {
+      item.quantity ++;
+      this.cartService.UpdateQuantity(item.lineItemId, item.quantity);
+    }
+  }
 }
