@@ -1,4 +1,5 @@
 import { CartItem, OrderCreateRequestDto } from '../models';
+import { PaymentMethods } from '../models/create-order-dto';
 import { OrderResponseDto, OrderItemDto } from '../models/order.types';
 import { Order, OrderItem, OrderStatus } from '../models/order.types';
 
@@ -22,10 +23,10 @@ export class OrderMapper {
       total: dto.salesPrice * dto.quantity // Logic: Calculation
     };
   }
-   static mapToOrderRequest(items: CartItem[], totalAmount: number): OrderCreateRequestDto {
+   static mapToOrderRequest(items: CartItem[], totalAmount: number, paymentMethod: PaymentMethods): OrderCreateRequestDto {
     return {
       totalAmount: totalAmount,
-      paymentMethod: 'Cash',
+      paymentMethod: paymentMethod,
       isPending: false,
       orderItems: items.map(item => ({
         productLineItemId: item.lineItemId,

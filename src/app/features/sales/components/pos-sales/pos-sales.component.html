@@ -59,6 +59,13 @@
       }
     </div>
     <div class="cart-footer">
+      <mat-button-toggle-group class="payment-methods-selector" name="paymentMethod" aria-label="Payment Method" [(ngModel)]="paymentMethod">
+        <mat-button-toggle value={{paymentMethodEnum.CREDIT}}>Credit</mat-button-toggle>
+        <mat-button-toggle value={{paymentMethodEnum.CARD_PAYMENT}}>Card</mat-button-toggle>
+        <mat-button-toggle value={{paymentMethodEnum.CASH}}>Cash</mat-button-toggle>
+        <mat-label class="payment-methods-label">Payment Method:</mat-label>
+      </mat-button-toggle-group>
+
       <span id="total-items-count">Total Items: {{ cartItems().length }}</span>
       <div class="total-row">
         <span>Total:</span>

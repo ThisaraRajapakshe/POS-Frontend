@@ -6,11 +6,14 @@ import { FormsModule } from '@angular/forms';
 import { ReceiptComponent } from "../receipt/receipt.component";
 import { SearchBarComponent } from '../../../../shared/Components/search-bar/search-bar.component';
 import { filterData } from '../../../../shared/utils/search-helper';
+import { PaymentMethods } from '../../models/create-order-dto';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import { MatLabel } from '@angular/material/input';
 
 @Component({
   selector: 'pos-pos-sales',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReceiptComponent, SearchBarComponent],
+  imports: [CommonModule, FormsModule, ReceiptComponent, SearchBarComponent, MatButtonToggleModule, MatLabel],
   templateUrl: './pos-sales.component.html',
   styleUrl: './pos-sales.component.scss'
 })
@@ -23,6 +26,8 @@ export class PosSalesComponent implements OnInit {
   // Data Streams
   cartItems: Signal<CartItem[]>;
   cartTotal: Signal<number>;
+  paymentMethod: PaymentMethods;
+  paymentMethodEnum = PaymentMethods;
   products: WritableSignal<PosProduct[]> = signal([]);
   private allProducts: PosProduct[] = [];
   quantity = 1;
@@ -34,6 +39,7 @@ export class PosSalesComponent implements OnInit {
       const items = this.cartItems();
       return items.reduce((total, item) => total + item.subTotal, 0);
     });
+    this.paymentMethod = this.paymentMethodEnum.CASH; // Default payment method
   }
 
   ngOnInit(): void {
@@ -66,7 +72,7 @@ export class PosSalesComponent implements OnInit {
   }
 
   onCheckout() {
-    this.orderService.createOrder(this.cartItems(), this.cartTotal()).subscribe({
+    this.orderService.createOrder(this.cartItems(), this.cartTotal(), this.paymentMethod).subscribe({
       next: (createOrder: Order) => {
         this.lastCompletedOrder.set(createOrder);
         alert("Order created successfully");

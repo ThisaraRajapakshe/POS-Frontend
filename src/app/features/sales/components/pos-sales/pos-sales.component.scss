@@ -370,3 +370,20 @@
   font-size: 1rem;
   color: #555;
 }
+.payment-methods-selector {
+  height: 35%;
+  align-items: center;
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 0;
+
+}
+
+.payment-methods-label {
+  margin-right: auto;
+  font-size: 0.9rem;
+  color: #555;
+  font-weight: 600;
+  padding: 10px;
+  
+}
