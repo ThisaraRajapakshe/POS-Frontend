@@ -1,15 +1,14 @@
 .pos-container {
   display: flex;
-  height: 100vh;
+  height: 91vh;
   /* Full Screen Application */
   font-family: 'Segoe UI', sans-serif;
-  overflow: hidden;
   /* No window scrollbars */
 }
 
 /* LEFT SIDE: CATALOG */
 .catalog-section {
-  flex: 7;
+  flex: 6;
   /* Takes 70% of width */
   background-color: #f4f6f8;
   padding: 20px;
@@ -45,11 +44,14 @@
   .qty-control {
     display: flex;
     align-items: center;
-    background: white;
-    border: 1px solid #ddd;
+    background: #f5f5f5;
+    height: 50px;
+    // border: 1px solid #ddd;
     border-radius: 8px;
-    padding: 0 15px;
+    padding: 5px 10px;
     width: 180px;
+    border: 1px solid #ddd;
+    transition: all 0.2s ease;
 
     label {
       font-weight: bold;
@@ -59,18 +61,20 @@
     }
 
     input {
-      width: 100%;
-      border: none;
+      width: 75px;
+      border: hidden;
       font-size: 1.5rem;
       font-weight: bold;
       text-align: center;
       outline: none;
       color: #333;
+      background: #f5f5f5;
     }
 
-    &:focus-within {
-      border-color: #28a745;
-      box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.1);
+    &:focus-within, &:focus-within input {
+      background: #fff;
+      border-color: #3f51b5; /* Primary Color */
+      box-shadow: 0 0 0 3px rgba(63, 81, 181, 0.1);
     }
   }
 
@@ -122,6 +126,11 @@
       line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
+
+       &:hover {
+      overflow: visible;
+      display: inline-block;
+    }
     }
 
     /* 2. PRICE (The Highlight) */
@@ -142,6 +151,16 @@
       font-family: 'Consolas', monospace;
       /* Monospace looks like code */
       letter-spacing: 1px;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+
+       &:hover {
+      overflow: visible;
+      display: block;
+    }
     }
 
     /* 4. STOCK (The Inventory Check) */
@@ -168,38 +187,13 @@
 
 /* RIGHT SIDE: CART */
 .cart-section {
-  flex: 3;
+  flex: 4;
   /* Takes 30% of width */
   background-color: white;
   border-left: 1px solid #ddd;
   display: flex;
   flex-direction: column;
   padding: 20px;
-
-  h2 {
-    margin-top: 0;
-    color: #333;
-  }
-
-  .cart-items {
-    flex: 1;
-    /* Pushes footer down */
-    overflow-y: auto;
-
-    .cart-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 10px 0;
-      border-bottom: 1px solid #eee;
-
-      .delete-btn {
-        background: none;
-        border: none;
-        color: red;
-        cursor: pointer;
-      }
-    }
-  }
 
   .cart-footer {
     height: 150px;
@@ -228,6 +222,199 @@
       &:hover {
         background-color: #218838;
       }
+    }
+  }
+}
+
+/* Cart Items Container */
+.cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+
+  
+    flex: 1; /* Takes all available space above footer */
+    /* Pushes footer down */
+    overflow-y: auto;
+
+
+}
+
+/* Cart Row - Using CSS Grid */
+.cart-row {
+  display: grid;
+  grid-template-columns: 40% 30% 15% 10%;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+/* Individual Columns */
+.cart-col {
+  display: grid;
+  align-items: center;
+}
+
+.product-col {
+  font-weight: 500;
+  color: #2c3e50;
+  font-size: 14px;
+  
+  /* Multi-line ellipsis technique */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+}
+
+.quantity-col {
+  justify-content: center;
+}
+
+.price-col {
+  justify-content: flex-end;
+  font-weight: 600;
+  color: #28a745;
+  font-size: 14px;
+}
+
+.action-col {
+  display: grid;
+}
+
+/* Quantity Controller Fix */
+.cart-quantity-controller {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: #f8f9fa;
+  padding: 4px;
+  border-radius: 6px;
+  border: 1px solid #dee2e6;
+}
+
+.cart-quantity-controller button {
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: white;
+  color: #333;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 4px;
+  border: 1px solid #ced4da;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-quantity-controller button:hover {
+  background: #e9ecef;
+}
+
+.cart-quantity-controller input {
+  width: 60px;
+  text-align: center;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  padding: 4px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.cart-quantity-controller input:focus {
+  outline: none;
+  border-color: #28a745;
+  box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.1);
+}
+
+/* Delete Button */
+.delete-btn {
+  width: 27px;
+  height: 27px;
+  border: none;
+  background: #ffffff;
+  color: rgb(227, 79, 79);
+  font-size: 20px;
+  border-radius: 30%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.delete-btn:hover {
+  background: #cc0000;
+  color: #ffffff;
+}
+
+#quantity{
+  width: 50px;
+}
+#total-items-count {
+  font-size: 1rem;
+  color: #555;
+}
+.payment-methods-selector {
+  height: 35%;
+  align-items: center;
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 0;
+
+}
+
+.payment-methods-label {
+  margin-right: auto;
+  font-size: 0.9rem;
+  color: #555;
+  font-weight: 600;
+  padding: 10px;
+  
+}
+
+.current-order-header {
+  h2{
+    margin-top: 1%;
+    color: #333;
+    flex: 5;
+  }
+  button{
+    flex: 1;
+  }
+  display: flex;
+}
+.clear-cart-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+  width: 20%;
+  height: 70%;
+  margin-top: 1%;
+  &:hover {
+    background-color: #c82333;
+  }
+  // Disabled state styling
+  &:disabled {
+    background-color: #e0a0a0;
+    cursor: not-allowed;
+    opacity: 0.6;
+    &:hover {
+      background-color: #e0a0a0;
     }
   }
 }
