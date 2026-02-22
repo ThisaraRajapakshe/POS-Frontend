@@ -26,8 +26,11 @@
   </div>
 
   <div class="cart-section">
-    <h2>Current Order</h2>
-
+    <div class="current-order-header">
+      <h2>Current Order</h2>
+      <!-- Clear Cart Button -->
+      <button (click)="clearCart()" class="clear-cart-btn" [disabled]="cartItems().length === 0">Clear Cart</button>
+    </div>
     <div class="cart-items">
       @for (item of cartItems(); track item) {
       <div class="cart-row">

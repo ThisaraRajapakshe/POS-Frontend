@@ -88,6 +88,10 @@ export class PosSalesComponent implements OnInit {
     });
     console.log("Checkout Clicked")
   }
+  // Clear Cart
+  clearCart() {
+    this.cartService.clearCart();
+  }
 
   updateQuantity(item: CartItem, newQuantity: number) {
     if (!newQuantity || newQuantity < 1) return;
