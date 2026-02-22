@@ -3,11 +3,11 @@
     <pos-admin-dashboard />
   }
 
-  @if (hasRole(Roles.CASHIER)) {
+  @else if (hasRole(Roles.CASHIER)) {
     <pos-cashier-dashboard />
   }
 
-  @if (hasRole(Roles.STOCK_CLERK)) {
+  @else if (hasRole(Roles.STOCK_CLERK)) {
     <pos-stock-clerk-dashboard />
 
   } @else {
