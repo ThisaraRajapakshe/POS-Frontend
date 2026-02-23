@@ -9,10 +9,9 @@ import { HttpClient } from '@angular/common/http';
 export class UserRegisterService {
   private readonly apiUrl = `${environment.apiUrl}/Auth/register`;
   private http = inject(HttpClient);
-  constructor() { }
 
   registerUser(userData: addStaffRequestDto) {
     return this.http.post(this.apiUrl, userData);
-    
+
   }
 }
