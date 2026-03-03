@@ -6,10 +6,11 @@ import { MatDialogRef, MatDialogContent } from '@angular/material/dialog';
 import { MatFormField, MatLabel, MatInput } from '@angular/material/input';
 import { MatSelect, MatOption } from "@angular/material/select";
 import { UserRole } from '../../../../Core/models';
+import { MatButton } from "@angular/material/button";
 
 @Component({
   selector: 'pos-user-register',
-  imports: [MatDialogContent, ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatSelect, MatOption],
+  imports: [MatDialogContent, ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatSelect, MatOption, MatButton],
   templateUrl: './user-register.component.html',
   styleUrl: './user-register.component.scss'
 })

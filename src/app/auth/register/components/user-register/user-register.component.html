@@ -22,10 +22,6 @@
             <input matInput formControlName="branchId">
         </mat-form-field>
         <mat-form-field>
-            <mat-label>branchId</mat-label>
-            <input matInput formControlName="branchId">
-        </mat-form-field>
-        <mat-form-field>
             <mat-label>Role</mat-label>
             <mat-select>
                 <mat-option value={{userRoles.ADMIN}}>Admin</mat-option>
@@ -35,5 +31,7 @@
                 <mat-option value={{userRoles.ACCOUNTANT}}>Accountant</mat-option>
             </mat-select>
         </mat-form-field>
+        <button mat-stroked-button (click)="dialogRef.close()" class="btn-close-form">Cancel</button>
+        <button mat-raised-button color="primary" (click)="onSubmit(userForm.value)" class="btn-add-user">Add User</button>
     </form>
 </mat-dialog-content>
