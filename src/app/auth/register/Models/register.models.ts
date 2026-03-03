@@ -1,4 +1,4 @@
-import { UserRole } from "../../Core/models";
+import { UserRole } from "../../../Core/models";
 
 export interface addStaffRequestDto{
     username: string;

@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { addStaffRequestDto } from '../register.models';
+import { addStaffRequestDto } from '../Models/register.models';
 import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 
