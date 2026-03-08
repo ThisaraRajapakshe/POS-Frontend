@@ -27,13 +27,14 @@ export class UserRegisterComponent {
     this.userForm = this.fb.group({
       username: ['', Validators.required],
       email: ['',[Validators.required, Validators.email]],
-      password: ['',Validators.required, Validators.minLength(6)],
+      password: ['',[Validators.required, Validators.minLength(6)]],
       fullName: ['',Validators.required],
       branchId:['',Validators.required],
       role: ['',Validators.required],
     });
   }
   onSubmit(userData: addStaffRequestDto): void {
+    console.log('onSubmit called with:', userData);
     if(this.userForm.valid){
       this.userRegisterService.registerUser(userData).subscribe({
         next: (response) => {
