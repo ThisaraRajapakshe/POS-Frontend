@@ -7,6 +7,7 @@ import { MatFormField, MatLabel, MatInput } from '@angular/material/input';
 import { MatSelect, MatOption } from "@angular/material/select";
 import { UserRole } from '../../../../Core/models';
 import { MatButton } from "@angular/material/button";
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'pos-user-register',
@@ -19,6 +20,7 @@ export class UserRegisterComponent {
   private userRegisterService = inject(UserRegisterService);
   private fb = inject(FormBuilder);
   public dialogRef = inject(MatDialogRef)
+  private snackBar = inject(MatSnackBar);
   // for use in html file
   userRoles = UserRole;
 
@@ -39,10 +41,14 @@ export class UserRegisterComponent {
       this.userRegisterService.registerUser(userData).subscribe({
         next: (response) => {
           console.log('User registered successfully:', response);
+          this.dialogRef.close(); // Close the dialog after successful registration
+          // toast or snackbar can be added here to show success message
+          this.snackBar.open('User registered successfully!', 'Close', { duration: 3000 });
           // You can add additional logic here, such as navigating to a different page or showing a success message
         },
         error: (error) => {
           console.error('Error registering user:', error);
+          this.snackBar.open('Error registering user!', 'Close', { duration: 3000 });
           // Handle the error, such as showing an error message to the user
         }
       });
