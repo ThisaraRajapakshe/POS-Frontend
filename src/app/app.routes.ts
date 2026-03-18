@@ -43,6 +43,11 @@ export const routes: Routes = [
                 path: 'dashboard',
                 loadComponent: () => import('./features/dashboard/dashboard.component')
                     .then(m => m.DashboardComponent)
+            },
+            {
+                path: 'user-register',
+                loadComponent: () => import('./auth/register/components/user-register/user-register.component')
+                    .then(m => m.UserRegisterComponent)
             }
         ]
     },
