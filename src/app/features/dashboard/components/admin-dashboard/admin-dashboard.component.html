@@ -1,0 +1,73 @@
+<div class="dashboard-wrapper">
+  <header class="page-header">
+    <div class="header-content">
+      <h1>Store Overview</h1>
+      <p class="subtitle">Welcome back, Administrator.</p>
+    </div>
+    <div class="date-badge">
+      {{ date | date: 'fullDate' }}
+    </div>
+  </header>
+
+  <section class="kpi-grid">
+    <mat-card class="kpi-card revenue">
+      <div class="card-inner">
+        <div class="meta">
+          <span class="label">Total Revenue</span>
+          <span class="value">Rs. {{ stats().totalRevenue | number: '1.0-0' }}</span>
+        </div>
+        <mat-icon class="icon-bg">payments</mat-icon>
+      </div>
+    </mat-card>
+
+    <mat-card class="kpi-card orders">
+      <div class="card-inner">
+        <div class="meta">
+          <span class="label">Orders Today</span>
+          <span class="value">{{ stats().ordersCount }}</span>
+        </div>
+        <mat-icon class="icon-bg">shopping_cart</mat-icon>
+      </div>
+    </mat-card>
+
+    <mat-card class="kpi-card alerts">
+      <div class="card-inner">
+        <div class="meta">
+          <span class="label">Low Stock Alerts</span>
+          <span class="value">{{ stats().lowStockItems }}</span>
+        </div>
+        <mat-icon class="icon-bg">warning</mat-icon>
+      </div>
+    </mat-card>
+  </section>
+
+  <section class="actions-section">
+    <h2>Management Tools</h2>
+    <div class="actions-grid">
+      <button mat-raised-button color="primary" routerLink="/sales">
+        <mat-icon>point_of_sale</mat-icon> New Sale (POS)
+      </button>
+
+      <button mat-stroked-button routerLink="/reports">
+        <mat-icon>bar_chart</mat-icon> Sales Reports
+      </button>
+
+      <button mat-stroked-button routerLink="/catalog">
+        <mat-icon>inventory_2</mat-icon>Inventory
+      </button>
+
+      <button mat-stroked-button routerLink="/add-staff">
+        <mat-icon>group</mat-icon> Add Staff
+      </button>
+      <button mat-stroked-button routerLink="/category-management">
+        <mat-icon>category</mat-icon> Category Management
+      </button>
+      <button mat-stroked-button routerLink="/product-management">
+        <mat-icon>local_offer</mat-icon> Product Management
+      </button>
+      <button mat-stroked-button routerLink="/product-line-item-management">
+        <mat-icon>list</mat-icon> Product Line Item Management
+      </button>
+    </div>
+  </section>
+</div>

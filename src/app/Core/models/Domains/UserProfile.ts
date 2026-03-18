@@ -1,3 +1,5 @@
+import { UserRole } from "./auth.types";
+
 export interface UserProfile {
   id: string;
   userName: string;
@@ -9,5 +11,5 @@ export interface UserProfile {
   isActive: boolean;
   createdAt: string;
   lastLoginAt: string | null;
-  roles: string[];
+  roles: UserRole[];
 }

@@ -39,6 +39,11 @@ export const routes: Routes = [
                 loadComponent: () => import('./features/sales/components/pos-sales/pos-sales.component')
                     .then(m => m.PosSalesComponent)
             },
+            {
+                path: 'dashboard',
+                loadComponent: () => import('./features/dashboard/dashboard.component')
+                    .then(m => m.DashboardComponent)
+            }
         ]
     },
     //Catch all 404

@@ -8,7 +8,7 @@ import { AuthService } from './auth.service';
 import { TokenService } from './token.service';
 import { environment } from '../../../../environments/environment';
 import { UserProfile } from '../../models/Domains/UserProfile';
-import { LoginRequest, LoginResponse, TokenResponse } from '../../models/Domains/auth.types';
+import { LoginRequest, LoginResponse, TokenResponse, UserRole } from '../../models/Domains/auth.types';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -113,7 +113,7 @@ describe('AuthService', () => {
       accessToken: 'abc', 
       refreshToken: 'xyz', 
       expiresAt: new Date(Date.now() + 3600 * 1000), 
-      roles: ['admin']
+      roles: [UserRole.ADMIN]
     };
 
     // Act
