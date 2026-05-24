@@ -1,14 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { AuthService } from '../../Core/services/auth/auth.service';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
-import { ChangePasswordRequest, ChangePasswordResponse } from '../../Core/models';
+import { ChangePasswordResponse } from '../../Core/models';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialogContent, MatDialogRef } from '@angular/material/dialog';
-import { MatSidenavContent } from "@angular/material/sidenav";
 
 @Component({
   selector: 'pos-change-password',
