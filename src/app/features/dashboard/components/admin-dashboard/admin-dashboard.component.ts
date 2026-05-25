@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { UserRegisterComponent } from '../../../../auth/register/components/user-register/user-register.component';
 import { MatDialog } from '@angular/material/dialog';
+import { ChangePasswordComponent } from '../../../../auth/change-password/change-password.component';
 interface AdminStats {
   totalRevenue: number;
   ordersCount: number;
@@ -51,6 +52,14 @@ export class AdminDashboardComponent implements OnInit {
     // Logic to open the UserRegisterComponent as a dialog
     // This would typically involve using MatDialog from Angular Material
     this.dialog.open(UserRegisterComponent, {
+      width: '400px',
+    });
+  }
+
+  openPasswordChangeDialog() {
+    // Logic to open the ChangePasswordComponent as a dialog
+    // This would typically involve using MatDialog from Angular Material
+    this.dialog.open(ChangePasswordComponent, {
       width: '400px',
     });
   }

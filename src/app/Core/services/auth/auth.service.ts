@@ -2,12 +2,10 @@ import { Injectable, inject } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap, BehaviorSubject, throwError, catchError, switchMap } from 'rxjs';
-import { UserProfile } from '../../models/Domains/UserProfile';
 import { Router } from '@angular/router';
-import { LoginRequest, LoginResponse, TokenResponse } from '../../models/Domains/auth.types';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 import { TokenService } from './token.service';
-
+import { ChangePasswordRequest, ChangePasswordResponse, LoginRequest, LoginResponse, TokenResponse, UserProfile } from '../../models';
 @Injectable({
   providedIn: 'root'
 })
@@ -148,5 +146,10 @@ export class AuthService {
   getRefreshTokenSubject() {
     return this.refreshTokenSubject;
   }
-
+ 
+  // --- End of Advanced Interceptor Methods ---
+  // change Password method
+  changePassword(changePasswordRequest: ChangePasswordRequest): Observable<ChangePasswordResponse> {
+    return this.http.post<ChangePasswordResponse>(`${this.apiUrl}/change-password`, changePasswordRequest);
+  }
 }
