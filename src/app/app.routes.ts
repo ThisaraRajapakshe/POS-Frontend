@@ -48,6 +48,11 @@ export const routes: Routes = [
                 path: 'user-register',
                 loadComponent: () => import('./auth/register/components/user-register/user-register.component')
                     .then(m => m.UserRegisterComponent)
+            },
+            {
+                path: 'reports',
+                loadComponent: () => import('./features/reports/components/reports-dashboard/reports-dashboard.component')
+                    .then(m => m.ReportsDashboardComponent)
             }
         ]
     },
