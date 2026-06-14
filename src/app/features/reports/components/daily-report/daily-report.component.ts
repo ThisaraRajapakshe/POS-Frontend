@@ -26,6 +26,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatProgressSpinnerModule,
     BaseChartDirective,
     
+    
 ],
   templateUrl: './daily-report.component.html',
   styleUrl: './daily-report.component.scss'
@@ -65,22 +66,47 @@ export class DailyReportComponent implements OnInit {
     });
   }
 
-    private prepareChart(items: TopSellingItem[]): void {
-    this.barChartData = {
-      labels: items.map(i => i.productName),
-      datasets: [
-        {
-          data: items.map(i => i.quantitySold),
-          label: 'Quantity Sold',
-          backgroundColor: '#42A5F5'
-        },
-        {
-          data: items.map(i => i.totalRevenue),
-          label: 'Revenue ($)',
-          backgroundColor: '#66BB6A'
-        }
-      ]
-    };
-  }
+    // private prepareChart(items: TopSellingItem[]): void {
+    // this.barChartData = {
+    //   labels: items.map(i => i.productName),
+    //   datasets: [
+    //     {
+    //       data: items.map(i => i.quantitySold),
+    //       label: 'Quantity Sold',
+    //       backgroundColor: '#42A5F5'
+    //     },
+    //     {
+    //       data: items.map(i => i.totalRevenue),
+    //       label: 'Revenue ($)',
+    //       backgroundColor: '#66BB6A'
+    //     }
+    //   ]
+    // };
+  // }
+
+  private prepareChart(items: TopSellingItem[]): void {
+  // Sort by revenue descending, take top 10
+  const sorted = [...items].sort((a, b) => b.totalRevenue - a.totalRevenue).slice(0, 10);
+  
+  this.barChartData = {
+    labels: sorted.map(i => i.productName),
+    datasets: [
+      {
+        data: sorted.map(i => i.totalRevenue),
+        label: 'Revenue (Rs.)',
+        backgroundColor: '#66BB6A'
+      }
+    ]
+  };
+
+  // Set indexAxis for horizontal bars
+  this.barChartOptions = {
+    indexAxis: 'x',   // horizontal bars
+    responsive: true,
+    plugins: {
+      legend: { display: false }   // hide legend for a single dataset
+    }
+  };
+}
 
 }

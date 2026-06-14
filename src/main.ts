@@ -4,13 +4,15 @@ import { AppComponent } from './app/app.component';
 import { provideHttpClient } from '@angular/common/http';
 import { routes } from './app/app.routes';
 import { provideRouter } from '@angular/router';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 bootstrapApplication(AppComponent, {
   ...appConfig,
   providers: [
     ...(appConfig.providers || []),
     provideHttpClient(),
-    provideRouter(routes)
+    provideRouter(routes),
+    provideCharts(withDefaultRegisterables())    
   ]
 })
 .catch(err => console.error(err));
