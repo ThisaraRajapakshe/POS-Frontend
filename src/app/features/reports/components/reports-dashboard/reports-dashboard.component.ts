@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { MonthlyReportComponent } from '../monthly-report/monthly-report.component';
 import { WeeklyReportComponent } from '../weekly-report/weekly-report.component';
 import { DailyReportComponent } from '../daily-report/daily-report.component';
 
@@ -8,7 +7,7 @@ import { MonthlyDetailedReportComponent } from '../monthly-detailed-report/month
 
 @Component({
   selector: 'pos-reports-dashboard',
-  imports: [MatTabsModule, DailyReportComponent, WeeklyReportComponent, MonthlyReportComponent, MonthlyDetailedReportComponent],
+  imports: [MatTabsModule, DailyReportComponent, WeeklyReportComponent, MonthlyDetailedReportComponent],
   templateUrl: './reports-dashboard.component.html',
   styleUrl: './reports-dashboard.component.scss'
 })
