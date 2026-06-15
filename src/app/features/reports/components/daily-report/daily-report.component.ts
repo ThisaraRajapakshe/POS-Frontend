@@ -11,6 +11,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { BaseChartDirective } from 'ng2-charts';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'pos-daily-report',
   imports: [
@@ -25,6 +26,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatTableModule,
     MatProgressSpinnerModule,
     BaseChartDirective,
+    FormsModule
     
     
 ],
@@ -37,6 +39,7 @@ export class DailyReportComponent implements OnInit {
 
   report: DailyReport | null = null;
   loading = false;
+  selectedDate: Date = new Date(); // default to today
 
     // Chart configuration
   barChartData: ChartData<'bar'> = { labels: [], datasets: [] };
@@ -46,9 +49,22 @@ export class DailyReportComponent implements OnInit {
   private reportService = inject(ReportService);
 
   ngOnInit(): void {
-    // Default to today's date; ideally from a date picker
-    const today = new Date().toISOString().split('T')[0]; // 'yyyy-MM-dd'
-    this.loadReport(today);
+    this.loadReport(this.formatDate(this.selectedDate));
+  }
+  // Called by Datepicker when user selects a date
+  onDateChange(date: Date | null): void {
+    if (date) {
+      this.selectedDate = date;
+      this.loadReport(this.formatDate(date));
+    }
+  }
+
+  // Helper: convert Date to 'yyyy-MM-dd'
+  private formatDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 
     loadReport(date: string): void {
