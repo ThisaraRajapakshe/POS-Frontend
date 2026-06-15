@@ -1,0 +1,80 @@
+<div class="report-container">
+  <h2>Monthly Detailed Report</h2>
+
+  <!-- Month / Year selectors -->
+  <div style="display: flex; gap: 20px; margin-bottom: 20px;">
+    <mat-form-field>
+      <mat-label>Month</mat-label>
+      <mat-select [(ngModel)]="selectedMonth" (selectionChange)="onMonthChange()">
+        @for (m of months; track m.value) {
+          <mat-option [value]="m.value">{{ m.name }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Year</mat-label>
+      <input matInput type="number" [(ngModel)]="selectedYear" (change)="onMonthChange()">
+    </mat-form-field>
+  </div>
+
+  @if (loading) {
+    <div class="loading">Loading...</div>
+  }
+
+  @if (summary) {
+    <!-- Aggregated summary cards -->
+    <div class="summary-cards" style="margin-bottom: 20px;">
+      <mat-card>Total Orders: {{ summary.totalOrders }}</mat-card>
+      <mat-card>Total Sales: Rs.{{ summary.totalSales | number:'1.2-2' }}</mat-card>
+      <mat-card>Total Cost: Rs.{{ summary.totalCost | number:'1.2-2' }}</mat-card>
+      <mat-card>Gross Profit: Rs.{{ summary.grossProfit | number:'1.2-2' }}</mat-card>
+      <mat-card>Avg Order Value: Rs.{{ summary.averageOrderValue | number:'1.2-2' }}</mat-card>
+    </div>
+
+    <!-- Daily sales bar chart -->
+    <div style="width: 100%; height: 350px; margin: 20px auto;">
+      <canvas baseChart
+              [data]="chartData"
+              [options]="chartOptions"
+              type="bar">
+      </canvas>
+    </div>
+
+    <!-- Daily breakdown table -->
+    @if (dailyReports.length) {
+      <table mat-table [dataSource]="dailyReports" class="mat-elevation-z8">
+        <!-- Date column -->
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef> Date </th>
+          <td mat-cell *matCellDef="let day">{{ day.date | date:'EEE, MMM d' }}</td>
+        </ng-container>
+
+        <!-- Orders column -->
+        <ng-container matColumnDef="orders">
+          <th mat-header-cell *matHeaderCellDef> Orders </th>
+          <td mat-cell *matCellDef="let day">{{ day.summary.totalOrders }}</td>
+        </ng-container>
+
+        <!-- Sales column -->
+        <ng-container matColumnDef="sales">
+          <th mat-header-cell *matHeaderCellDef> Sales </th>
+          <td mat-cell *matCellDef="let day">Rs.{{ day.summary.totalSales | number:'1.2-2' }}</td>
+        </ng-container>
+
+        <!-- Profit column -->
+        <ng-container matColumnDef="profit">
+          <th mat-header-cell *matHeaderCellDef> Profit </th>
+          <td mat-cell *matCellDef="let day">Rs.{{ day.summary.grossProfit | number:'1.2-2' }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    }
+  }
+
+  @if (!loading && !summary) {
+    <p>No sales data for this month.</p>
+  }
+</div>
