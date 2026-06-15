@@ -16,7 +16,6 @@ import { FormsModule } from '@angular/forms';
   selector: 'pos-daily-report',
   imports: [
     MatFormField,
-    MatFormField,
     CommonModule, // required for pipes and built-in directives like @if/@for
     MatCardModule,
     MatFormFieldModule,
@@ -81,24 +80,6 @@ export class DailyReportComponent implements OnInit {
       }
     });
   }
-
-    // private prepareChart(items: TopSellingItem[]): void {
-    // this.barChartData = {
-    //   labels: items.map(i => i.productName),
-    //   datasets: [
-    //     {
-    //       data: items.map(i => i.quantitySold),
-    //       label: 'Quantity Sold',
-    //       backgroundColor: '#42A5F5'
-    //     },
-    //     {
-    //       data: items.map(i => i.totalRevenue),
-    //       label: 'Revenue ($)',
-    //       backgroundColor: '#66BB6A'
-    //     }
-    //   ]
-    // };
-  // }
 
   private prepareChart(items: TopSellingItem[]): void {
   // Sort by revenue descending, take top 10
