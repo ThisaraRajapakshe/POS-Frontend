@@ -7,7 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { ReportService } from '../../services/report.service';
-import { ReportSummary, MonthlyReport, DailyReport } from '../../models';
+import { ReportSummary, DailyReport } from '../../models';
 import { ChartData, ChartOptions } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import { MatTableModule } from '@angular/material/table';
