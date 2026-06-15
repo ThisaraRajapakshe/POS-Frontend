@@ -1,1 +1,39 @@
-<p>monthly-report works!</p>
+<div class="report-container">
+  <h2>Monthly Report</h2>
+
+  <!-- Month/Year selectors -->
+  <div style="display: flex; gap: 20px; margin-bottom: 20px;">
+    <mat-form-field>
+      <mat-label>Month</mat-label>
+      <mat-select [(ngModel)]="selectedMonth" (selectionChange)="onMonthChange()">
+        @for (m of months; track m.value) {
+          <mat-option [value]="m.value">{{ m.name }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Year</mat-label>
+      <input matInput type="number" [(ngModel)]="selectedYear" (change)="onMonthChange()">
+    </mat-form-field>
+  </div>
+
+  @if (loading) {
+    <div class="loading">Loading...</div>
+  }
+
+  @if (summary) {
+    <!-- Summary Cards -->
+    <div class="summary-cards">
+      <mat-card>Total Orders: {{ summary.totalOrders }}</mat-card>
+      <mat-card>Total Sales: Rs.{{ summary.totalSales | number:'1.2-2' }}</mat-card>
+      <mat-card>Total Cost: Rs.{{ summary.totalCost | number:'1.2-2' }}</mat-card>
+      <mat-card>Gross Profit: Rs.{{ summary.grossProfit | number:'1.2-2' }}</mat-card>
+      <mat-card>Avg Order Value: Rs.{{ summary.averageOrderValue | number:'1.2-2' }}</mat-card>
+    </div>
+  }
+
+  @if (!loading && !summary) {
+    <p>No sales data for this month.</p>
+  }
+</div>

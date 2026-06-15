@@ -34,6 +34,6 @@ export class ReportService {
       .set('year', year.toString())
       .set('month', month.toString())
       .set('timeZoneId', this.userTimeZone);
-    return this.http.get<ReportSummary>(`${this.baseUrl}/monthly-detailed`, { params });
+    return this.http.get<ReportSummary>(`${this.baseUrl}/monthly`, { params });
   }
 }
