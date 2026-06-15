@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { DailyReport, ReportSummary } from '../models';
+import { DailyReport, MonthlyReport, ReportSummary } from '../models';
 import { environment } from '../../../../environments/environment';
 
 @Injectable({
@@ -36,4 +36,12 @@ export class ReportService {
       .set('timeZoneId', this.userTimeZone);
     return this.http.get<ReportSummary>(`${this.baseUrl}/monthly`, { params });
   }
+
+  getMonthlyDetailed(year: number, month: number): Observable<MonthlyReport> {
+  const params = new HttpParams()
+    .set('year', year.toString())
+    .set('month', month.toString())
+    .set('timeZoneId', this.userTimeZone);
+  return this.http.get<MonthlyReport>(`${this.baseUrl}/monthly-detailed`, { params });
+}
 }
