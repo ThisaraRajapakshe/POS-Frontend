@@ -14,7 +14,7 @@
       <div class="card-inner">
         <div class="meta">
           <span class="label">Total Revenue</span>
-          <span class="value">Rs. {{ stats().totalRevenue | number: '1.0-0' }}</span>
+          <span class="value">Rs. {{ stats.totalRevenue | number: '1.0-0' }}</span>
         </div>
         <mat-icon class="icon-bg">payments</mat-icon>
       </div>
@@ -24,7 +24,7 @@
       <div class="card-inner">
         <div class="meta">
           <span class="label">Orders Today</span>
-          <span class="value">{{ stats().ordersCount }}</span>
+          <span class="value">{{ stats.ordersToday }}</span>
         </div>
         <mat-icon class="icon-bg">shopping_cart</mat-icon>
       </div>
@@ -34,7 +34,7 @@
       <div class="card-inner">
         <div class="meta">
           <span class="label">Low Stock Alerts</span>
-          <span class="value">{{ stats().lowStockItems }}</span>
+          <span class="value">{{ stats.lowStockAlerts }}</span>
         </div>
         <mat-icon class="icon-bg">warning</mat-icon>
       </div>
