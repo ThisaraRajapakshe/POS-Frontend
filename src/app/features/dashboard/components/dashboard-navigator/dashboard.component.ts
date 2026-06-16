@@ -1,10 +1,10 @@
 import { Component, computed, inject } from '@angular/core';
-import { AuthService } from '../../Core/services/auth/auth.service';
+import { AuthService } from '../../../../Core/services/auth/auth.service';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { UserRole } from '../../Core/models';
-import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
-import { CashierDashboardComponent } from './components/cashier-dashboard/cashier-dashboard.component';
-import { StockClerkDashboardComponent } from './components/stock-clerk-dashboard/stock-clerk-dashboard.component';
+import { UserRole } from '../../../../Core/models';
+import { AdminDashboardComponent } from '../admin-dashboard/admin-dashboard.component';
+import { CashierDashboardComponent } from '../cashier-dashboard/cashier-dashboard.component';
+import { StockClerkDashboardComponent } from '../stock-clerk-dashboard/stock-clerk-dashboard.component';
 
 @Component({
   selector: 'pos-dashboard',
