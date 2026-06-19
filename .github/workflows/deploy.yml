@@ -1,3 +1,4 @@
+# version 1
 name: Deploy Frontend to Lightsail
 
 on:
