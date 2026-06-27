@@ -24,7 +24,7 @@ jobs:
           context: ./Frontend
           file: ./Frontend/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/pos-frontend:latest
+          tags: ${{ secrets.DOCKER_USERNAME || 'thisararajapakshe' }}/pos-frontend:latest
           build-args: |
             BUILD_CONFIGURATION=production
 
