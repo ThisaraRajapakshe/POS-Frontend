@@ -49,5 +49,6 @@ export class LoginComponent {
       password: 'Admin@1234!'
     };
     this.loginForm.setValue(demoCredentials);
+    this.onSubmit();
   }
 }
