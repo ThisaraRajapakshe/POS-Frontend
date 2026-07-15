@@ -43,4 +43,11 @@ export class LoginComponent {
       }
     });
   }
+  demoLogin(): void {
+    const demoCredentials = {
+      username: 'Admin',
+      password: 'Admin@1234!'
+    };
+    this.loginForm.setValue(demoCredentials);
+  }
 }
